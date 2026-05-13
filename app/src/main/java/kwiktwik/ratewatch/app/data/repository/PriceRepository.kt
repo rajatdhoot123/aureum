@@ -73,16 +73,19 @@ class PriceRepository @Inject constructor(
 
     suspend fun getUsStockQuotes(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stockApi.getLatestStockPrices()
-            if (!response.success) throw Exception("API returned failure")
-            response.data.map { stock ->
+            // Use the unified Stocks API (supports any Yahoo symbol including US)
+            val usSymbols = listOf("AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META")
+            val csv = usSymbols.joinToString(",")
+            val response = RetrofitClient.stocksApi.getQuotes(csv)
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data.map { item ->
                 StockQuote(
-                    symbol = stock.symbol,
-                    shortName = stock.symbol,
-                    price = stock.price,
-                    change = stock.change,
-                    changePercent = stock.changePercent.replace("%", "").toDoubleOrNull() ?: 0.0,
-                    currency = "USD"
+                    symbol = item.symbol,
+                    shortName = item.name ?: item.symbol,
+                    price = item.price,
+                    change = item.change,
+                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
+                    currency = item.currency ?: "USD"
                 )
             }
         }.fold(

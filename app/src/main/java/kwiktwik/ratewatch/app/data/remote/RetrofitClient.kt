@@ -35,24 +35,6 @@ object RetrofitClient {
             .create(GoldSilverApi::class.java)
     }
 
-    val yahooFinanceApi: YahooFinanceApi by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.YAHOO_FINANCE_BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(YahooFinanceApi::class.java)
-    }
-
-    val stockApi: StockApi by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.STOCK_API_BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(StockApi::class.java)
-    }
-
     val stocksApi: StocksApi by lazy {
         Retrofit.Builder()
             .baseUrl(BuildConfig.STOCK_API_BASE_URL)

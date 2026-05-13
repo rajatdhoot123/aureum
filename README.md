@@ -62,7 +62,7 @@ app/build/outputs/apk/debug/app-debug.apk
   - 22K & 24K Gold (per 10g)
   - Silver (per kg)
   - City-wise prices (Delhi, Mumbai, Chennai, Bangalore, Hyderabad, etc.)
-- **Stocks & Indices** — Nifty 50, Sensex, Bank Nifty + major stocks via Yahoo Finance
+- **Stocks & Indices** — Nifty 50, Sensex, Bank Nifty + major stocks via the unified Stocks API (Yahoo Finance wrapper)
 - **Watchlist** — Save and track your favorite metals and stocks
 - **Multi-language Support** — Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi + English
 - **Modern UI** — Material 3, dynamic theming, smooth animations
@@ -85,7 +85,7 @@ app/build/outputs/apk/debug/app-debug.apk
 | Data              | Source                                      |
 |-------------------|---------------------------------------------|
 | Gold & Silver     | `https://api.example.com/scraper/metals/latest` (Goodreturns.in) |
-| Stocks & Indices  | Yahoo Finance (`query1.finance.yahoo.com`)  |
+| Stocks & Indices  | `https://api.example.com/stocks/...` (KwikTwik Stocks API) |
 
 > Base URLs are configured in `app/build.gradle.kts` via `buildConfigField`.
 

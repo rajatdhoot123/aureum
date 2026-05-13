@@ -10,26 +10,6 @@ data class StockQuote(
     val lastUpdated: Long = System.currentTimeMillis()
 )
 
-data class StockApiResponse(
-    val success: Boolean,
-    val data: List<StockData>,
-    val lastScrapeAt: String?
-)
-
-data class StockData(
-    val symbol: String,
-    val price: Double,
-    val change: Double,
-    val changePercent: String,
-    val volume: Long,
-    val latestTradingDay: String,
-    val previousClose: Double,
-    val high: Double,
-    val low: Double,
-    val open: Double,
-    val scrapedAt: String
-)
-
 data class StockSymbol(
     val symbol: String,
     val displayName: String,

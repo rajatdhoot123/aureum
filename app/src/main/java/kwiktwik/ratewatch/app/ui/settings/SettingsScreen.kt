@@ -103,7 +103,7 @@ fun SettingsScreen(
                 SettingsItem(
                     emoji = "📡",
                     title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.data_source),
-                    subtitle = "Gold & Silver: Goodreturns.in\nStocks: Yahoo Finance",
+                    subtitle = "Gold & Silver: Goodreturns.in\nStocks: KwikTwik Stocks API",
                     onClick = {}
                 )
             }
