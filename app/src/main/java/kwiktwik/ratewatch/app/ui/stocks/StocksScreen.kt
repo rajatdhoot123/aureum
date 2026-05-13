@@ -106,12 +106,12 @@ fun StocksScreen(
                         }
                         Spacer(Modifier.height(24.dp))
                         Text(
-                            "Market data unavailable", 
+                            if (uiState.error != null) "Market data error" else "Market data unavailable",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            "Try refreshing in a few moments", 
+                            uiState.error ?: "Try refreshing in a few moments",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

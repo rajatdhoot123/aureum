@@ -31,20 +31,27 @@ class StocksViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             // Primary source: Groww-powered Indian indices (recommended, single call, rich data)
-            repository.getGrowwIndianIndices()
-                .onSuccess { quotes ->
-                    if (quotes.isNotEmpty()) {
-                        _uiState.update { it.copy(quotes = quotes, isLoading = false) }
-                        return@launch
-                    }
+            val growwResult = repository.getGrowwIndianIndices()
+            growwResult.onSuccess { quotes ->
+                if (quotes.isNotEmpty()) {
+                    Log.i("StocksViewModel", "Loaded ${quotes.size} indices from Groww")
+                    _uiState.update { it.copy(quotes = quotes, isLoading = false) }
+                    return@launch
+                } else {
+                    Log.w("StocksViewModel", "Groww returned empty list, trying legacy fallback")
                 }
+            }.onFailure { throwable ->
+                Log.e("StocksViewModel", "Groww /scraper/stocks/groww/indices failed", throwable)
+            }
 
             // Fallback to legacy popular quotes (Yahoo-backed multi-symbol)
             repository.getAllPopularStockQuotes()
                 .onSuccess { quotes ->
+                    Log.i("StocksViewModel", "Loaded ${quotes.size} quotes via legacy /stocks/quote fallback")
                     _uiState.update { it.copy(quotes = quotes, isLoading = false) }
                 }
                 .onFailure { throwable ->
+                    Log.e("StocksViewModel", "Legacy stocks/quote fallback also failed", throwable)
                     _uiState.update { it.copy(isLoading = false, error = throwable.message ?: "Failed to load market data") }
                 }
         }
@@ -56,9 +63,11 @@ class StocksViewModel @Inject constructor(
 
             repository.getGrowwGlobalInstruments()
                 .onSuccess { quotes ->
+                    Log.i("StocksViewModel", "Loaded ${quotes.size} global instruments from Groww")
                     _uiState.update { it.copy(quotes = quotes, isLoading = false) }
                 }
                 .onFailure { throwable ->
+                    Log.e("StocksViewModel", "Groww global failed", throwable)
                     _uiState.update { it.copy(isLoading = false, error = throwable.message ?: "Failed to load global markets") }
                 }
         }

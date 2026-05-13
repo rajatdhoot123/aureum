@@ -31,19 +31,19 @@ interface StocksApi {
 
     // --- Groww-powered live endpoints (recommended for Indian market data) ---
     // Single call returns 15-25 Indian indices with full OHLC + change data. 6s server cache.
-    @GET("stocks/groww/indices")
+    @GET("scraper/stocks/groww/indices")
     suspend fun getGrowwIndices(): GrowwIndicesResponse
 
     // Global instruments: GIFT Nifty, Dow Jones, S&P 500, Nikkei, Hang Seng, etc.
-    @GET("stocks/groww/global")
+    @GET("scraper/stocks/groww/global")
     suspend fun getGrowwGlobal(): GrowwGlobalResponse
 
     // Raw Groww search metadata (for symbol resolution / autocomplete)
-    @GET("stocks/groww/search/{searchId}")
+    @GET("scraper/stocks/groww/search/{searchId}")
     suspend fun getGrowwSearch(@Path("searchId") searchId: String): retrofit2.Response<okhttp3.ResponseBody>
 
     // Server health & scrape status (useful for diagnostics)
-    @GET("health")
+    @GET("scraper/health")
     suspend fun getHealth(): ScraperHealthResponse
 }
 
@@ -152,7 +152,7 @@ data class ScrapeResponse(
  * in a single fast call with 6-second server-side cache.
  */
 data class GrowwIndicesResponse(
-    val success: Boolean,
+    val success: Boolean = true,   // tolerant default if field missing
     val count: Int = 0,
     val data: List<StockQuoteItem> = emptyList(),
     val source: String? = null,
@@ -165,7 +165,7 @@ data class GrowwIndicesResponse(
  * 15-second cache.
  */
 data class GrowwGlobalResponse(
-    val success: Boolean,
+    val success: Boolean = true,
     val count: Int = 0,
     val data: List<StockQuoteItem> = emptyList(),
     val source: String? = null,
