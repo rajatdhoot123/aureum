@@ -1,0 +1,28 @@
+# Android Studio / IntelliJ
+.idea/
+.gradle/
+build/
+app/build/
+*.iml
+*.iws
+*.ipr
+
+# Gradle
+local.properties
+.kotlin/
+
+# Output
+*.apk
+*.aab
+
+# Keys
+*.jks
+*.keystore
+key.properties
+!debug.keystore
+
+# macOS
+.DS_Store
+
+# Log files
+*.log

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">रेटवॉच</string>
+    <string name="tagline">सोना • चाँदी • शेयर • लाइव भारत</string>
+
+    <string name="welcome">रेटवॉच में आपका स्वागत है</string>
+    <string name="choose_language">अपनी भाषा चुनें</string>
+    <string name="language_subtitle">आप इसे कभी भी सेटिंग्स में बदल सकते हैं</string>
+    <string name="get_started">शुरू करें</string>
+    <string name="skip">छोड़ें</string>
+
+    <string name="nav_home">होम</string>
+    <string name="nav_markets">मार्केट</string>
+    <string name="nav_watchlist">वॉचलिस्ट</string>
+    <string name="nav_settings">सेटिंग्स</string>
+
+    <string name="gold_22k">22K सोना</string>
+    <string name="gold_24k">24K सोना</string>
+    <string name="silver">चाँदी</string>
+    <string name="per_10_grams">प्रति 10 ग्राम</string>
+    <string name="per_kg">प्रति किलो</string>
+    <string name="last_updated">आखिरी अपडेट</string>
+    <string name="select_city">शहर चुनें</string>
+    <string name="india_approx">भारत (लगभग)</string>
+    <string name="pull_to_refresh">रिफ्रेश करने के लिए खींचें</string>
+    <string name="refresh">रिफ्रेश</string>
+    <string name="no_data">कोई डेटा उपलब्ध नहीं</string>
+
+    <string name="stocks">शेयर और इंडेक्स</string>
+    <string name="nifty_50">निफ्टी 50</string>
+    <string name="sensex">बीएसई सेंसेक्स</string>
+    <string name="bank_nifty">बैंक निफ्टी</string>
+    <string name="add_to_watchlist">वॉचलिस्ट में जोड़ें</string>
+    <string name="live_data">लाइव</string>
+    <string name="coming_soon">और शेयर जल्द आ रहे हैं</string>
+
+    <string name="watchlist">वॉचलिस्ट</string>
+    <string name="empty_watchlist">आपकी वॉचलिस्ट खाली है</string>
+    <string name="add_symbols">ट्रैक करने के लिए सोना, चाँदी या शेयर जोड़ें</string>
+
+    <string name="settings">सेटिंग्स</string>
+    <string name="language">भाषा</string>
+    <string name="change_language">भाषा बदलें</string>
+    <string name="theme">थीम</string>
+    <string name="dark_mode">डार्क मोड</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="about">ऐप के बारे में</string>
+    <string name="version">वर्जन</string>
+    <string name="data_source">डेटा स्रोत</string>
+    <string name="goodreturns">Goodreturns.in via KwikTwik</string>
+    <string name="rate_us">प्ले स्टोर पर रेट करें</string>
+    <string name="share_app">ऐप शेयर करें</string>
+    <string name="privacy_policy">प्राइवेसी पॉलिसी</string>
+
+    <string name="retry">पुनः प्रयास करें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="save">सेव करें</string>
+    <string name="close">बंद करें</string>
+    <string name="error_generic">कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।</string>
+    <string name="no_internet">इंटरनेट कनेक्शन नहीं है</string>
+</resources>

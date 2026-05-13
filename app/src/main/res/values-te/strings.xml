@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">రేట్‌వాచ్</string>
+    <string name="tagline">బంగారం • వెండి • స్టాక్స్ • లైవ్ ఇండియా</string>
+
+    <string name="welcome">రేట్‌వాచ్‌కు స్వాగతం</string>
+    <string name="choose_language">మీ భాషను ఎంచుకోండి</string>
+    <string name="language_subtitle">ఇది సెట్టింగ్స్‌లో ఎప్పుడైనా మార్చవచ్చు</string>
+    <string name="get_started">ప్రారంభించండి</string>
+    <string name="skip">దాటవేయి</string>
+
+    <string name="nav_home">హోమ్</string>
+    <string name="nav_markets">మార్కెట్లు</string>
+    <string name="nav_watchlist">వాచ్‌లిస్ట్</string>
+    <string name="nav_settings">సెట్టింగ్స్</string>
+
+    <string name="gold_22k">22K బంగారం</string>
+    <string name="gold_24k">24K బంగారం</string>
+    <string name="silver">వెండి</string>
+    <string name="per_10_grams">10 గ్రాములకు</string>
+    <string name="per_kg">కిలోకు</string>
+    <string name="last_updated">చివరిగా అప్‌డేట్ చేయబడింది</string>
+    <string name="select_city">నగరం ఎంచుకోండి</string>
+    <string name="india_approx">భారతదేశం (సుమారు)</string>
+    <string name="pull_to_refresh">రిఫ్రెష్ చేయడానికి లాగండి</string>
+    <string name="refresh">రిఫ్రెష్</string>
+    <string name="no_data">డేటా అందుబాటులో లేదు</string>
+
+    <string name="stocks">స్టాక్స్ &amp; ఇండెక్స్‌లు</string>
+    <string name="nifty_50">నిఫ్టీ 50</string>
+    <string name="sensex">బిఎస్ఇ సెన్సెక్స్</string>
+    <string name="bank_nifty">బ్యాంక్ నిఫ్టీ</string>
+    <string name="add_to_watchlist">వాచ్‌లిస్ట్‌కి జోడించు</string>
+    <string name="live_data">లైవ్</string>
+    <string name="coming_soon">మరిన్ని స్టాక్స్ త్వరలో</string>
+
+    <string name="watchlist">వాచ్‌లిస్ట్</string>
+    <string name="empty_watchlist">మీ వాచ్‌లిస్ట్ ఖాళీగా ఉంది</string>
+    <string name="add_symbols">బంగారం, వెండి లేదా స్టాక్స్‌ను ట్రాక్ చేయడానికి జోడించండి</string>
+
+    <string name="settings">సెట్టింగ్స్</string>
+    <string name="language">భాష</string>
+    <string name="change_language">భాష మార్చండి</string>
+    <string name="theme">థీమ్</string>
+    <string name="dark_mode">డార్క్ మోడ్</string>
+    <string name="system_default">సిస్టమ్ డిఫాల్ట్</string>
+    <string name="about">గురించి</string>
+    <string name="version">వెర్షన్</string>
+    <string name="data_source">డేటా మూలం</string>
+    <string name="goodreturns">Goodreturns.in ద్వారా</string>
+    <string name="rate_us">Play Storeలో రేట్ చేయండి</string>
+    <string name="share_app">అనువర్తనాన్ని షేర్ చేయండి</string>
+    <string name="privacy_policy">గోప్యతా విధానం</string>
+
+    <string name="retry">మళ్లీ ప్రయత్నించు</string>
+    <string name="cancel">రద్దు చేయి</string>
+    <string name="save">సేవ్ చేయి</string>
+    <string name="close">మూసివేయి</string>
+    <string name="error_generic">ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="no_internet">ఇంటర్నెట్ కనెక్షన్ లేదు</string>
+</resources>

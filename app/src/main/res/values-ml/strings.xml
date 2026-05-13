@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">റേറ്റ്‌വാച്ച്</string>
+    <string name="welcome">റേറ്റ്‌വാച്ചിലേക്ക് സ്വാഗതം</string>
+    <string name="choose_language">നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക</string>
+    <string name="gold_22k">22K സ്വർണ്ണം</string>
+    <string name="gold_24k">24K സ്വർണ്ണം</string>
+    <string name="silver">വെള്ളി</string>
+</resources>

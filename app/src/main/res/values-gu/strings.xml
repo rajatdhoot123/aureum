@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">રેટવોચ</string>
+    <string name="welcome">રેટવોચમાં આપનું સ્વાગત છે</string>
+    <string name="choose_language">તમારી ભાષા પસંદ કરો</string>
+    <string name="gold_22k">22K સોનું</string>
+    <string name="gold_24k">24K સોનું</string>
+    <string name="silver">ચાંદી</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">रेटवॉच</string>
+    <string name="welcome">रेटवॉचमध्ये स्वागत आहे</string>
+    <string name="choose_language">आपली भाषा निवडा</string>
+    <string name="get_started">सुरू करा</string>
+    <string name="gold_22k">२२K सोने</string>
+    <string name="gold_24k">२४K सोने</string>
+    <string name="silver">चांदी</string>
+</resources>

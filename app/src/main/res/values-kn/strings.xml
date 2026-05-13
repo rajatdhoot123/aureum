@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ರೇಟ್‌ವಾಚ್</string>
+    <string name="welcome">ರೇಟ್‌ವಾಚ್‌ಗೆ ಸುಸ್ವಾಗತ</string>
+    <string name="choose_language">ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="gold_22k">22K ಚಿನ್ನ</string>
+    <string name="gold_24k">24K ಚಿನ್ನ</string>
+    <string name="silver">ಬೆಳ್ಳಿ</string>
+</resources>

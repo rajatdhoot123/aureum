@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ரேட்வாட்ச்</string>
+    <string name="tagline">தங்கம் • வெள்ளி • பங்குகள் • நேரடி இந்தியா</string>
+
+    <string name="welcome">ரேட்வாட்சிற்கு வரவேற்கிறோம்</string>
+    <string name="choose_language">உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="language_subtitle">இதை அமைப்புகளில் எப்போது வேண்டுமானாலும் மாற்றலாம்</string>
+    <string name="get_started">தொடங்கு</string>
+    <string name="skip">தவிர்</string>
+
+    <string name="nav_home">முகப்பு</string>
+    <string name="nav_markets">சந்தைகள்</string>
+    <string name="nav_watchlist">கண்காணிப்புப் பட்டியல்</string>
+    <string name="nav_settings">அமைப்புகள்</string>
+
+    <string name="gold_22k">22K தங்கம்</string>
+    <string name="gold_24k">24K தங்கம்</string>
+    <string name="silver">வெள்ளி</string>
+    <string name="per_10_grams">10 கிராமுக்கு</string>
+    <string name="per_kg">ஒரு கிலோவுக்கு</string>
+    <string name="last_updated">கடைசியாக புதுப்பிக்கப்பட்டது</string>
+    <string name="select_city">நகரத்தைத் தேர்ந்தெடு</string>
+    <string name="india_approx">இந்தியா (தோராயமாக)</string>
+    <string name="pull_to_refresh">புதுப்பிக்க இழுக்கவும்</string>
+    <string name="refresh">புதுப்பி</string>
+    <string name="no_data">தரவு இல்லை</string>
+
+    <string name="stocks">பங்குகள் &amp; குறியீடுகள்</string>
+    <string name="nifty_50">நிஃப்டி 50</string>
+    <string name="sensex">பிஎஸ்இ சென்செக்ஸ்</string>
+    <string name="bank_nifty">பேங்க் நிஃப்டி</string>
+    <string name="add_to_watchlist">கண்காணிப்பில் சேர்க்கவும்</string>
+    <string name="live_data">நேரடி</string>
+    <string name="coming_soon">மேலும் பங்குகள் விரைவில்</string>
+
+    <string name="watchlist">கண்காணிப்புப் பட்டியல்</string>
+    <string name="empty_watchlist">உங்கள் கண்காணிப்புப் பட்டியல் காலியாக உள்ளது</string>
+    <string name="add_symbols">தங்கம், வெள்ளி அல்லது பங்குகளைச் சேர்க்கவும்</string>
+
+    <string name="settings">அமைப்புகள்</string>
+    <string name="language">மொழி</string>
+    <string name="change_language">மொழியை மாற்று</string>
+    <string name="theme">தீம்</string>
+    <string name="dark_mode">இருண்ட பயன்முறை</string>
+    <string name="system_default">கணினி இயல்பு</string>
+    <string name="about">பற்றி</string>
+    <string name="version">பதிப்பு</string>
+    <string name="data_source">தரவு மூலம்</string>
+    <string name="goodreturns">Goodreturns.in வழியாக</string>
+    <string name="rate_us">Play Store-இல் மதிப்பிடவும்</string>
+    <string name="share_app">ஆப்ஸைப் பகிரவும்</string>
+    <string name="privacy_policy">தனியுரிமைக் கொள்கை</string>
+
+    <string name="retry">மீண்டும் முயற்சி</string>
+    <string name="cancel">ரத்து</string>
+    <string name="save">சேமி</string>
+    <string name="close">மூடு</string>
+    <string name="error_generic">ஏதோ தவறு நேர்ந்தது. மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="no_internet">இணைய இணைப்பு இல்லை</string>
+</resources>
