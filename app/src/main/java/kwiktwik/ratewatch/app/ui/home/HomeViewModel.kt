@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(
                             prices = response.data,
                             isLoading = false,
                             source = response.source ?: "",
-                            lastUpdated = response.lastScrapeAt
+                            lastUpdated = response.lastScrapeAt ?: ""
                         )
                     }
                 }

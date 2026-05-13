@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class GoldSilverResponse(
     val success: Boolean,
     val data: List<CityPrice>,
-    @SerializedName("lastScrapeAt") val lastScrapeAt: String,
+    @SerializedName("lastScrapeAt") val lastScrapeAt: String?,
     val source: String?
 )
 
@@ -17,5 +17,5 @@ data class CityPrice(
     @SerializedName("gold22kChange") val gold22kChange: String?,
     @SerializedName("gold24kChange") val gold24kChange: String?,
     @SerializedName("silverChange") val silverChange: String?,
-    @SerializedName("scrapedAt") val scrapedAt: String
+    @SerializedName("scrapedAt") val scrapedAt: String?
 )

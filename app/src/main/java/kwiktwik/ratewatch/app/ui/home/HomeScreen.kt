@@ -337,7 +337,8 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
     }
 }
 
-private fun formatTime(isoString: String): String {
+private fun formatTime(isoString: String?): String {
+    if (isoString == null) return "--"
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).apply {
             timeZone = TimeZone.getTimeZone("UTC")
