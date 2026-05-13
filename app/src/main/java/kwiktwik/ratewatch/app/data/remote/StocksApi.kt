@@ -69,7 +69,18 @@ data class StockQuoteItem(
     val latestTradingDay: String? = null,
     val currency: String? = null,
     val exchange: String? = null,
-    val scrapedAt: String? = null
+    val scrapedAt: String? = null,
+    // New fields from updated Groww indices scraper response
+    val logoUrl: String? = null,
+    val searchId: String? = null,
+    val gsin: String? = null,
+    val yearHigh: Double? = null,
+    val yearLow: Double? = null,
+    val instrumentType: String? = null,
+    @SerializedName("isBse") val isBse: Boolean? = null,
+    val continent: String? = null,
+    val country: String? = null,
+    val source: String? = null
 )
 
 // --- Chart Endpoint (TradingView Lightweight Charts compatible) ---

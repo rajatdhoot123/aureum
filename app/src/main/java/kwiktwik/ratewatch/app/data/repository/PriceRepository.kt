@@ -229,6 +229,13 @@ class PriceRepository @Inject constructor(
         low = low,
         previousClose = previousClose,
         exchange = exchange,
-        latestTradingDay = latestTradingDay
+        latestTradingDay = latestTradingDay,
+        logoUrl = logoUrl,
+        searchId = searchId,
+        yearHigh = yearHigh,
+        yearLow = yearLow,
+        instrumentType = instrumentType,
+        source = source,
+        gsin = gsin
     )
 }

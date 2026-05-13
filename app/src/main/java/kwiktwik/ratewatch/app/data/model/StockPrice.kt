@@ -14,7 +14,15 @@ data class StockQuote(
     val low: Double? = null,
     val previousClose: Double? = null,
     val exchange: String? = null,
-    val latestTradingDay: String? = null
+    val latestTradingDay: String? = null,
+    // Additional fields from updated Groww Indian indices response
+    val logoUrl: String? = null,
+    val searchId: String? = null,
+    val yearHigh: Double? = null,
+    val yearLow: Double? = null,
+    val instrumentType: String? = null,
+    val source: String? = null,
+    val gsin: String? = null
 )
 
 data class StockSymbol(

@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
 
@@ -188,18 +189,30 @@ private fun StockQuoteCard(
                 .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E).copy(alpha = 0.1f) else androidx.compose.ui.graphics.Color(0xFFEF4444).copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    if (isPositive) "↗" else "↘",
-                    color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
-                    fontWeight = FontWeight.Bold
+            // Logo or fallback indicator
+            if (quote.logoUrl != null) {
+                AsyncImage(
+                    model = quote.logoUrl,
+                    contentDescription = quote.shortName,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                 )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E).copy(alpha = 0.1f) else androidx.compose.ui.graphics.Color(0xFFEF4444).copy(alpha = 0.1f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        if (isPositive) "↗" else "↘",
+                        color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
             
             Spacer(Modifier.width(16.dp))
@@ -237,6 +250,14 @@ private fun StockQuoteCard(
                         text = "H: ${String.format("%.0f", quote.high)}  L: ${String.format("%.0f", quote.low)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                }
+                // Show 52-week range from updated Groww data (very useful for indices like NIFTY)
+                if (quote.yearHigh != null && quote.yearLow != null) {
+                    Text(
+                        text = "52w: ${String.format("%.0f", quote.yearLow)} – ${String.format("%.0f", quote.yearHigh)}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
                     )
                 }
             }
