@@ -65,4 +65,34 @@ class HomeViewModel @Inject constructor(
                 }
         }
     }
+
+    /**
+     * Forces an immediate fresh scrape from Goodreturns.in (bypasses cache).
+     * Use when /latest returns empty data.
+     */
+    fun forceMetalsScrape() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+
+            repository.triggerMetalsScrape()
+                .onSuccess { response ->
+                    _uiState.update {
+                        it.copy(
+                            prices = response.data,
+                            isLoading = false,
+                            source = response.source ?: "",
+                            lastUpdated = response.lastScrapeAt ?: ""
+                        )
+                    }
+                }
+                .onFailure { throwable ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = throwable.message ?: "Scrape failed"
+                        )
+                    }
+                }
+        }
+    }
 }

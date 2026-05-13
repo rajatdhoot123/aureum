@@ -160,64 +160,68 @@ fun HomeScreen(
                     }
 
                     else -> {
-                        val cityData = state.prices.find { it.city == selectedCity }
-                            ?: state.prices.firstOrNull()
+                        if (state.prices.isEmpty()) {
+                            EmptyMetalsState(onForceScrape = { viewModel.forceMetalsScrape() })
+                        } else {
+                            val cityData = state.prices.find { it.city == selectedCity }
+                                ?: state.prices.firstOrNull()
 
-                        cityData?.let { price ->
-                            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                                // Gold 24K Card
-                                PriceCard(
-                                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_24k),
-                                    price = price.gold24kPer10g ?: 0,
-                                    unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
-                                    change = price.gold24kChange,
-                                    iconEmoji = "🪙",
-                                    accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent
-                                )
+                            cityData?.let { price ->
+                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                    // Gold 24K Card
+                                    PriceCard(
+                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_24k),
+                                        price = price.gold24kPer10g ?: 0,
+                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
+                                        change = price.gold24kChange,
+                                        iconEmoji = "🪙",
+                                        accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent
+                                    )
 
-                                // Gold 22K Card
-                                PriceCard(
-                                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_22k),
-                                    price = price.gold22kPer10g ?: 0,
-                                    unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
-                                    change = price.gold22kChange,
-                                    iconEmoji = "🥇",
-                                    accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent.copy(alpha = 0.8f)
-                                )
+                                    // Gold 22K Card
+                                    PriceCard(
+                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_22k),
+                                        price = price.gold22kPer10g ?: 0,
+                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
+                                        change = price.gold22kChange,
+                                        iconEmoji = "🥇",
+                                        accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent.copy(alpha = 0.8f)
+                                    )
 
-                                // Silver Card
-                                PriceCard(
-                                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.silver),
-                                    price = price.silverPerKg ?: 0,
-                                    unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_kg),
-                                    change = price.silverChange,
-                                    iconEmoji = "🥈",
-                                    accentColor = kwiktwik.ratewatch.app.ui.theme.SilverAccent
-                                )
+                                    // Silver Card
+                                    PriceCard(
+                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.silver),
+                                        price = price.silverPerKg ?: 0,
+                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_kg),
+                                        change = price.silverChange,
+                                        iconEmoji = "🥈",
+                                        accentColor = kwiktwik.ratewatch.app.ui.theme.SilverAccent
+                                    )
 
-                                Spacer(Modifier.height(8.dp))
+                                    Spacer(Modifier.height(8.dp))
 
-                                // Last Updated & Source
-                                Surface(
-                                    shape = RoundedCornerShape(16.dp),
-                                    color = Color.Transparent,
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(horizontal = 8.dp),
-                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    // Last Updated & Source
+                                    Surface(
+                                        shape = RoundedCornerShape(16.dp),
+                                        color = Color.Transparent,
+                                        modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        Text(
-                                            "Updated: ${formatTime(price.scrapedAt)}",
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        if (state.source.isNotEmpty()) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 8.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
                                             Text(
-                                                "via ${state.source}",
+                                                "Updated: ${formatTime(price.scrapedAt)}",
                                                 style = MaterialTheme.typography.labelMedium,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
+                                            if (state.source.isNotEmpty()) {
+                                                Text(
+                                                    "via ${state.source}",
+                                                    style = MaterialTheme.typography.labelMedium,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -305,6 +309,51 @@ fun LoadingState() {
     }
 }
 
+
+@Composable
+private fun EmptyMetalsState(onForceScrape: () -> Unit) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+        shape = RoundedCornerShape(24.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("📭", style = MaterialTheme.typography.displaySmall)
+            Spacer(Modifier.height(12.dp))
+            Text(
+                "No gold/silver data yet",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "The scraper hasn't fetched fresh rates from Goodreturns.in.\nTrigger a manual scrape to load the latest prices.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            Spacer(Modifier.height(20.dp))
+            Button(
+                onClick = onForceScrape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Force Scrape Now")
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "Rate limit: once every 5 minutes",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            )
+        }
+    }
+}
 
 @Composable
 private fun ErrorState(message: String, onRetry: () -> Unit) {
