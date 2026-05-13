@@ -2,6 +2,7 @@ package kwiktwik.ratewatch.app.ui.stocks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.util.Log
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
 import kwiktwik.ratewatch.app.data.repository.PriceRepository
