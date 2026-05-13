@@ -3,6 +3,8 @@ package kwiktwik.ratewatch.app.data.repository
 import kwiktwik.ratewatch.app.data.model.*
 import kwiktwik.ratewatch.app.data.remote.RetrofitClient
 import kwiktwik.ratewatch.app.data.remote.CandlesData
+import kwiktwik.ratewatch.app.data.remote.ScrapeResponse
+import kwiktwik.ratewatch.app.data.remote.ScraperHealthResponse
 import kwiktwik.ratewatch.app.data.remote.SearchResultItem
 import kwiktwik.ratewatch.app.data.remote.StockQuoteItem
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,31 @@ class PriceRepository @Inject constructor(
     suspend fun getGoldSilverPrices(): Result<GoldSilverResponse> = withContext(Dispatchers.IO) {
         runCatching {
             RetrofitClient.goldSilverApi.getLatestPrices()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Triggers immediate gold/silver scrape from Goodreturns.
+     * Returns the freshly scraped data.
+     */
+    suspend fun triggerMetalsScrape(): Result<GoldSilverResponse> = withContext(Dispatchers.IO) {
+        runCatching {
+            RetrofitClient.goldSilverApi.triggerScrape()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Fetches unified scraper health status (last scrape times, cache state, available endpoints).
+     */
+    suspend fun getScraperHealth(): Result<ScraperHealthResponse> = withContext(Dispatchers.IO) {
+        runCatching {
+            RetrofitClient.stocksApi.getHealth()
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it) }
@@ -144,12 +171,64 @@ class PriceRepository @Inject constructor(
         )
     }
 
+    // --- Groww-powered live market data (recommended primary source) ---
+
+    /**
+     * Fetches live Indian indices from Groww via the unified scraper.
+     * Includes NIFTY 50, BANK NIFTY, INDIA VIX, FINNIFTY, MIDCAP, and 15+ sectoral indices.
+     * Single HTTP call with 6s server cache.
+     */
+    suspend fun getGrowwIndianIndices(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getGrowwIndices()
+            if (!response.success) throw Exception("Groww indices endpoint failed")
+            response.data.map { it.toStockQuote() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Fetches global instruments (GIFT Nifty, Dow Jones, S&P 500, Nikkei, Hang Seng, etc.)
+     * 15-second cache on the scraper.
+     */
+    suspend fun getGrowwGlobalInstruments(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getGrowwGlobal()
+            if (!response.success) throw Exception("Groww global endpoint failed")
+            response.data.map { it.toStockQuote() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Triggers an immediate background scrape of Groww market data.
+     * Use sparingly — the scheduled + 6s cache already provides fresh data.
+     */
+    suspend fun triggerStocksScrape(): Result<ScrapeResponse> = withContext(Dispatchers.IO) {
+        runCatching {
+            RetrofitClient.stocksApi.triggerScrape()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
     private fun StockQuoteItem.toStockQuote(): StockQuote = StockQuote(
         symbol = symbol,
         shortName = name ?: symbol,
         price = price,
         change = change,
         changePercent = changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
-        currency = currency ?: "INR"
+        currency = currency ?: "INR",
+        open = open,
+        high = high,
+        low = low,
+        previousClose = previousClose,
+        exchange = exchange,
+        latestTradingDay = latestTradingDay
     )
 }

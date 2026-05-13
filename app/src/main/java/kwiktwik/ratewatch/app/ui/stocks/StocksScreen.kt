@@ -54,11 +54,20 @@ fun StocksScreen(
                 Spacer(Modifier.width(8.dp))
                 LivePulseIndicator()
             }
-            Text(
-                "Major Indian Indices & Stocks", 
-                style = MaterialTheme.typography.bodyMedium, 
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Live Indian Indices from Groww", 
+                    style = MaterialTheme.typography.bodyMedium, 
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                TextButton(onClick = { viewModel.loadGlobalInstruments() }) {
+                    Text("Show Global", style = MaterialTheme.typography.labelMedium)
+                }
+            }
 
             Spacer(Modifier.height(24.dp))
 
@@ -222,6 +231,14 @@ private fun StockQuoteCard(
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold
                 )
+                // Show day's range when rich Groww data is available
+                if (quote.high != null && quote.low != null) {
+                    Text(
+                        text = "H: ${String.format("%.0f", quote.high)}  L: ${String.format("%.0f", quote.low)}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                }
             }
 
             Spacer(Modifier.width(8.dp))

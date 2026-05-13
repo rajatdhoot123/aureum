@@ -30,12 +30,36 @@ class StocksViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
+            // Primary source: Groww-powered Indian indices (recommended, single call, rich data)
+            repository.getGrowwIndianIndices()
+                .onSuccess { quotes ->
+                    if (quotes.isNotEmpty()) {
+                        _uiState.update { it.copy(quotes = quotes, isLoading = false) }
+                        return@launch
+                    }
+                }
+
+            // Fallback to legacy popular quotes (Yahoo-backed multi-symbol)
             repository.getAllPopularStockQuotes()
                 .onSuccess { quotes ->
                     _uiState.update { it.copy(quotes = quotes, isLoading = false) }
                 }
-                .onFailure {
-                    _uiState.update { it.copy(isLoading = false, error = it.error) }
+                .onFailure { throwable ->
+                    _uiState.update { it.copy(isLoading = false, error = throwable.message ?: "Failed to load market data") }
+                }
+        }
+    }
+
+    fun loadGlobalInstruments() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+
+            repository.getGrowwGlobalInstruments()
+                .onSuccess { quotes ->
+                    _uiState.update { it.copy(quotes = quotes, isLoading = false) }
+                }
+                .onFailure { throwable ->
+                    _uiState.update { it.copy(isLoading = false, error = throwable.message ?: "Failed to load global markets") }
                 }
         }
     }

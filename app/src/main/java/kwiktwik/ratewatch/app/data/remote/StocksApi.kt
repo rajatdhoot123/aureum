@@ -28,6 +28,23 @@ interface StocksApi {
 
     @POST("stocks/scrape")
     suspend fun triggerScrape(): ScrapeResponse
+
+    // --- Groww-powered live endpoints (recommended for Indian market data) ---
+    // Single call returns 15-25 Indian indices with full OHLC + change data. 6s server cache.
+    @GET("stocks/groww/indices")
+    suspend fun getGrowwIndices(): GrowwIndicesResponse
+
+    // Global instruments: GIFT Nifty, Dow Jones, S&P 500, Nikkei, Hang Seng, etc.
+    @GET("stocks/groww/global")
+    suspend fun getGrowwGlobal(): GrowwGlobalResponse
+
+    // Raw Groww search metadata (for symbol resolution / autocomplete)
+    @GET("stocks/groww/search/{searchId}")
+    suspend fun getGrowwSearch(@Path("searchId") searchId: String): retrofit2.Response<okhttp3.ResponseBody>
+
+    // Server health & scrape status (useful for diagnostics)
+    @GET("health")
+    suspend fun getHealth(): ScraperHealthResponse
 }
 
 // --- Quote Endpoint ---
@@ -125,4 +142,61 @@ data class ScrapeResponse(
     val success: Boolean,
     val message: String? = null,
     val triggeredAt: String? = null
+)
+
+// --- Groww Live Endpoints (Unified Scraper API) ---
+
+/**
+ * Response for GET /stocks/groww/indices
+ * Returns 15-25 Indian market indices (NIFTY 50, BANK NIFTY, INDIA VIX, sectoral, etc.)
+ * in a single fast call with 6-second server-side cache.
+ */
+data class GrowwIndicesResponse(
+    val success: Boolean,
+    val count: Int = 0,
+    val data: List<StockQuoteItem> = emptyList(),
+    val source: String? = null,
+    val cached: Boolean = false
+)
+
+/**
+ * Response for GET /stocks/groww/global
+ * GIFT Nifty + major global indices (Dow Jones, S&P 500, Nikkei, Hang Seng, etc.)
+ * 15-second cache.
+ */
+data class GrowwGlobalResponse(
+    val success: Boolean,
+    val count: Int = 0,
+    val data: List<StockQuoteItem> = emptyList(),
+    val source: String? = null,
+    val cached: Boolean = false
+)
+
+// --- Health Check Response (Unified Scraper) ---
+
+data class ScraperHealthResponse(
+    val status: String = "ok",
+    val metals: MetalsHealth? = null,
+    val indices: IndicesHealth? = null,
+    val stocksApi: StocksApiHealth? = null
+)
+
+data class MetalsHealth(
+    @SerializedName("lastScrapeAt") val lastScrapeAt: String? = null,
+    val isScraping: Boolean = false,
+    val count: Int = 0
+)
+
+data class IndicesHealth(
+    @SerializedName("lastScrapeAt") val lastScrapeAt: String? = null,
+    val isScraping: Boolean = false,
+    val count: Int = 0,
+    val growwCacheSize: Int? = null
+)
+
+data class StocksApiHealth(
+    val endpoints: List<String> = emptyList(),
+    val sources: List<String> = emptyList(),
+    val indianMarketReady: Boolean = false,
+    val note: String? = null
 )

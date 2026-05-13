@@ -7,7 +7,14 @@ data class StockQuote(
     val change: Double,
     val changePercent: Double,
     val currency: String = "INR",
-    val lastUpdated: Long = System.currentTimeMillis()
+    val lastUpdated: Long = System.currentTimeMillis(),
+    // Rich fields from Groww scraper (available on /groww/indices and /groww/global)
+    val open: Double? = null,
+    val high: Double? = null,
+    val low: Double? = null,
+    val previousClose: Double? = null,
+    val exchange: String? = null,
+    val latestTradingDay: String? = null
 )
 
 data class StockSymbol(
