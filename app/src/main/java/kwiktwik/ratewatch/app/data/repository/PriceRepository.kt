@@ -2,6 +2,9 @@ package kwiktwik.ratewatch.app.data.repository
 
 import kwiktwik.ratewatch.app.data.model.*
 import kwiktwik.ratewatch.app.data.remote.RetrofitClient
+import kwiktwik.ratewatch.app.data.remote.CandlesData
+import kwiktwik.ratewatch.app.data.remote.SearchResultItem
+import kwiktwik.ratewatch.app.data.remote.StockQuoteItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,18 +33,18 @@ class PriceRepository @Inject constructor(
         }
         val result = runCatching {
             val csv = symbols.joinToString(",")
-            val response = RetrofitClient.yahooFinanceApi.getQuotes(csv)
-            response.quoteResponse?.result?.mapNotNull { yahoo ->
-                if (yahoo.symbol == null || yahoo.regularMarketPrice == null) return@mapNotNull null
+            val response = RetrofitClient.stocksApi.getQuotes(csv)
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data.map { item ->
                 StockQuote(
-                    symbol = yahoo.symbol,
-                    shortName = yahoo.shortName ?: yahoo.symbol,
-                    price = yahoo.regularMarketPrice,
-                    change = yahoo.regularMarketChange ?: 0.0,
-                    changePercent = yahoo.regularMarketChangePercent ?: 0.0,
-                    currency = yahoo.currency ?: "INR"
+                    symbol = item.symbol,
+                    shortName = item.name ?: item.symbol,
+                    price = item.price,
+                    change = item.change,
+                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
+                    currency = item.currency ?: "INR"
                 )
-            } ?: emptyList()
+            }
         }
         emit(result)
     }
@@ -50,20 +53,100 @@ class PriceRepository @Inject constructor(
         runCatching {
             val symbols = PopularStocks.all.map { it.symbol }
             val csv = symbols.joinToString(",")
-            val response = RetrofitClient.yahooFinanceApi.getQuotes(csv)
-            response.quoteResponse?.result?.mapNotNull { yahoo ->
-                if (yahoo.symbol == null || yahoo.regularMarketPrice == null) return@mapNotNull null
+            val response = RetrofitClient.stocksApi.getQuotes(csv)
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data.map { item ->
                 StockQuote(
-                    symbol = yahoo.symbol,
-                    shortName = yahoo.shortName ?: yahoo.symbol,
-                    price = yahoo.regularMarketPrice,
-                    change = yahoo.regularMarketChange ?: 0.0,
-                    changePercent = yahoo.regularMarketChangePercent ?: 0.0
+                    symbol = item.symbol,
+                    shortName = item.name ?: item.symbol,
+                    price = item.price,
+                    change = item.change,
+                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
+                    currency = item.currency ?: "INR"
                 )
-            } ?: emptyList()
+            }
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it) }
         )
     }
+
+    suspend fun getUsStockQuotes(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stockApi.getLatestStockPrices()
+            if (!response.success) throw Exception("API returned failure")
+            response.data.map { stock ->
+                StockQuote(
+                    symbol = stock.symbol,
+                    shortName = stock.symbol,
+                    price = stock.price,
+                    change = stock.change,
+                    changePercent = stock.changePercent.replace("%", "").toDoubleOrNull() ?: 0.0,
+                    currency = "USD"
+                )
+            }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    // --- New Stocks API (per /stocks/... spec) ---
+
+    suspend fun getStocksSummary(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getSummary()
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data.map { item -> item.toStockQuote() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    suspend fun getLatestStocks(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getLatest()
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data.map { item -> item.toStockQuote() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    suspend fun searchStocks(query: String): Result<List<SearchResultItem>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.search(query)
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    suspend fun getStockChart(
+        symbol: String,
+        interval: String = "5m",
+        range: String = "1d"
+    ): Result<CandlesData?> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getChart(symbol, interval, range)
+            if (!response.success) throw Exception("Stocks API returned failure")
+            response.data?.candles
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    private fun StockQuoteItem.toStockQuote(): StockQuote = StockQuote(
+        symbol = symbol,
+        shortName = name ?: symbol,
+        price = price,
+        change = change,
+        changePercent = changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
+        currency = currency ?: "INR"
+    )
 }

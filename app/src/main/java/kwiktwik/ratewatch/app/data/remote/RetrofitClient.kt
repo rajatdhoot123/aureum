@@ -14,6 +14,7 @@ object RetrofitClient {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(AppIdInterceptor("kwiktwik.ratewatch.app"))
         .addInterceptor(loggingInterceptor)
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
@@ -41,5 +42,23 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(YahooFinanceApi::class.java)
+    }
+
+    val stockApi: StockApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.STOCK_API_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(StockApi::class.java)
+    }
+
+    val stocksApi: StocksApi by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.STOCK_API_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(StocksApi::class.java)
     }
 }

@@ -10,6 +10,26 @@ data class StockQuote(
     val lastUpdated: Long = System.currentTimeMillis()
 )
 
+data class StockApiResponse(
+    val success: Boolean,
+    val data: List<StockData>,
+    val lastScrapeAt: String?
+)
+
+data class StockData(
+    val symbol: String,
+    val price: Double,
+    val change: Double,
+    val changePercent: String,
+    val volume: Long,
+    val latestTradingDay: String,
+    val previousClose: Double,
+    val high: Double,
+    val low: Double,
+    val open: Double,
+    val scrapedAt: String
+)
+
 data class StockSymbol(
     val symbol: String,
     val displayName: String,
@@ -21,15 +41,30 @@ object PopularStocks {
         StockSymbol("^NSEI", "Nifty 50"),
         StockSymbol("^BSESN", "Sensex"),
         StockSymbol("^NSEBANK", "Bank Nifty"),
+        StockSymbol("^NSEIT", "Nifty IT"),
+        StockSymbol("^CNXAUTO", "Nifty Auto"),
+        StockSymbol("^INDIAVIX", "India VIX"),
     )
 
     val stocks = listOf(
         StockSymbol("RELIANCE.NS", "Reliance Industries"),
         StockSymbol("TCS.NS", "Tata Consultancy"),
         StockSymbol("HDFCBANK.NS", "HDFC Bank"),
-        StockSymbol("INFY.NS", "Infosys"),
         StockSymbol("ICICIBANK.NS", "ICICI Bank"),
+        StockSymbol("INFY.NS", "Infosys"),
         StockSymbol("SBIN.NS", "State Bank of India"),
+        StockSymbol("BHARTIARTL.NS", "Bharti Airtel"),
+        StockSymbol("LT.NS", "Larsen & Toubro"),
+        StockSymbol("ITC.NS", "ITC Limited"),
+        StockSymbol("TATAMOTORS.NS", "Tata Motors"),
+    )
+
+    val metals = listOf(
+        StockSymbol("GC=F", "Gold Futures"),
+        StockSymbol("SI=F", "Silver Futures"),
+        StockSymbol("GOLDBEES.NS", "Nippon India Gold BeES"),
+        StockSymbol("SILVERBEES.NS", "Nippon India Silver ETF"),
+        StockSymbol("HDFCGOLD.NS", "HDFC Gold ETF"),
     )
 
     val all = indices + stocks

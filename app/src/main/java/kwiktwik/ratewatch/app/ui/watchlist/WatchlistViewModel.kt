@@ -22,6 +22,9 @@ class WatchlistViewModel @Inject constructor(
     private val _quotes = MutableStateFlow<List<StockQuote>>(emptyList())
     val quotes: StateFlow<List<StockQuote>> = _quotes.asStateFlow()
 
+    private val _usStocks = MutableStateFlow<List<StockQuote>>(emptyList())
+    val usStocks: StateFlow<List<StockQuote>> = _usStocks.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
@@ -38,6 +41,14 @@ class WatchlistViewModel @Inject constructor(
                 result.onSuccess { _quotes.value = it }
                 _isLoading.value = false
             }
+        }
+    }
+
+    fun loadUsStocks() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            priceRepo.getUsStockQuotes().onSuccess { _usStocks.value = it }
+            _isLoading.value = false
         }
     }
 

@@ -24,10 +24,15 @@ fun WatchlistScreen(
 ) {
     val watchlistSymbols by viewModel.watchlistSymbols.collectAsState()
     val quotes by viewModel.quotes.collectAsState()
+    val usStocks by viewModel.usStocks.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
     LaunchedEffect(watchlistSymbols) {
         viewModel.loadWatchlistQuotes()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadUsStocks()
     }
 
     Box(
@@ -70,6 +75,24 @@ fun WatchlistScreen(
                     Spacer(Modifier.height(16.dp))
                 }
 
+                if (usStocks.isNotEmpty()) {
+                    Text(
+                        "US Stocks",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(usStocks) { quote ->
+                            StockItem(quote = quote)
+                        }
+                    }
+                    Spacer(Modifier.height(24.dp))
+                }
+
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(bottom = 100.dp)
@@ -81,6 +104,49 @@ fun WatchlistScreen(
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StockItem(quote: StockQuote) {
+    val isDark = isSystemInDarkTheme()
+    val isPositive = quote.change >= 0
+    
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = GlassMorphism.surfaceColor(isDark),
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp, 
+            GlassMorphism.strokeColor(isDark)
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(
+                    quote.symbol, 
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    "$${String.format("%.2f", quote.price)}", 
+                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    "${if (isPositive) "+" else ""}${String.format("%.2f", quote.changePercent)}%",
+                    color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.labelMedium
+                )
             }
         }
     }

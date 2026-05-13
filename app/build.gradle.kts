@@ -27,6 +27,7 @@ android {
         // API Base URLs - can be overridden per build type / flavor
         buildConfigField("String", "GOLD_SILVER_BASE_URL", "\"https://api.example.com/\"")
         buildConfigField("String", "YAHOO_FINANCE_BASE_URL", "\"https://query1.finance.yahoo.com/\"")
+        buildConfigField("String", "STOCK_API_BASE_URL", "\"https://api.example.com/\"")
     }
 
     signingConfigs {
