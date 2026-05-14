@@ -9,13 +9,13 @@ interface GoldSilverApi {
      * Latest city-wise gold (22K/24K) & silver prices from Goodreturns.in.
      * Supported paths on the unified scraper: /metals/latest, /gold/latest, /metal/latest, /scraper/metals/latest
      */
-    @GET("scraper/metals/latest")
+    @GET("metals/latest")
     suspend fun getLatestPrices(): GoldSilverResponse
 
     /**
      * Force an immediate scrape of gold/silver rates (bypasses schedule).
      * Rate limit recommendation: do not call more than once every 5 minutes.
      */
-    @POST("scraper/metals/scrape")
+    @POST("metals/scrape")
     suspend fun triggerScrape(): GoldSilverResponse
 }

@@ -2,6 +2,7 @@ package kwiktwik.ratewatch.app.data.repository
 
 import kwiktwik.ratewatch.app.data.model.*
 import kwiktwik.ratewatch.app.data.remote.RetrofitClient
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategoriesData
 import kwiktwik.ratewatch.app.data.remote.CandlesData
 import kwiktwik.ratewatch.app.data.remote.ScrapeResponse
 import kwiktwik.ratewatch.app.data.remote.ScraperHealthResponse
@@ -197,6 +198,34 @@ class PriceRepository @Inject constructor(
         runCatching {
             val response = RetrofitClient.stocksApi.getGrowwGlobal()
             if (!response.success) throw Exception("Groww global endpoint failed")
+            response.data.map { it.toStockQuote() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Fetches market categories (sections like Top Gainers, Losers and Indices).
+     */
+    suspend fun getMarketCategories(): Result<GrowwMarketCategoriesData> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getMarketCategories()
+            if (!response.success) throw Exception("Market categories endpoint failed")
+            response.data
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it) }
+        )
+    }
+
+    /**
+     * Fetches market data for a specific category (e.g., top-gainers) and index.
+     */
+    suspend fun getMarketData(type: String, index: String? = null): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = RetrofitClient.stocksApi.getMarketData(type, index)
+            if (!response.success) throw Exception("Market data endpoint failed")
             response.data.map { it.toStockQuote() }
         }.fold(
             onSuccess = { Result.success(it) },

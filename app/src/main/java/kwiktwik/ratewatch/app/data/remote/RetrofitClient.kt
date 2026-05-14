@@ -28,7 +28,7 @@ object RetrofitClient {
 
     val goldSilverApi: GoldSilverApi by lazy {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.GOLD_SILVER_BASE_URL)
+            .baseUrl(BuildConfig.GOLD_SILVER_BASE_URL.let { if (it.endsWith("/")) "${it}scraper/" else "$it/scraper/" })
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -37,7 +37,7 @@ object RetrofitClient {
 
     val stocksApi: StocksApi by lazy {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.STOCK_API_BASE_URL)
+            .baseUrl(BuildConfig.STOCK_API_BASE_URL.let { if (it.endsWith("/")) "${it}scraper/" else "$it/scraper/" })
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

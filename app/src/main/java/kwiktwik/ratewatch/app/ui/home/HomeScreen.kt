@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategory
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketIndex
 import kwiktwik.ratewatch.app.ui.stocks.StocksViewModel
 import kwiktwik.ratewatch.app.ui.stocks.StocksUiState
 import kwiktwik.ratewatch.app.ui.theme.*
@@ -122,8 +124,12 @@ fun HomeScreen(
 
             Spacer(Modifier.height(32.dp))
 
-            // 5. Top Performers
-            TopPerformersSection(stocksState)
+            // 5. Market Insights (Groww Categories)
+            MarketInsightsSection(
+                uiState = uiState,
+                onCategorySelected = { viewModel.selectCategory(it) },
+                onIndexSelected = { viewModel.selectIndex(it) }
+            )
 
             Spacer(Modifier.height(120.dp)) // Padding for bottom nav
         }
@@ -471,6 +477,137 @@ fun IndexCard(name: String, price: Double?, change: String, isPositive: Boolean 
 }
 
 @Composable
+fun MarketInsightsSection(
+    uiState: HomeUiState,
+    onCategorySelected: (GrowwMarketCategory) -> Unit,
+    onIndexSelected: (GrowwMarketIndex) -> Unit
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Market Insights",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            
+            // Index selector
+            uiState.marketCategories?.indices?.let { indices ->
+                var expanded by remember { mutableStateOf(false) }
+                Box {
+                    Surface(
+                        onClick = { expanded = true },
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color.White.copy(alpha = 0.05f),
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                uiState.selectedIndex?.name ?: "NIFTY 50",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = GoldAccent
+                            )
+                            Icon(
+                                Icons.Default.KeyboardArrowDown,
+                                contentDescription = null,
+                                tint = GoldAccent,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+                    
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.background(AureumCard).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                    ) {
+                        indices.forEach { index ->
+                            DropdownMenuItem(
+                                text = { Text(index.name, color = Color.White) },
+                                onClick = {
+                                    onIndexSelected(index)
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        
+        Spacer(Modifier.height(16.dp))
+        
+        // Category selection tabs
+        uiState.marketCategories?.sections?.let { sections ->
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(sections) { category ->
+                    val isSelected = uiState.selectedCategory?.id == category.id
+                    Surface(
+                        onClick = { onCategorySelected(category) },
+                        shape = RoundedCornerShape(20.dp),
+                        color = if (isSelected) GoldAccent else Color.White.copy(alpha = 0.05f),
+                        border = BorderStroke(1.dp, if (isSelected) GoldAccent else Color.White.copy(alpha = 0.1f))
+                    ) {
+                        Text(
+                            category.name,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                            color = if (isSelected) Color.Black else Color.White.copy(alpha = 0.6f)
+                        )
+                    }
+                }
+            }
+        }
+        
+        Spacer(Modifier.height(20.dp))
+        
+        // Market data list
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(28.dp),
+            color = AureumCard,
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                if (uiState.isMarketLoading) {
+                    Box(Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = GoldAccent)
+                    }
+                } else if (uiState.marketStocks.isEmpty()) {
+                    Box(Modifier.fillMaxWidth().height(100.dp), contentAlignment = Alignment.Center) {
+                        Text("No data available", color = Color.White.copy(alpha = 0.5f))
+                    }
+                } else {
+                    uiState.marketStocks.take(6).forEachIndexed { index, stock ->
+                        StockItem(
+                            symbol = stock.symbol.take(4),
+                            name = stock.shortName,
+                            sector = stock.exchange ?: "NSE",
+                            price = stock.price,
+                            change = "${if (stock.change >= 0) "+" else ""}${"%.2f".format(stock.changePercent)}%",
+                            isPositive = stock.change >= 0
+                        )
+                        if (index < uiState.marketStocks.take(6).size - 1) {
+                            HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun TopPerformersSection(stocksState: StocksUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -503,7 +640,7 @@ fun TopPerformersSection(stocksState: StocksUiState) {
                 isPositive = true
             )
             
-            Divider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
+            HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
             
             StockItem(
                 symbol = "TCS",

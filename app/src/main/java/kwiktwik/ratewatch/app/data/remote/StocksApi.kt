@@ -31,20 +31,30 @@ interface StocksApi {
 
     // --- Groww-powered live endpoints (recommended for Indian market data) ---
     // Single call returns 15-25 Indian indices with full OHLC + change data. 6s server cache.
-    @GET("scraper/stocks/groww/indices")
+    @GET("stocks/groww/indices")
     suspend fun getGrowwIndices(): GrowwIndicesResponse
 
     // Global instruments: GIFT Nifty, Dow Jones, S&P 500, Nikkei, Hang Seng, etc.
-    @GET("scraper/stocks/groww/global")
+    @GET("stocks/groww/global")
     suspend fun getGrowwGlobal(): GrowwGlobalResponse
 
     // Raw Groww search metadata (for symbol resolution / autocomplete)
-    @GET("scraper/stocks/groww/search/{searchId}")
+    @GET("stocks/groww/search/{searchId}")
     suspend fun getGrowwSearch(@Path("searchId") searchId: String): retrofit2.Response<okhttp3.ResponseBody>
 
     // Server health & scrape status (useful for diagnostics)
-    @GET("scraper/health")
+    @GET("health")
     suspend fun getHealth(): ScraperHealthResponse
+
+    // --- Groww Market Sections (Top Gainers, Losers, etc.) ---
+    @GET("stocks/markets/categories")
+    suspend fun getMarketCategories(): GrowwMarketCategoriesResponse
+
+    @GET("stocks/markets/{type}")
+    suspend fun getMarketData(
+        @Path("type") type: String,
+        @Query("index") index: String? = null
+    ): GrowwMarketDataResponse
 }
 
 // --- Quote Endpoint ---
@@ -210,4 +220,35 @@ data class StocksApiHealth(
     val sources: List<String> = emptyList(),
     val indianMarketReady: Boolean = false,
     val note: String? = null
+)
+
+// --- Groww Market Categories ---
+
+data class GrowwMarketCategoriesResponse(
+    val success: Boolean,
+    val data: GrowwMarketCategoriesData
+)
+
+data class GrowwMarketCategoriesData(
+    val sections: List<GrowwMarketCategory> = emptyList(),
+    val indices: List<GrowwMarketIndex> = emptyList()
+)
+
+data class GrowwMarketCategory(
+    val id: String,
+    val name: String
+)
+
+data class GrowwMarketIndex(
+    val id: String,
+    val name: String
+)
+
+data class GrowwMarketDataResponse(
+    val success: Boolean,
+    val type: String? = null,
+    val index: String? = null,
+    val count: Int = 0,
+    val data: List<StockQuoteItem> = emptyList(),
+    val source: String? = null
 )

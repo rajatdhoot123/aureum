@@ -3,6 +3,10 @@ package kwiktwik.ratewatch.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kwiktwik.ratewatch.app.data.model.CityPrice
+import kwiktwik.ratewatch.app.data.model.StockQuote
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategoriesData
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategory
+import kwiktwik.ratewatch.app.data.remote.GrowwMarketIndex
 import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
 import kwiktwik.ratewatch.app.data.repository.PriceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +19,13 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val source: String = "",
-    val lastUpdated: String = ""
+    val lastUpdated: String = "",
+    // New fields for market data
+    val marketCategories: GrowwMarketCategoriesData? = null,
+    val selectedCategory: GrowwMarketCategory? = null,
+    val selectedIndex: GrowwMarketIndex? = null,
+    val marketStocks: List<StockQuote> = emptyList(),
+    val isMarketLoading: Boolean = false
 )
 
 @HiltViewModel
@@ -32,6 +42,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         refresh()
+        loadMarketCategories()
     }
 
     fun setCity(city: String) {
@@ -62,6 +73,76 @@ class HomeViewModel @Inject constructor(
                             error = throwable.message ?: "Failed to load prices"
                         )
                     }
+                }
+        }
+    }
+
+    /**
+     * Fetches market categories and initial data.
+     */
+    fun loadMarketCategories() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMarketLoading = true) }
+            repository.getMarketCategories()
+                .onSuccess { data ->
+                    val initialCategory = data.sections.firstOrNull()
+                    val initialIndex = data.indices.find { it.id == "GIDXNIFTYTOTALMCAP" } ?: data.indices.firstOrNull()
+                    
+                    _uiState.update {
+                        it.copy(
+                            marketCategories = data,
+                            selectedCategory = initialCategory,
+                            selectedIndex = initialIndex
+                        )
+                    }
+                    
+                    if (initialCategory != null) {
+                        loadMarketData(initialCategory.id, initialIndex?.id)
+                    } else {
+                        _uiState.update { it.copy(isMarketLoading = false) }
+                    }
+                }
+                .onFailure {
+                    _uiState.update { it.copy(isMarketLoading = false) }
+                }
+        }
+    }
+
+    /**
+     * Fetches market data for a specific category and index.
+     */
+    fun selectCategory(category: GrowwMarketCategory) {
+        val currentState = _uiState.value
+        if (currentState.selectedCategory?.id == category.id) return
+
+        _uiState.update { it.copy(selectedCategory = category) }
+        loadMarketData(category.id, currentState.selectedIndex?.id)
+    }
+
+    fun selectIndex(index: GrowwMarketIndex) {
+        val currentState = _uiState.value
+        if (currentState.selectedIndex?.id == index.id) return
+
+        _uiState.update { it.copy(selectedIndex = index) }
+        currentState.selectedCategory?.let { category ->
+            loadMarketData(category.id, index.id)
+        }
+    }
+
+    private fun loadMarketData(type: String, index: String? = null) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMarketLoading = true) }
+            repository.getMarketData(type, index)
+                .onSuccess { stocks ->
+                    _uiState.update {
+                        it.copy(
+                            marketStocks = stocks,
+                            isMarketLoading = false
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update { it.copy(isMarketLoading = false) }
                 }
         }
     }
