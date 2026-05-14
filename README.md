@@ -2,6 +2,10 @@
 
 **Aureum** is a modern fintech Android app for India — live **Gold (24K)**, **Silver**, and **Indian Equities (NIFTY 50, SENSEX)** tracking with portfolio summary, price alerts, and market intelligence.
 
+<p align="center">
+  <img src="screenshots/home_screen.png" width="300" title="Home Screen">
+</p>
+
 > Built in Kotlin + Jetpack Compose. Design reference: modern simplified fintech (deep navy #031427, emerald gains, ruby losses). Mobile-first.
 
 - Real-time gold (24K per 10g), silver (per kg), NIFTY 50 & SENSEX with live changes
@@ -20,6 +24,17 @@
 - JDK 17+
 - Android SDK 35 (compileSdk)
 - Minimum SDK 24 (Android 7.0)
+
+### API Configuration
+
+Since this project is open-source, you must provide your own API base URLs. Create (or update) a `local.properties` file in the root directory and add the following:
+
+```properties
+GOLD_SILVER_BASE_URL=https://your-api-endpoint.com/
+STOCK_API_BASE_URL=https://your-api-endpoint.com/
+```
+
+The app expects these endpoints to follow the expected scraper schema.
 
 ### Build & Run from Terminal
 
@@ -86,10 +101,10 @@ app/build/outputs/apk/debug/app-debug.apk
 
 | Data              | Source                                      |
 |-------------------|---------------------------------------------|
-| Gold & Silver     | `https://api.example.com/scraper/metals/latest` (Goodreturns.in) |
-| Stocks & Indices  | `https://api.example.com/stocks/...` (KwikTwik Stocks API) |
+| Gold & Silver     | Metals Scraper Endpoint (Goodreturns.in)   |
+| Stocks & Indices  | Stocks Scraper Endpoint (Groww/Yahoo)      |
 
-> Base URLs are configured in `app/build.gradle.kts` via `buildConfigField`.
+> Base URLs are loaded from `local.properties` to keep sensitive endpoints out of source control.
 
 ---
 
