@@ -41,9 +41,12 @@ Optimized for the **Indian economy**, it supports multi-language localization an
 
 ## 📱 Screenshots
 <p align="center">
-  <img src="screenshots/home_screen.png" width="300" title="Aureum Home Screen">
+  <img src="screenshots/home_overview.png" width="240" title="Aureum Home Screen">
+  <img src="screenshots/market_portfolio.png" width="240" title="Market Overview">
+  <img src="screenshots/watchlist_alerts.png" width="240" title="Price Tracking">
+  <img src="screenshots/settings_news.png" width="240" title="Settings & News">
   <br>
-  <em>Premium Glass-morphic Dashboard</em>
+  <em>Premium Glass-morphic UI across all core features</em>
 </p>
 
 ---
