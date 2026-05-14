@@ -24,7 +24,7 @@ fun StartupScreen(
             Log.d("Aureum", "StartupScreen: Got value = $completed, navigating...")
             
             if (completed) {
-                navController.navigate(Screen.Overview.route) {
+                navController.navigate(Screen.Home.route) {
                     popUpTo("startup") { inclusive = true }
                 }
             } else {

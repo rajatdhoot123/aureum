@@ -44,7 +44,8 @@ import java.util.*
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    onNavigateToSearch: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val stocksViewModel: StocksViewModel = hiltViewModel()
@@ -75,7 +76,7 @@ fun HomeScreen(
             Spacer(Modifier.height(24.dp))
 
             // 2. Search Bar
-            SearchBar()
+            SearchBar(onClick = onNavigateToSearch)
 
             Spacer(Modifier.height(24.dp))
 
@@ -179,11 +180,12 @@ fun AureumHeader() {
 }
 
 @Composable
-fun SearchBar() {
+fun SearchBar(onClick: () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(56.dp)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         color = SearchBarBg,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))

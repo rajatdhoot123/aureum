@@ -4,6 +4,21 @@
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-orange.svg)](https://developer.android.com/jetpack/compose)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![Stars](https://img.shields.io/github/stars/aureum-app/RateWatch?style=social)](https://github.com/aureum-app/RateWatch/stargazers)
+[![Forks](https://img.shields.io/github/forks/aureum-app/RateWatch?style=social)](https://github.com/aureum-app/RateWatch/network/members)
+
+<!-- SEO Description -->
+<meta name="description" content="Aureum is a free, open-source Android app for tracking live gold rate, silver price, NIFTY 50, and SENSEX in India. Real-time precious metals rates across Indian cities with a premium glass-morphic UI.">
+<meta name="keywords" content="gold price India, silver rate tracker, NIFTY 50 app, SENSEX live, Indian stock market, gold rate app download, commodity prices India, equity tracking, investment tracker, Aureum RateWatch">
+<meta name="author" content="RateWatch">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Aureum (RateWatch) - Gold Rate & Indian Stock Market Tracker">
+<meta property="og:description" content="Open-source Android app for tracking real-time gold, silver, NIFTY 50, and SENSEX prices in India with premium UI.">
+<meta property="og:type" content="software">
+<meta property="og:url" content="https://github.com/aureum-app/RateWatch">
 
 **Aureum** is a high-performance, open-source fintech application designed for the Indian market. It provides real-time tracking for **Gold**, **Silver**, and **Indian Stock Market Indices** (NIFTY 50, SENSEX) with a premium glass-morphic design.
 
@@ -29,6 +44,25 @@ Optimized for the **Indian economy**, it supports multi-language localization an
 
 ---
 
+## 🔍 Frequently Asked Questions (FAQ)
+
+### Does Aureum support gold rate tracking for my city?
+Yes! Aureum tracks 22K and 24K gold prices as well as silver rates across **all major Indian cities**. Rates are updated in real-time.
+
+### Can I track NIFTY 50 and SENSEX on Aureum?
+Yes. Aureum provides live index tracking for NIFTY 50, SENSEX, and major sectoral indices.
+
+### Is Aureum free and open-source?
+Yes. Aureum is 100% free and open-source under the MIT License. No premium paywall, no ads.
+
+### Does Aureum work offline?
+Yes. Aureum uses offline-first caching so you can access last-known prices even without an internet connection.
+
+### What languages does Aureum support?
+Aureum supports 10+ languages including Hindi, English, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.
+
+---
+
 ## ✨ Key Features
 - **Live Precious Metals** — Real-time 22K & 24K Gold and Silver prices across all major Indian cities.
 - **Stock Market Indices** — Dynamic tracking of NIFTY 50, SENSEX, and sectoral indices.
@@ -41,10 +75,10 @@ Optimized for the **Indian economy**, it supports multi-language localization an
 
 ## 📱 Screenshots
 <p align="center">
-  <img src="screenshots/home_overview.png" width="240" title="Aureum Home Screen">
-  <img src="screenshots/market_portfolio.png" width="240" title="Market Overview">
-  <img src="screenshots/watchlist_alerts.png" width="240" title="Price Tracking">
-  <img src="screenshots/settings_news.png" width="240" title="Settings & News">
+<img src="screenshots/home_overview_top.png" width="240" title="Aureum Home Screen">
+<img src="screenshots/home_overview.png" width="240" title="Aureum Home Screen">
+<img src="screenshots/search.png" width="240" title="Search">
+<img src="screenshots/stock_details.png" width="240" title="Stock Details">
   <br>
   <em>Premium Glass-morphic UI across all core features</em>
 </p>

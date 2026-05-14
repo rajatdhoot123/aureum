@@ -14,6 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kwiktwik.ratewatch.app.data.model.StockQuote
+import kwiktwik.ratewatch.app.ui.search.SearchScreen
+import kwiktwik.ratewatch.app.ui.search.SearchViewModel
+import kwiktwik.ratewatch.app.ui.stockdetail.StockDetailScreen
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
@@ -24,25 +28,29 @@ import kwiktwik.ratewatch.app.ui.settings.SettingsScreen
 import kwiktwik.ratewatch.app.ui.startup.StartupScreen
 import kwiktwik.ratewatch.app.ui.stocks.StocksScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
+import kwiktwik.ratewatch.app.ui.watchlist.WatchlistViewModel
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
 import kwiktwik.ratewatch.app.ui.theme.AureumBg
 import kwiktwik.ratewatch.app.ui.theme.GoldAccent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.LibraryBooks
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.TrendingUp
 
 sealed class Screen(val route: String, val labelRes: Int, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
-    object Overview : Screen("overview", R.string.nav_overview, Icons.Outlined.GridView)
-    object Portfolio : Screen("portfolio", R.string.nav_portfolio, Icons.Outlined.AccountBalanceWallet)
+    object Home : Screen("home", R.string.nav_home, Icons.Outlined.Home)
+    object Watchlist : Screen("watchlist", R.string.nav_watchlist, Icons.Outlined.StarOutline)
     object Alerts : Screen("alerts", R.string.nav_alerts, Icons.Outlined.Notifications)
-    object News : Screen("news", R.string.nav_news, Icons.Outlined.LibraryBooks)
+    object Markets : Screen("markets", R.string.nav_markets, Icons.Outlined.Category)
+    object Movers : Screen("movers", R.string.nav_movers, Icons.Outlined.TrendingUp)
+    object Search : Screen("search", R.string.nav_home, Icons.Outlined.Home) // Helper for route
 }
 
 private val bottomNavItems = listOf(
-    Screen.Overview, Screen.Portfolio, Screen.Alerts, Screen.News
+    Screen.Home, Screen.Watchlist, Screen.Alerts, Screen.Markets, Screen.Movers
 )
 
 @Composable
@@ -50,10 +58,11 @@ fun AureumNavigation(
     onThemeChange: (Boolean) -> Unit
 ) {
     val navController = rememberNavController()
+    // Shared state to pass StockQuote to detail screen (avoids serialization)
+    var pendingDetailQuote by remember { mutableStateOf<StockQuote?>(null) }
 
     NavHost(navController = navController, startDestination = "startup") {
 
-        // Startup decision screen - checks if user has completed onboarding
         composable("startup") {
             StartupScreen(navController = navController)
         }
@@ -61,33 +70,69 @@ fun AureumNavigation(
         composable("onboarding") {
             OnboardingScreen(
                 onComplete = {
-                    navController.navigate(Screen.Overview.route) {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo("onboarding") { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Screen.Overview.route) {
+        composable(Screen.Home.route) {
             MainScaffold(navController) {
-                HomeScreen(viewModel = hiltViewModel())
+                HomeScreen(
+                    viewModel = hiltViewModel(),
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
+                )
             }
         }
-        composable(Screen.Portfolio.route) {
+        composable(Screen.Watchlist.route) {
             MainScaffold(navController) {
-                StocksScreen(viewModel = hiltViewModel())
+                WatchlistScreen(
+                    viewModel = hiltViewModel(),
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
+                )
             }
         }
         composable(Screen.Alerts.route) {
             MainScaffold(navController) {
-                WatchlistScreen(viewModel = hiltViewModel())
+                WatchlistScreen(
+                    viewModel = hiltViewModel(),
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
+                )
             }
         }
-        composable(Screen.News.route) {
+        composable(Screen.Markets.route) {
             MainScaffold(navController) {
-                SettingsScreen(
-                    viewModel = hiltViewModel(),
-                    onThemeChange = onThemeChange
+                StocksScreen(viewModel = hiltViewModel())
+            }
+        }
+        composable(Screen.Movers.route) {
+            MainScaffold(navController) {
+                StocksScreen(viewModel = hiltViewModel())
+            }
+        }
+        composable(Screen.Search.route) {
+            val watchlistViewModel: WatchlistViewModel = hiltViewModel()
+            SearchScreen(
+                viewModel = hiltViewModel(),
+                onBack = { navController.popBackStack() },
+                onNavigateToDetail = { quote ->
+                    pendingDetailQuote = quote
+                    navController.navigate("stock_detail")
+                },
+                onAddToWatchlist = { symbol -> watchlistViewModel.addToWatchlist(symbol) }
+            )
+        }
+        composable("stock_detail") {
+            val watchlistViewModel: WatchlistViewModel = hiltViewModel()
+            val quote = pendingDetailQuote
+            if (quote != null) {
+                StockDetailScreen(
+                    quote = quote,
+                    onBack = { navController.popBackStack() },
+                    onAddToWatchlist = { symbol ->
+                        watchlistViewModel.addToWatchlist(symbol)
+                    }
                 )
             }
         }

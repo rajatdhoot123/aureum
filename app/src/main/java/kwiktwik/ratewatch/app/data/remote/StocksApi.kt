@@ -38,9 +38,13 @@ interface StocksApi {
     @GET("stocks/groww/global")
     suspend fun getGrowwGlobal(): GrowwGlobalResponse
 
+    // Groww-powered global search (autocomplete)
+    @GET("stocks/groww/search")
+    suspend fun searchGroww(@Query("q") query: String, @Query("size") size: Int? = 10): GrowwSearchResponse
+
     // Raw Groww search metadata (for symbol resolution / autocomplete)
-    @GET("stocks/groww/search/{searchId}")
-    suspend fun getGrowwSearch(@Path("searchId") searchId: String): retrofit2.Response<okhttp3.ResponseBody>
+    @GET("stocks/{searchId}")
+    suspend fun getGrowwDetails(@Path("searchId") searchId: String): com.google.gson.JsonObject
 
     // Server health & scrape status (useful for diagnostics)
     @GET("health")
@@ -81,25 +85,25 @@ data class StockQuoteItem(
     val exchange: String? = null,
     val scrapedAt: String? = null,
     // New fields from updated Groww indices scraper response
-    val logoUrl: String? = null,
-    val searchId: String? = null,
-    val gsin: String? = null,
-    val yearHigh: Double? = null,
-    val yearLow: Double? = null,
-    val instrumentType: String? = null,
+    @SerializedName(value = "logoUrl", alternate = ["logo_url"]) val logoUrl: String? = null,
+    @SerializedName(value = "searchId", alternate = ["search_id"]) val searchId: String? = null,
+    @SerializedName(value = "gsin", alternate = ["isin"]) val gsin: String? = null,
+    @SerializedName(value = "yearHigh", alternate = ["year_high"]) val yearHigh: Double? = null,
+    @SerializedName(value = "yearLow", alternate = ["year_low"]) val yearLow: Double? = null,
+    @SerializedName(value = "instrumentType", alternate = ["instrument_type"]) val instrumentType: String? = null,
     @SerializedName("isBse") val isBse: Boolean? = null,
     val continent: String? = null,
     val country: String? = null,
     val source: String? = null,
 
     // Groww Market Specific Fields
-    @SerializedName("companyName") val companyName: String? = null,
-    @SerializedName("companyShortName") val companyShortName: String? = null,
-    @SerializedName("nseScriptCode") val nseScriptCode: String? = null,
-    @SerializedName("bseScriptCode") val bseScriptCode: String? = null,
+    @SerializedName(value = "companyName", alternate = ["company_name"]) val companyName: String? = null,
+    @SerializedName(value = "companyShortName", alternate = ["company_short_name"]) val companyShortName: String? = null,
+    @SerializedName(value = "nseScriptCode", alternate = ["nse_scrip_code", "nse_script_code"]) val nseScriptCode: String? = null,
+    @SerializedName(value = "bseScriptCode", alternate = ["bse_scrip_code", "bse_script_code"]) val bseScriptCode: String? = null,
     @SerializedName("ltp") val ltp: Double? = null,
     @SerializedName("dayChange") val dayChange: Double? = null,
-    @SerializedName("dayChangePerc") val dayChangePerc: Double? = null,
+    @SerializedName(value = "dayChangePerc", alternate = ["day_change_perc"]) val dayChangePerc: Double? = null,
     @SerializedName("marketCap") val marketCap: Double? = null,
     @SerializedName("close") val close: Double? = null
 )
@@ -261,5 +265,32 @@ data class GrowwMarketDataResponse(
     val index: String? = null,
     val count: Int = 0,
     val data: List<StockQuoteItem> = emptyList(),
+    val source: String? = null
+)
+
+// --- Groww Search ---
+
+data class GrowwSearchResponse(
+    val success: Boolean,
+    val query: String? = null,
+    val count: Int = 0,
+    val data: List<GrowwSearchResultItem> = emptyList(),
+    val source: String? = null
+)
+
+data class GrowwSearchResultItem(
+    @SerializedName(value = "searchId", alternate = ["search_id"]) val searchId: String,
+    val title: String,
+    @SerializedName(value = "entityType", alternate = ["entity_type"]) val entityType: String? = null,
+    val isin: String? = null,
+    @SerializedName(value = "bseScripCode", alternate = ["bse_scrip_code"]) val bseScripCode: String? = null,
+    @SerializedName(value = "nseScripCode", alternate = ["nse_scrip_code"]) val nseScripCode: String? = null,
+    @SerializedName(value = "logoUrl", alternate = ["logo_url"]) val logoUrl: String? = null,
+    val id: String? = null
+)
+
+data class GrowwDetailsResponse(
+    val success: Boolean,
+    val data: StockQuoteItem? = null,
     val source: String? = null
 )

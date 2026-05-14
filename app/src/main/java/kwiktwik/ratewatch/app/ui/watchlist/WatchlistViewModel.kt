@@ -19,14 +19,27 @@ class WatchlistViewModel @Inject constructor(
     val watchlistSymbols: StateFlow<Set<String>> = prefs.watchlistFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
 
+    private val _selectedCategory = MutableStateFlow("Indian Market")
+    val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+
     private val _quotes = MutableStateFlow<List<StockQuote>>(emptyList())
-    val quotes: StateFlow<List<StockQuote>> = _quotes.asStateFlow()
+    val quotes: StateFlow<List<StockQuote>> = combine(_quotes, _selectedCategory) { quotes, category ->
+        // In a real app, you'd filter by category or instrument type
+        // For now we'll just return the quotes
+        quotes
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _usStocks = MutableStateFlow<List<StockQuote>>(emptyList())
     val usStocks: StateFlow<List<StockQuote>> = _usStocks.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _selectedStock = MutableStateFlow<StockQuote?>(null)
+    val selectedStock = _selectedStock.asStateFlow()
+
+    private val _isDetailsLoading = MutableStateFlow(false)
+    val isDetailsLoading = _isDetailsLoading.asStateFlow()
 
     fun loadWatchlistQuotes() {
         viewModelScope.launch {
@@ -51,10 +64,31 @@ class WatchlistViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
-
+    fun selectCategory(category: String) {
+        _selectedCategory.value = category
+    }
+    fun addToWatchlist(symbol: String) {
+        viewModelScope.launch {
+            prefs.addToWatchlist(symbol)
+        }
+    }
     fun removeFromWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.removeFromWatchlist(symbol)
         }
+    }
+
+    fun fetchDetails(searchId: String) {
+        viewModelScope.launch {
+            _isDetailsLoading.value = true
+            priceRepo.getGrowwDetails(searchId)
+                .onSuccess { _selectedStock.value = it }
+                .onFailure { /* Handle error */ }
+            _isDetailsLoading.value = false
+        }
+    }
+
+    fun clearDetails() {
+        _selectedStock.value = null
     }
 }

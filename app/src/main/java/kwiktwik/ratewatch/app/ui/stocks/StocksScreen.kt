@@ -49,7 +49,7 @@ fun StocksScreen(
             
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Portfolio",
+                    text = "Markets",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White
@@ -58,7 +58,7 @@ fun StocksScreen(
                 LivePulseIndicator()
             }
             Text(
-                "Savings Summary • Your Holdings",
+                "Live indices • Top Gainers & Losers",
                 style = MaterialTheme.typography.bodyMedium, 
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -22,7 +22,118 @@ data class StockQuote(
     val yearLow: Double? = null,
     val instrumentType: String? = null,
     val source: String? = null,
-    val gsin: String? = null
+    val gsin: String? = null,
+    // ETF-specific fields
+    val aum: String? = null,
+    val expenseRatio: String? = null,
+    val trackingError: String? = null,
+    val nav: String? = null,
+    val return1M: String? = null,
+    val return6M: String? = null,
+    val return1Y: String? = null,
+    val description: String? = null,
+    val peers: List<PeerInfo>? = null,
+    // Stock-specific enriched fields
+    val fullName: String? = null,
+    val headquarters: String? = null,
+    val ceo: String? = null,
+    val foundedYear: Int? = null,
+    val businessSummary: String? = null,
+    val websiteUrl: String? = null,
+    val industryName: String? = null,
+    val cappedType: String? = null,          // Large Cap / Mid Cap / Small Cap
+    val marketCap: Double? = null,
+    val peRatio: Double? = null,
+    val pbRatio: Double? = null,
+    val divYield: Double? = null,
+    val epsTtm: Double? = null,
+    val roe: Double? = null,
+    val debtToEquity: Double? = null,
+    val faceValue: Double? = null,
+    val netProfitMargin: Double? = null,
+    val operatingProfitMargin: Double? = null,
+    val bookValue: Double? = null,
+    val industryPe: Double? = null,
+    val fundamentals: List<FundamentalItem>? = null,
+    val stockPeers: List<StockPeerInfo>? = null,
+    val financials: StockFinancials? = null,
+    val newsItems: List<StockNewsItem>? = null,
+    val eventsItems: List<StockEventItem>? = null,
+    val shareholdingPattern: Map<String, ShareholdingQuarter>? = null,
+    val brandLogos: List<BrandInfo>? = null,
+    val isFnoEnabled: Boolean = false,
+    val nseScriptCode: String? = null,
+    val bseScriptCode: String? = null,
+    val volume: Long? = null,
+    val totalBuyQty: Long? = null,
+    val totalSellQty: Long? = null
+)
+
+data class PeerInfo(
+    val name: String,
+    val expenseRatio: String,
+    val isin: String
+)
+
+data class FundamentalItem(
+    val name: String,
+    val shortName: String,
+    val value: String
+)
+
+data class StockPeerInfo(
+    val searchId: String,
+    val displayName: String,
+    val shortName: String,
+    val logoUrl: String?,
+    val marketCap: Double?,
+    val peRatio: Double?,
+    val pbRatio: Double?,
+    val nseSymbol: String?,
+    val ltp: Double?,
+    val dayChange: Double?,
+    val dayChangePerc: Double?,
+    val yearHigh: Double?,
+    val yearLow: Double?
+)
+
+data class StockFinancials(
+    val consolidatedRevenue: Map<String, Double>?,
+    val consolidatedProfit: Map<String, Double>?,
+    val consolidatedNetWorth: Map<String, Double>?,
+    val quarterlyRevenue: Map<String, Double>?,
+    val quarterlyProfit: Map<String, Double>?
+)
+
+data class StockNewsItem(
+    val id: String,
+    val title: String,
+    val url: String?,
+    val pubDate: String?,
+    val source: String?
+)
+
+data class StockEventItem(
+    val title: String,
+    val eventType: String?,
+    val primaryDate: String?,
+    val description: String?,
+    val corporateEventFilter: String?,
+    val detailValue: String?,
+    val detailDescription: String?
+)
+
+data class ShareholdingQuarter(
+    val promoters: Double,
+    val mutualFunds: Double,
+    val foreignInstitutions: Double,
+    val insurance: Double,
+    val retailAndOthers: Double
+)
+
+data class BrandInfo(
+    val name: String,
+    val logoUrl: String
 )
 
 data class StockSymbol(
