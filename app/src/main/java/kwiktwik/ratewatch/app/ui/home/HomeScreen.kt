@@ -5,6 +5,9 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import kwiktwik.ratewatch.app.data.model.*
 import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategory
 import kwiktwik.ratewatch.app.data.remote.GrowwMarketIndex
 import kwiktwik.ratewatch.app.ui.stocks.StocksViewModel
@@ -49,6 +53,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.refresh()
         stocksViewModel.loadStocks()
+        stocksViewModel.loadLatestIndices()
     }
 
     Box(
@@ -403,29 +408,150 @@ fun SilverPriceCard(uiState: HomeUiState) {
 
 @Composable
 fun IndicesRow(stocksState: StocksUiState) {
-    val nifty = stocksState.quotes.firstOrNull { it.symbol.contains("NIFTY", true) }
-    val sensex = stocksState.quotes.firstOrNull { it.symbol.contains("SENSEX", true) }
+    val indices = stocksState.latestIndices
     
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        IndexCard(
-            name = "NIFTY 50",
-            price = nifty?.price,
-            change = "+0.65%",
-            modifier = Modifier.weight(1f)
-        )
-        IndexCard(
-            name = "SENSEX",
-            price = sensex?.price,
-            change = "-0.12%",
-            isPositive = false,
-            modifier = Modifier.weight(1f)
-        )
+    if (stocksState.isLoading && indices.isEmpty()) {
+        // Loading state: 2x2 skeleton grid
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            repeat(2) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    repeat(2) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(145.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(AureumCard.copy(alpha = 0.5f))
+                        )
+                    }
+                }
+            }
+        }
+    } else if (indices.isNotEmpty()) {
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(306.dp), // (145.dp * 2) + 16.dp spacing
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(end = 20.dp)
+        ) {
+            items(indices) { index ->
+                IndexCard(
+                    quote = index,
+                    modifier = Modifier.width(160.dp)
+                )
+            }
+        }
     }
 }
 
+@Composable
+fun IndexCard(quote: StockQuote, modifier: Modifier = Modifier) {
+    val isPositive = quote.changePercent >= 0
+    val change = "${if (isPositive) "+" else ""}${"%.2f".format(quote.changePercent)}%"
+    
+    Surface(
+        modifier = modifier.height(145.dp), // Increased height for more data
+        shape = RoundedCornerShape(24.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                    if (!quote.logoUrl.isNullOrEmpty()) {
+                        AsyncImage(
+                            model = quote.logoUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.1f)),
+                            contentScale = ContentScale.Fit
+                        )
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    Text(
+                        quote.shortName,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White.copy(alpha = 0.9f),
+                        maxLines = 1
+                    )
+                }
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = (if (isPositive) EmeraldGreen else RubyRed).copy(alpha = 0.1f)
+                ) {
+                    Text(
+                        "${if (isPositive) "↑" else "↓"} $change",
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (isPositive) EmeraldGreen else RubyRed
+                    )
+                }
+            }
+            
+            Spacer(Modifier.height(12.dp))
+            
+            Text(
+                "₹${"%,.2f".format(quote.price)}",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.White
+            )
+            
+            Spacer(Modifier.weight(1f))
+            
+            // Show all available data: High and Low
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text("L: ₹${"%,.0f".format(quote.low ?: 0.0)}", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.4f))
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text("H: ₹${"%,.0f".format(quote.high ?: 0.0)}", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.4f))
+                }
+            }
+            
+            Spacer(Modifier.height(4.dp))
+            
+            // Minimal visual indicator instead of hardcoded chart
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(2.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.05f))
+            ) {
+                val range = (quote.high ?: 0.0) - (quote.low ?: 0.0)
+                if (range > 0) {
+                    val position = ((quote.price - (quote.low ?: 0.0)) / range).coerceIn(0.0, 1.0).toFloat()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(position)
+                            .fillMaxHeight()
+                            .background(if (isPositive) EmeraldGreen else RubyRed)
+                    )
+                }
+            }
+        }
+    }
+}
+
+// Keep the old one for empty state if needed, or update empty state to use a placeholder
 @Composable
 fun IndexCard(name: String, price: Double?, change: String, isPositive: Boolean = true, modifier: Modifier = Modifier) {
     Surface(

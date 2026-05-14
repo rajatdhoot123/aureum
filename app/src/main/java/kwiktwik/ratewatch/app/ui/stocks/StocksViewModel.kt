@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 data class StocksUiState(
     val quotes: List<StockQuote> = emptyList(),
+    val latestIndices: List<StockQuote> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -58,6 +59,21 @@ class StocksViewModel @Inject constructor(
                 }
                 .onFailure { throwable ->
                     _uiState.update { it.copy(isLoading = false, error = throwable.message ?: "Failed to load market data") }
+                }
+        }
+    }
+
+    fun loadLatestIndices() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            repository.getGrowwIndianIndices()
+                .onSuccess { quotes ->
+                    Log.i("StocksViewModel", "Loaded ${quotes.size} latest indices from Groww")
+                    _uiState.update { it.copy(latestIndices = quotes, isLoading = false) }
+                }
+                .onFailure { throwable ->
+                    Log.e("StocksViewModel", "Latest indices failed", throwable)
+                    _uiState.update { it.copy(isLoading = false, error = throwable.message) }
                 }
         }
     }
