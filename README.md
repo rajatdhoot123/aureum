@@ -1,157 +1,118 @@
-# Aureum
+# Aureum (RateWatch) 🪙
 
-**Aureum** is a modern fintech Android app for India — live **Gold (24K)**, **Silver**, and **Indian Equities (NIFTY 50, SENSEX)** tracking with portfolio summary, price alerts, and market intelligence.
+[![Android](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-orange.svg)](https://developer.android.com/jetpack/compose)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**Aureum** is a high-performance, open-source fintech application designed for the Indian market. It provides real-time tracking for **Gold**, **Silver**, and **Indian Stock Market Indices** (NIFTY 50, SENSEX) with a premium glass-morphic design.
+
+---
+
+## 📖 Table of Contents
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Screenshots](#-screenshots)
+- [Architecture & Tech Stack](#-architecture--tech-stack)
+- [Getting Started](#-getting-started)
+- [API Configuration](#-api-configuration)
+- [Release Builds](#-release-builds)
+- [Branding & Metadata](#-branding--metadata)
+- [License](#-license)
+
+---
+
+## 🌟 Overview
+Aureum (formerly RateWatch) is built to provide Indian investors with a single, beautiful interface to track their core assets. Whether you are monitoring gold prices for a wedding purchase or tracking NIFTY 50 for your portfolio, Aureum delivers real-time data with minimal latency and a state-of-the-art UI.
+
+Optimized for the **Indian economy**, it supports multi-language localization and city-wise precious metal tracking.
+
+---
+
+## ✨ Key Features
+- **Live Precious Metals** — Real-time 22K & 24K Gold and Silver prices across all major Indian cities.
+- **Stock Market Indices** — Dynamic tracking of NIFTY 50, SENSEX, and sectoral indices.
+- **Aureum Design System** — A custom, premium UI built with glass-morphism, dark mode by default (#031427 navy), and high-fidelity animations.
+- **Multilingual Support** — Available in 10+ Indic languages including Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.
+- **Offline First** — Fast local caching for seamless performance even on slower connections.
+- **Privacy Focused** — No trackers, no data collection. Just your data.
+
+---
+
+## 📱 Screenshots
 <p align="center">
-  <img src="screenshots/home_screen.png" width="300" title="Home Screen">
+  <img src="screenshots/home_screen.png" width="300" title="Aureum Home Screen">
+  <br>
+  <em>Premium Glass-morphic Dashboard</em>
 </p>
 
-> Built in Kotlin + Jetpack Compose. Design reference: modern simplified fintech (deep navy #031427, emerald gains, ruby losses). Mobile-first.
+---
 
-- Real-time gold (24K per 10g), silver (per kg), NIFTY 50 & SENSEX with live changes
-- Savings Summary: Physical Gold, Global Equities, Cash Reserves with P/L
-- Conversational price alerts ("Notify me when...")
-- Curated market news for Indian economy, inflation, commodities
-- 10 Indic languages + English, dark mode by default (#031427 navy)
+## 🛠 Architecture & Tech Stack
+Aureum follows modern Android development best practices and Clean Architecture:
+
+- **Language**: [Kotlin](https://kotlinlang.org)
+- **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose) with Material 3
+- **Dependency Injection**: [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- **Networking**: [Retrofit](https://square.github.io/retrofit/) & [OkHttp](https://square.github.io/okhttp/)
+- **Reactive Programming**: [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) & [Flow](https://kotlinlang.org/docs/flow.html)
+- **Data Management**: [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) (Preferences)
+- **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+- **Android Studio** Hedgehog (2023.1.1) or higher.
+- **JDK 17** or higher.
+- **Android SDK 35** (compileSdk).
+- **Minimum SDK 24** (Android 7.0).
 
-- Android Studio Hedgehog | 2023.1.1+ (or newer)
-- JDK 17+
-- Android SDK 35 (compileSdk)
-- Minimum SDK 24 (Android 7.0)
-
-### API Configuration
-
-Since this project is open-source, you must provide your own API base URLs. Create (or update) a `local.properties` file in the root directory and add the following:
-
-```properties
-GOLD_SILVER_BASE_URL=https://your-api-endpoint.com/
-STOCK_API_BASE_URL=https://your-api-endpoint.com/
-```
-
-The app expects these endpoints to follow the expected scraper schema.
-
-### Build & Run from Terminal
-
-```bash
-# 1. Clone the repository (if you haven't already)
-git clone <your-repo-url>
-cd RateWatch
-
-# 2. Make gradlew executable (first time only)
-chmod +x gradlew
-
-# 3. Build the debug APK
-./gradlew assembleDebug
-
-# 4. Build the release bundle (.aab)
-./gradlew bundleRelease
-
-# 5. Build the release APK
-./gradlew assembleRelease
-
-# 6. Install and launch on a connected device or emulator
-./gradlew installDebug
-```
-
-### Run from Android Studio
-
-1. Open the project in Android Studio
-2. Sync Gradle files
-3. Select a device/emulator
-4. Click **Run** (or press `Shift + F10`)
-
-The generated debug APK will be available at:
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/RateWatch.git
+   ```
+2. Open the project in Android Studio.
+3. Sync Gradle and build the project.
 
 ---
 
-## ✨ Features
+## 📡 API Configuration
+To protect sensitive endpoints and facilitate open-source contributions, Aureum uses a `local.properties` configuration system.
 
-- **Gold & Silver Prices** — Fetched live from `https://api.example.com/scraper/metals/latest`
-  - 22K & 24K Gold (per 10g)
-  - Silver (per kg)
-  - City-wise prices (Delhi, Mumbai, Chennai, Bangalore, Hyderabad, etc.)
-- **Stocks & Indices** — Nifty 50, Sensex, Bank Nifty + major stocks via the unified Stocks API (Yahoo Finance wrapper)
-- **Watchlist** — Save and track your favorite metals and stocks
-- **Multi-language Support** — Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi + English
-- **Modern UI** — Material 3, dynamic theming, smooth animations
-
----
-
-## 🛠 Tech Stack
-
-- **Kotlin** + **Jetpack Compose** + **Material 3**
-- **Hilt** (Dependency Injection)
-- **Retrofit** + **OkHttp** (Networking)
-- **DataStore** (Preferences & persistence)
-- **Kotlin Coroutines** + **Flow**
-- **Navigation Compose**
-
----
-
-## 📡 APIs Used
-
-| Data              | Source                                      |
-|-------------------|---------------------------------------------|
-| Gold & Silver     | Metals Scraper Endpoint (Goodreturns.in)   |
-| Stocks & Indices  | Stocks Scraper Endpoint (Groww/Yahoo)      |
-
-> Base URLs are loaded from `local.properties` to keep sensitive endpoints out of source control.
-
----
-
-## 📝 License
-
-```
-MIT License
-
-Copyright (c) 2026 RateWatch
-```
+1. Locate `local.properties` in your root directory (automatically created by Android Studio).
+2. Add your custom API base URLs:
+   ```properties
+   GOLD_SILVER_BASE_URL=https://your-api.com/
+   STOCK_API_BASE_URL=https://your-api.com/
+   ```
+*Note: The app expects these endpoints to follow the [Scraper API Schema](docs/api-schema.md).*
 
 ---
 
 ## 📦 Release Builds
+To generate production-ready artifacts:
 
-To generate production-ready artifacts, use the following commands:
-
-### 1. Generate Android App Bundle (.aab)
-Recommended for Play Store submission.
+### 1. Android App Bundle (.aab)
 ```bash
 ./gradlew bundleRelease
 ```
-The AAB will be available at:
-`app/build/outputs/bundle/release/app-release.aab`
+Path: `app/build/outputs/bundle/release/app-release.aab`
 
-### 2. Generate APK (.apk)
-Useful for manual distribution or testing.
+### 2. APK (.apk)
 ```bash
 ./gradlew assembleRelease
 ```
-The APK will be available at:
-`app/build/outputs/apk/release/app-release.apk`
+Path: `app/build/outputs/apk/release/app-release.apk`
 
 ---
 
 ## 🔑 Signing Configuration
+The project uses `key.properties` for release signing. **Do NOT commit `key.properties` or `*.jks` files to version control.**
 
-The project uses `key.properties` (in the root directory) to manage release signing. 
-
-**Wait, do NOT commit `key.properties` or `*.jks` files to version control.**
-
-If you need to generate a new keystore:
-```bash
-keytool -genkeypair -v -keystore ratewatch-release.jks -alias ratewatch -keyalg RSA -keysize 2048 -validity 10000
-```
-
-Ensure your `key.properties` matches the generated keystore:
+Example `key.properties`:
 ```properties
 storePassword=your_password
 keyPassword=your_password
@@ -162,9 +123,29 @@ storeFile=ratewatch-release.jks
 ---
 
 ## 🎨 Branding & Metadata
+- **Play Store Listing**: Metadata is located in [listing.md](./playstore_listing/listing.md).
+- **Assets**: High-resolution icons and branding assets are in the `playstore_listing/` directory.
 
-- **Play Store Listing**: Find optimized titles and descriptions in [listing.md](./playstore_listing/listing.md).
-- **App Icon**: Premium Material 3 icons are located in the `playstore_listing/` directory.
+---
+
+## 📝 License
+This project is licensed under the **MIT License**.
+
+```text
+MIT License
+
+Copyright (c) 2026 RateWatch
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
 
 ---
 
