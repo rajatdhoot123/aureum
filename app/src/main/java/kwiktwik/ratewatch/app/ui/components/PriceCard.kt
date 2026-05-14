@@ -14,7 +14,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.RubyRed
 import java.text.NumberFormat
 import java.util.*
 
@@ -110,8 +112,8 @@ fun PriceCard(
                     
                     Surface(
                         color = when {
-                            isUp -> Color(0xFF22C55E).copy(alpha = 0.1f)
-                            isDown -> Color(0xFFEF4444).copy(alpha = 0.1f)
+                            isUp -> EmeraldGreen.copy(alpha = 0.1f)
+                            isDown -> RubyRed.copy(alpha = 0.1f)
                             else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
                         },
                         shape = RoundedCornerShape(50),
@@ -120,8 +122,8 @@ fun PriceCard(
                         Text(
                             text = "${if (isUp) "↗" else if (isDown) "↘" else "•"} $change",
                             color = when {
-                                isUp -> Color(0xFF22C55E)
-                                isDown -> Color(0xFFEF4444)
+                                isUp -> EmeraldGreen
+                                isDown -> RubyRed
                                 else -> MaterialTheme.colorScheme.onSurfaceVariant
                             },
                             style = MaterialTheme.typography.labelLarge,

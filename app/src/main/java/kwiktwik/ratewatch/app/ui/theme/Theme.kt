@@ -12,26 +12,28 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.graphics.Brush
 
-// Premium Colors
-val Navy950 = Color(0xFF020617)
-val Navy900 = Color(0xFF0F172A)
-val Navy800 = Color(0xFF1E293B)
+// Aureum Modern Fintech Palette - Deep Navy/Charcoal
+val AureumBg = Color(0xFF031427)
+val AureumSurface = Color(0xFF0A1F3A)
+val AureumCard = Color(0xFF122A47)
 val Cyan400 = Color(0xFF22D3EE)
 val Cyan500 = Color(0xFF06B6D4)
 val GoldAccent = Color(0xFFD4AF37)
 val SilverAccent = Color(0xFF94A3B8)
+val EmeraldGreen = Color(0xFF10B981)
+val RubyRed = Color(0xFFEF4444)
 
 private val LightColorScheme = lightColorScheme(
     primary = Cyan500,
     onPrimary = Color.White,
     primaryContainer = Color(0xFFCFFAFE),
     onPrimaryContainer = Color(0xFF083344),
-    secondary = Navy800,
+    secondary = AureumSurface,
     onSecondary = Color.White,
     background = Color(0xFFF8FAFC),
-    onBackground = Navy950,
+    onBackground = AureumBg,
     surface = Color.White,
-    onSurface = Navy950,
+    onSurface = AureumBg,
     surfaceVariant = Color(0xFFF1F5F9),
     error = Color(0xFFEF4444),
     onError = Color.White,
@@ -39,22 +41,22 @@ private val LightColorScheme = lightColorScheme(
 
 private val DarkColorScheme = darkColorScheme(
     primary = Cyan400,
-    onPrimary = Navy950,
-    primaryContainer = Color(0xFF083344),
+    onPrimary = AureumBg,
+    primaryContainer = Color(0xFF0A2A4A),
     onPrimaryContainer = Color(0xFFCFFAFE),
     secondary = Color(0xFF94A3B8),
-    onSecondary = Navy950,
-    background = Navy950,
-    onBackground = Color(0xFFF8FAFC),
-    surface = Navy900,
-    onSurface = Color(0xFFF8FAFC),
-    surfaceVariant = Navy800,
-    error = Color(0xFFFF6B6B),
-    onError = Navy950,
+    onSecondary = AureumBg,
+    background = AureumBg,
+    onBackground = Color(0xFFF1F5F9),
+    surface = AureumSurface,
+    onSurface = Color(0xFFF1F5F9),
+    surfaceVariant = AureumCard,
+    error = RubyRed,
+    onError = Color.White,
 )
 
 @Composable
-fun RateWatchTheme(
+fun AureumTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -76,7 +78,7 @@ fun RateWatchTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = RateWatchTypography,
+        typography = AureumTypography,
         content = content
     )
 }
@@ -87,9 +89,9 @@ object GlassMorphism {
         return if (darkTheme) {
             Brush.verticalGradient(
                 colors = listOf(
-                    Navy950,
-                    Navy900,
-                    Navy950
+                    AureumBg,
+                    AureumSurface,
+                    AureumBg
                 )
             )
         } else {
@@ -105,12 +107,12 @@ object GlassMorphism {
 
     @Composable
     fun surfaceColor(darkTheme: Boolean): Color {
-        return if (darkTheme) Color(0x1AFFFFFF) else Color(0x66FFFFFF)
+        return if (darkTheme) AureumCard else Color(0x66FFFFFF)
     }
 
     @Composable
     fun strokeColor(darkTheme: Boolean): Color {
-        return if (darkTheme) Color(0x33FFFFFF) else Color(0x4D000000)
+        return if (darkTheme) Color(0x22FFFFFF) else Color(0x4D000000)
     }
 }
 

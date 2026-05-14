@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RateWatch</string>
-    <string name="tagline">Gold • Silver • Stocks • Live India</string>
+    <string name="app_name">Aureum</string>
+    <string name="tagline">Gold • Silver • Equities • India</string>
 
     <!-- Onboarding -->
-    <string name="welcome">Welcome to RateWatch</string>
+    <string name="welcome">Welcome to Aureum</string>
     <string name="choose_language">Choose your language</string>
     <string name="language_subtitle">You can change this anytime in settings</string>
     <string name="get_started">Get Started</string>
     <string name="skip">Skip</string>
 
     <!-- Bottom Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_markets">Markets</string>
-    <string name="nav_watchlist">Watchlist</string>
-    <string name="nav_settings">Settings</string>
+    <string name="nav_overview">Overview</string>
+    <string name="nav_portfolio">Portfolio</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_news">News</string>
 
     <!-- Gold & Silver -->
     <string name="gold_22k">22K Gold</string>
@@ -65,4 +65,51 @@
     <string name="close">Close</string>
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="no_internet">No internet connection</string>
+
+    <!-- Aureum Dashboard -->
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="market_overview">Market Overview</string>
+    <string name="savings_summary">Savings Summary</string>
+    <string name="physical_gold">Physical Gold</string>
+    <string name="global_equities">Global Equities</string>
+    <string name="cash_reserves">Cash Reserves</string>
+    <string name="profit">Profit</string>
+    <string name="loss">Loss</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">Overview</string>
+    <string name="tab_portfolio">Portfolio</string>
+    <string name="tab_alerts">Alerts</string>
+    <string name="tab_news">News</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">Price Alerts</string>
+    <string name="alerts_subtitle">Get notified when prices hit your targets</string>
+    <string name="create_alert">Create Alert</string>
+    <string name="notify_me_when">Notify me when...</string>
+    <string name="select_asset">Select asset</string>
+    <string name="price_above">Price goes above</string>
+    <string name="price_below">Price goes below</string>
+    <string name="set_target">Set target price</string>
+    <string name="active_alerts">Active Alerts</string>
+    <string name="no_alerts">No alerts yet</string>
+    <string name="alert_created">Alert created successfully</string>
+    <string name="delete_alert">Delete</string>
+
+    <!-- News -->
+    <string name="market_intelligence">Market Intelligence</string>
+    <string name="news_subtitle">Insights on Indian economy, inflation &amp; commodities</string>
+    <string name="read_more">Read more</string>
+    <string name="no_news">No news available</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">Portfolio Value</string>
+    <string name="total_pnl">Total P&amp;L</string>
+    <string name="add_holding">Add Holding</string>
+    <string name="current_value">Current Value</string>
+    <string name="your_holdings">Your Holdings</string>
+    <string name="no_holdings">No holdings yet</string>
+    <string name="add_first_holding">Add your first asset to track savings</string>
 </resources>

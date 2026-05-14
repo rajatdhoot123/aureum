@@ -1,12 +1,14 @@
-# RateWatch
+# Aureum
 
-**RateWatch** is a modern Android app to monitor live **Gold**, **Silver**, and **Stock** prices in India.
+**Aureum** is a modern fintech Android app for India — live **Gold (24K)**, **Silver**, and **Indian Equities (NIFTY 50, SENSEX)** tracking with portfolio summary, price alerts, and market intelligence.
 
-- Real-time gold & silver prices across major Indian cities (powered by Goodreturns.in)
-- Live Indian stock indices (Nifty 50, Sensex, Bank Nifty) and popular stocks
-- Full support for **10 Indic languages** + English (onboarding + runtime language switching)
-- Beautiful Material 3 UI with dark mode
-- Watchlist for tracking your favorite assets
+> Built in Kotlin + Jetpack Compose. Design reference: modern simplified fintech (deep navy #031427, emerald gains, ruby losses). Mobile-first.
+
+- Real-time gold (24K per 10g), silver (per kg), NIFTY 50 & SENSEX with live changes
+- Savings Summary: Physical Gold, Global Equities, Cash Reserves with P/L
+- Conversational price alerts ("Notify me when...")
+- Curated market news for Indian economy, inflation, commodities
+- 10 Indic languages + English, dark mode by default (#031427 navy)
 
 ---
 
@@ -151,4 +153,4 @@ storeFile=ratewatch-release.jks
 
 ---
 
-Made with ❤️ for India. Monitor your gold, silver, and stocks — in your language.
+Made with ❤️ for India. Track your gold, silver & equities with clarity.

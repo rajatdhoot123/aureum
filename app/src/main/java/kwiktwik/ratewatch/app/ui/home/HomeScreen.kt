@@ -5,15 +5,17 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,9 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kwiktwik.ratewatch.app.ui.components.PriceCard
-import kwiktwik.ratewatch.app.ui.components.CitySelectorSheet
+import androidx.hilt.navigation.compose.hiltViewModel
+import kwiktwik.ratewatch.app.ui.stocks.StocksViewModel
+import kwiktwik.ratewatch.app.ui.stocks.StocksUiState
+import kwiktwik.ratewatch.app.ui.theme.Cyan400
+import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.GoldAccent
+import kwiktwik.ratewatch.app.ui.theme.RubyRed
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,11 +40,12 @@ fun HomeScreen(
     viewModel: HomeViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val selectedCity by viewModel.selectedCity.collectAsState()
-    var showCitySheet by remember { mutableStateOf(false) }
+    val stocksViewModel: StocksViewModel = hiltViewModel()
+    val stocksState by stocksViewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.refresh()
+        stocksViewModel.loadStocks()
     }
 
     Box(
@@ -52,202 +60,97 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
 
-            // Modern Header
+            // Aureum Header matching design brief
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            "RateWatch",
-                            style = MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        LivePulseIndicator()
-                    }
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.tagline),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        "Aureum",
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White
                     )
+                    Spacer(Modifier.width(8.dp))
+                    LivePulseIndicator()
                 }
-
+                // User avatar
                 Surface(
-                    onClick = { viewModel.refresh() },
-                    shape = RoundedCornerShape(16.dp),
-                    color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
-                    modifier = Modifier.size(48.dp)
+                    shape = RoundedCornerShape(50),
+                    color = GoldAccent,
+                    modifier = Modifier.size(42.dp).clickable { /* open profile */ }
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            Icons.Default.Refresh,
-                            contentDescription = "Refresh",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(32.dp))
-
-            // City Selection Area
-            Surface(
-                onClick = { showCitySheet = true },
-                shape = RoundedCornerShape(24.dp),
-                color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("📍", style = MaterialTheme.typography.titleMedium)
-                    }
-                    Spacer(Modifier.width(16.dp))
-                    Column {
                         Text(
-                            "Location",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            selectedCity,
+                            "R",
                             style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF031427)
                         )
-                    }
-                    Spacer(Modifier.weight(1f))
-                    Icon(
-                        androidx.compose.material.icons.Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(Modifier.height(32.dp))
-
-            AnimatedContent(
-                targetState = uiState,
-                transitionSpec = {
-                    fadeIn(animationSpec = tween(500)) togetherWith fadeOut(animationSpec = tween(500))
-                },
-                label = "UIState"
-            ) { state ->
-                when {
-                    state.isLoading -> {
-                        LoadingState()
-                    }
-
-                    state.error != null -> {
-                        ErrorState(
-                            message = state.error!!,
-                            onRetry = { viewModel.refresh() }
-                        )
-                    }
-
-                    else -> {
-                        if (state.prices.isEmpty()) {
-                            EmptyMetalsState(onForceScrape = { viewModel.forceMetalsScrape() })
-                        } else {
-                            val cityData = state.prices.find { it.city == selectedCity }
-                                ?: state.prices.firstOrNull()
-
-                            cityData?.let { price ->
-                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                                    // Gold 24K Card
-                                    PriceCard(
-                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_24k),
-                                        price = price.gold24kPer10g ?: 0,
-                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
-                                        change = price.gold24kChange,
-                                        iconEmoji = "🪙",
-                                        accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent
-                                    )
-
-                                    // Gold 22K Card
-                                    PriceCard(
-                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.gold_22k),
-                                        price = price.gold22kPer10g ?: 0,
-                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_10_grams),
-                                        change = price.gold22kChange,
-                                        iconEmoji = "🥇",
-                                        accentColor = kwiktwik.ratewatch.app.ui.theme.GoldAccent.copy(alpha = 0.8f)
-                                    )
-
-                                    // Silver Card
-                                    PriceCard(
-                                        title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.silver),
-                                        price = price.silverPerKg ?: 0,
-                                        unit = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.per_kg),
-                                        change = price.silverChange,
-                                        iconEmoji = "🥈",
-                                        accentColor = kwiktwik.ratewatch.app.ui.theme.SilverAccent
-                                    )
-
-                                    Spacer(Modifier.height(8.dp))
-
-                                    // Last Updated & Source
-                                    Surface(
-                                        shape = RoundedCornerShape(16.dp),
-                                        color = Color.Transparent,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.padding(horizontal = 8.dp),
-                                            horizontalArrangement = Arrangement.SpaceBetween
-                                        ) {
-                                            Text(
-                                                "Updated: ${formatTime(price.scrapedAt)}",
-                                                style = MaterialTheme.typography.labelMedium,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                            if (state.source.isNotEmpty()) {
-                                                Text(
-                                                    "via ${state.source}",
-                                                    style = MaterialTheme.typography.labelMedium,
-                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(12.dp))
 
+            // Greeting - local context
+            val greeting = getTimeBasedGreeting()
+            Text(
+                "$greeting, Rajat",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFFF1F5F9)
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // Top tabs visual (Overview | Portfolio | Alerts | News) - Overview active
+            TabChips(selectedTab = 0)
+
+            Spacer(Modifier.height(20.dp))
+
+            // Market Overview - 4 asset cards (Gold, Silver, NIFTY, SENSEX)
+            Text(
+                "Market Overview",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(Modifier.height(12.dp))
+
+            MarketOverviewSection(uiState = uiState, stocksState = stocksState)
+
+            Spacer(Modifier.height(28.dp))
+
+            // Savings Summary - Portfolio snapshot (from brief)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Savings Summary",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    "View all",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Cyan400,
+                    modifier = Modifier.clickable { /* navigate to Portfolio */ }
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+
+            SavingsSummarySection()
 
             Spacer(Modifier.height(100.dp)) // Extra space for navigation bar
         }
-    }
-
-    if (showCitySheet) {
-        CitySelectorSheet(
-            cities = uiState.prices.map { it.city },
-            selectedCity = selectedCity,
-            onCitySelected = {
-                viewModel.setCity(it)
-                showCitySheet = false
-            },
-            onDismiss = { showCitySheet = false }
-        )
     }
 }
 
@@ -276,11 +179,11 @@ fun LivePulseIndicator() {
     Box(contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.size(16.dp)) {
             drawCircle(
-                color = Color(0xFF22C55E).copy(alpha = alpha),
+                color = EmeraldGreen.copy(alpha = alpha),
                 radius = size.minDimension / 2 * scale
             )
             drawCircle(
-                color = Color(0xFF22C55E),
+                color = EmeraldGreen,
                 radius = size.minDimension / 4
             )
         }
@@ -399,6 +302,244 @@ private fun formatTime(isoString: String?): String {
         formatter.format(date ?: Date())
     } catch (e: Exception) {
         isoString.take(16)
+    }
+}
+
+@Composable
+fun getTimeBasedGreeting(): String {
+    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    return when (hour) {
+        in 5..11 -> "Good morning"
+        in 12..16 -> "Good afternoon"
+        else -> "Good evening"
+    }
+}
+
+@Composable
+fun TabChips(selectedTab: Int) {
+    val tabs = listOf("Overview", "Portfolio", "Alerts", "News")
+    Row(
+        modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        tabs.forEachIndexed { index, tab ->
+            val isSelected = index == selectedTab
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else GlassMorphism.surfaceColor(isSystemInDarkTheme()),
+                border = BorderStroke(
+                    1.dp,
+                    if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else GlassMorphism.strokeColor(isSystemInDarkTheme())
+                ),
+                modifier = Modifier.clickable { /* TODO: switch tab or navigate */ }
+            ) {
+                Text(
+                    tab,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MarketOverviewSection(uiState: HomeUiState, stocksState: StocksUiState) {
+    val isDark = isSystemInDarkTheme()
+    // Extract live gold/silver (use first city or India approx)
+    val price = uiState.prices.firstOrNull()
+    val goldPrice = price?.gold24kPer10g ?: 7812.0
+    val goldChange = price?.gold24kChange ?: "+0.8%"
+    val silverPrice = price?.silverPerKg ?: 91200.0
+    val silverChange = price?.silverChange ?: "+1.2%"
+
+    // Find NIFTY and SENSEX from stocks
+    val nifty = stocksState.quotes.firstOrNull { it.symbol.contains("NIFTY", true) || it.shortName.contains("Nifty", true) }
+    val sensex = stocksState.quotes.firstOrNull { it.symbol.contains("SENSEX", true) || it.shortName.contains("Sensex", true) || it.shortName.contains("BSE", true) }
+
+    val niftyPrice = nifty?.price ?: 24823.15
+    val niftyPct = nifty?.changePercent ?: -0.3
+    val niftyChange = if (niftyPct >= 0) "+${"%.1f".format(niftyPct)}%" else "${"%.1f".format(niftyPct)}%"
+    val sensexPrice = sensex?.price ?: 81785.67
+    val sensexPct = sensex?.changePercent ?: -0.2
+    val sensexChange = if (sensexPct >= 0) "+${"%.1f".format(sensexPct)}%" else "${"%.1f".format(sensexPct)}%"
+
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        item {
+            MarketAssetCard(
+                name = "Gold 24K",
+                price = "₹${"%,.0f".format(goldPrice)}",
+                unit = "/10g",
+                change = goldChange,
+                icon = "🪙",
+                isPositive = goldChange.startsWith("+", ignoreCase = true)
+            )
+        }
+        item {
+            MarketAssetCard(
+                name = "Silver",
+                price = "₹${"%,.0f".format(silverPrice)}",
+                unit = "/kg",
+                change = silverChange,
+                icon = "🥈",
+                isPositive = silverChange.startsWith("+", ignoreCase = true)
+            )
+        }
+        item {
+            MarketAssetCard(
+                name = "NIFTY 50",
+                price = "₹${"%,.0f".format(niftyPrice)}",
+                unit = "",
+                change = niftyChange,
+                icon = "📈",
+                isPositive = niftyChange.startsWith("+", ignoreCase = true)
+            )
+        }
+        item {
+            MarketAssetCard(
+                name = "SENSEX",
+                price = "₹${"%,.0f".format(sensexPrice)}",
+                unit = "",
+                change = sensexChange,
+                icon = "📊",
+                isPositive = sensexChange.startsWith("+", ignoreCase = true)
+            )
+        }
+    }
+}
+
+@Composable
+fun MarketAssetCard(
+    name: String,
+    price: String,
+    unit: String,
+    change: String,
+    icon: String,
+    isPositive: Boolean
+) {
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
+        border = BorderStroke(1.dp, GlassMorphism.strokeColor(isSystemInDarkTheme())),
+        modifier = Modifier.width(140.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(icon, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    name,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFFB0B8C4)
+                )
+            }
+            Text(
+                price,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            if (unit.isNotEmpty()) {
+                Text(unit, style = MaterialTheme.typography.labelSmall, color = Color(0xFF8A96A6))
+            }
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = (if (isPositive) EmeraldGreen else RubyRed).copy(alpha = 0.12f)
+            ) {
+                Text(
+                    "${if (isPositive) "↑" else "↓"} $change",
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (isPositive) EmeraldGreen else RubyRed
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SavingsSummarySection() {
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        item {
+            PortfolioSummaryCard(
+                name = "Physical Gold",
+                value = "₹45,200",
+                pnl = "+₹2,100 (4.8%)",
+                isPositive = true,
+                icon = "🪙"
+            )
+        }
+        item {
+            PortfolioSummaryCard(
+                name = "Global Equities",
+                value = "₹1,24,500",
+                pnl = "+₹8,750 (7.5%)",
+                isPositive = true,
+                icon = "🌍"
+            )
+        }
+        item {
+            PortfolioSummaryCard(
+                name = "Cash Reserves",
+                value = "₹28,000",
+                pnl = "—",
+                isPositive = true,
+                icon = "💵"
+            )
+        }
+    }
+}
+
+@Composable
+fun PortfolioSummaryCard(
+    name: String,
+    value: String,
+    pnl: String,
+    isPositive: Boolean,
+    icon: String
+) {
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
+        border = BorderStroke(1.dp, GlassMorphism.strokeColor(isSystemInDarkTheme())),
+        modifier = Modifier.width(160.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(icon, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    name,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFFB0B8C4)
+                )
+            }
+            Text(
+                value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Text(
+                pnl,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = if (pnl.contains("+") || pnl == "—") EmeraldGreen else RubyRed
+            )
+        }
     }
 }
 

@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.data.model.StockQuote
+import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.RubyRed
 
 @Composable
 fun StocksScreen(
@@ -48,27 +50,19 @@ fun StocksScreen(
             
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.stocks),
+                    text = "Portfolio",
                     style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White
                 )
                 Spacer(Modifier.width(8.dp))
                 LivePulseIndicator()
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Live Indian Indices from Groww", 
-                    style = MaterialTheme.typography.bodyMedium, 
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                TextButton(onClick = { viewModel.loadGlobalInstruments() }) {
-                    Text("Show Global", style = MaterialTheme.typography.labelMedium)
-                }
-            }
+            Text(
+                "Savings Summary • Your Holdings",
+                style = MaterialTheme.typography.bodyMedium, 
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
 
             Spacer(Modifier.height(24.dp))
 
@@ -155,11 +149,11 @@ fun LivePulseIndicator() {
     Box(contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.size(16.dp)) {
             drawCircle(
-                color = androidx.compose.ui.graphics.Color(0xFF22C55E).copy(alpha = alpha),
+                color = EmeraldGreen.copy(alpha = alpha),
                 radius = size.minDimension / 2 * scale
             )
             drawCircle(
-                color = androidx.compose.ui.graphics.Color(0xFF22C55E),
+                color = EmeraldGreen,
                 radius = size.minDimension / 4
             )
         }
@@ -204,12 +198,12 @@ private fun StockQuoteCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E).copy(alpha = 0.1f) else androidx.compose.ui.graphics.Color(0xFFEF4444).copy(alpha = 0.1f)),
+                        .background(if (isPositive) EmeraldGreen.copy(alpha = 0.1f) else RubyRed.copy(alpha = 0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         if (isPositive) "↗" else "↘",
-                        color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                        color = if (isPositive) EmeraldGreen else RubyRed,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -240,7 +234,7 @@ private fun StockQuoteCard(
                 )
                 Text(
                     text = "${if (isPositive) "+" else ""}${quote.change} (${quote.changePercent}%)",
-                    color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                    color = if (isPositive) EmeraldGreen else RubyRed,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold
                 )

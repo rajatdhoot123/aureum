@@ -9,13 +9,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.RubyRed
 import kwiktwik.ratewatch.app.data.model.StockQuote
 
 @Composable
@@ -49,12 +52,13 @@ fun WatchlistScreen(
             Spacer(Modifier.height(24.dp))
             
             Text(
-                text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.watchlist),
+                text = "Alerts",
                 style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.White
             )
             Text(
-                "Your pinned stocks & indices", 
+                "Notify me when price hits target • Conversational alerts",
                 style = MaterialTheme.typography.bodyMedium, 
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -143,7 +147,7 @@ private fun StockItem(quote: StockQuote) {
                 )
                 Text(
                     "${if (isPositive) "+" else ""}${String.format("%.2f", quote.changePercent)}%",
-                    color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                    color = if (isPositive) EmeraldGreen else RubyRed,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelMedium
                 )
@@ -224,7 +228,7 @@ private fun WatchlistItem(quote: StockQuote, onRemove: () -> Unit) {
                 )
                 Text(
                     "${if (isPositive) "+" else ""}${quote.changePercent}%",
-                    color = if (isPositive) androidx.compose.ui.graphics.Color(0xFF22C55E) else androidx.compose.ui.graphics.Color(0xFFEF4444),
+                    color = if (isPositive) EmeraldGreen else RubyRed,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelMedium
                 )

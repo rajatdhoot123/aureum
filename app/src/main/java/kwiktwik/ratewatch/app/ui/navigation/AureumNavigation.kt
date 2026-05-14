@@ -27,18 +27,18 @@ import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
 
 sealed class Screen(val route: String, val labelRes: Int, val emoji: String) {
-    object Home : Screen("home", R.string.nav_home, "🏠")
-    object Markets : Screen("markets", R.string.nav_markets, "📈")
-    object Watchlist : Screen("watchlist", R.string.nav_watchlist, "⭐")
-    object Settings : Screen("settings", R.string.nav_settings, "⚙️")
+    object Overview : Screen("overview", R.string.nav_overview, "📊")
+    object Portfolio : Screen("portfolio", R.string.nav_portfolio, "💰")
+    object Alerts : Screen("alerts", R.string.nav_alerts, "🔔")
+    object News : Screen("news", R.string.nav_news, "📰")
 }
 
 private val bottomNavItems = listOf(
-    Screen.Home, Screen.Markets, Screen.Watchlist, Screen.Settings
+    Screen.Overview, Screen.Portfolio, Screen.Alerts, Screen.News
 )
 
 @Composable
-fun RateWatchNavigation(
+fun AureumNavigation(
     onThemeChange: (Boolean) -> Unit
 ) {
     val navController = rememberNavController()
@@ -53,29 +53,29 @@ fun RateWatchNavigation(
         composable("onboarding") {
             OnboardingScreen(
                 onComplete = {
-                    navController.navigate(Screen.Home.route) {
+                    navController.navigate(Screen.Overview.route) {
                         popUpTo("onboarding") { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Screen.Home.route) {
+        composable(Screen.Overview.route) {
             MainScaffold(navController) {
                 HomeScreen(viewModel = hiltViewModel())
             }
         }
-        composable(Screen.Markets.route) {
+        composable(Screen.Portfolio.route) {
             MainScaffold(navController) {
                 StocksScreen(viewModel = hiltViewModel())
             }
         }
-        composable(Screen.Watchlist.route) {
+        composable(Screen.Alerts.route) {
             MainScaffold(navController) {
                 WatchlistScreen(viewModel = hiltViewModel())
             }
         }
-        composable(Screen.Settings.route) {
+        composable(Screen.News.route) {
             MainScaffold(navController) {
                 SettingsScreen(
                     viewModel = hiltViewModel(),

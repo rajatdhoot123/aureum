@@ -45,12 +45,13 @@ fun SettingsScreen(
             item {
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.settings),
+                    text = "News",
                     style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White
                 )
                 Text(
-                    "Preferences & App Information", 
+                    "Market Intelligence • Curated for Indian economy",
                     style = MaterialTheme.typography.bodyMedium, 
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

@@ -5,9 +5,9 @@ import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class RateWatchApplication : Application() {
+class AureumApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        Log.d("RateWatch", "=== Application onCreate ===")
+        Log.d("Aureum", "=== Application onCreate ===")
     }
 }
