@@ -12,6 +12,15 @@ android {
     namespace = "kwiktwik.ratewatch.app"
     compileSdk = 35
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+
+    val goldSilverBaseUrl = localProperties.getProperty("GOLD_SILVER_BASE_URL") ?: ""
+    val stockApiBaseUrl = localProperties.getProperty("STOCK_API_BASE_URL") ?: ""
+
     defaultConfig {
         applicationId = "kwiktwik.ratewatch.app"
         minSdk = 24
@@ -24,9 +33,9 @@ android {
             useSupportLibrary = true
         }
 
-        // API Base URLs - can be overridden per build type / flavor
-        buildConfigField("String", "GOLD_SILVER_BASE_URL", "\"https://api.example.com/\"")
-        buildConfigField("String", "STOCK_API_BASE_URL", "\"https://api.example.com/\"")
+        // API Base URLs - loaded from local.properties (gitignored)
+        buildConfigField("String", "GOLD_SILVER_BASE_URL", "\"$goldSilverBaseUrl\"")
+        buildConfigField("String", "STOCK_API_BASE_URL", "\"$stockApiBaseUrl\"")
     }
 
     signingConfigs {
