@@ -66,7 +66,7 @@ data class StocksQuoteResponse(
 )
 
 data class StockQuoteItem(
-    val symbol: String,
+    val symbol: String? = null,
     val name: String? = null,
     val price: Double = 0.0,
     val change: Double = 0.0,
@@ -90,7 +90,18 @@ data class StockQuoteItem(
     @SerializedName("isBse") val isBse: Boolean? = null,
     val continent: String? = null,
     val country: String? = null,
-    val source: String? = null
+    val source: String? = null,
+
+    // Groww Market Specific Fields
+    @SerializedName("companyName") val companyName: String? = null,
+    @SerializedName("companyShortName") val companyShortName: String? = null,
+    @SerializedName("nseScriptCode") val nseScriptCode: String? = null,
+    @SerializedName("bseScriptCode") val bseScriptCode: String? = null,
+    @SerializedName("ltp") val ltp: Double? = null,
+    @SerializedName("dayChange") val dayChange: Double? = null,
+    @SerializedName("dayChangePerc") val dayChangePerc: Double? = null,
+    @SerializedName("marketCap") val marketCap: Double? = null,
+    @SerializedName("close") val close: Double? = null
 )
 
 // --- Chart Endpoint (TradingView Lightweight Charts compatible) ---

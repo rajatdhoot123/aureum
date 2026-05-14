@@ -63,16 +63,7 @@ class PriceRepository @Inject constructor(
             val csv = symbols.joinToString(",")
             val response = RetrofitClient.stocksApi.getQuotes(csv)
             if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item ->
-                StockQuote(
-                    symbol = item.symbol,
-                    shortName = item.name ?: item.symbol,
-                    price = item.price,
-                    change = item.change,
-                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
-                    currency = item.currency ?: "INR"
-                )
-            }
+            response.data.map { item -> item.toStockQuote() }
         }
         emit(result)
     }
@@ -83,16 +74,7 @@ class PriceRepository @Inject constructor(
             val csv = symbols.joinToString(",")
             val response = RetrofitClient.stocksApi.getQuotes(csv)
             if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item ->
-                StockQuote(
-                    symbol = item.symbol,
-                    shortName = item.name ?: item.symbol,
-                    price = item.price,
-                    change = item.change,
-                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
-                    currency = item.currency ?: "INR"
-                )
-            }
+            response.data.map { item -> item.toStockQuote() }
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it) }
@@ -106,16 +88,7 @@ class PriceRepository @Inject constructor(
             val csv = usSymbols.joinToString(",")
             val response = RetrofitClient.stocksApi.getQuotes(csv)
             if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item ->
-                StockQuote(
-                    symbol = item.symbol,
-                    shortName = item.name ?: item.symbol,
-                    price = item.price,
-                    change = item.change,
-                    changePercent = item.changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
-                    currency = item.currency ?: "USD"
-                )
-            }
+            response.data.map { item -> item.toStockQuote() }
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it) }
@@ -246,25 +219,33 @@ class PriceRepository @Inject constructor(
         )
     }
 
-    private fun StockQuoteItem.toStockQuote(): StockQuote = StockQuote(
-        symbol = symbol,
-        shortName = name ?: symbol,
-        price = price,
-        change = change,
-        changePercent = changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0,
-        currency = currency ?: "INR",
-        open = open,
-        high = high,
-        low = low,
-        previousClose = previousClose,
-        exchange = exchange,
-        latestTradingDay = latestTradingDay,
-        logoUrl = logoUrl,
-        searchId = searchId,
-        yearHigh = yearHigh,
-        yearLow = yearLow,
-        instrumentType = instrumentType,
-        source = source,
-        gsin = gsin
-    )
+    private fun StockQuoteItem.toStockQuote(): StockQuote {
+        val resolvedSymbol = nseScriptCode ?: bseScriptCode ?: symbol ?: ""
+        val resolvedName = companyName ?: companyShortName ?: name ?: resolvedSymbol
+        val resolvedPrice = ltp ?: price
+        val resolvedChange = dayChange ?: change
+        val resolvedChangePercent = dayChangePerc ?: changePercent.replace("%", "").replace("+", "").toDoubleOrNull() ?: 0.0
+        
+        return StockQuote(
+            symbol = resolvedSymbol,
+            shortName = resolvedName,
+            price = resolvedPrice,
+            change = resolvedChange,
+            changePercent = resolvedChangePercent,
+            currency = currency ?: "INR",
+            open = open,
+            high = high,
+            low = low,
+            previousClose = previousClose ?: close,
+            exchange = exchange ?: if (nseScriptCode != null) "NSE" else if (bseScriptCode != null) "BSE" else null,
+            latestTradingDay = latestTradingDay,
+            logoUrl = logoUrl,
+            searchId = searchId,
+            yearHigh = yearHigh,
+            yearLow = yearLow,
+            instrumentType = instrumentType,
+            source = source,
+            gsin = gsin
+        )
+    }
 }
