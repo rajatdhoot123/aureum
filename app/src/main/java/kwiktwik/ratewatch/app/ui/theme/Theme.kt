@@ -18,10 +18,13 @@ val AureumSurface = Color(0xFF0A1F3A)
 val AureumCard = Color(0xFF122A47)
 val Cyan400 = Color(0xFF22D3EE)
 val Cyan500 = Color(0xFF06B6D4)
-val GoldAccent = Color(0xFFD4AF37)
+val GoldAccent = Color(0xFFFFD700) // Brighter Gold for accents
+val AureumGold = Color(0xFFFFCC33) // Brand gold color
 val SilverAccent = Color(0xFF94A3B8)
 val EmeraldGreen = Color(0xFF10B981)
 val RubyRed = Color(0xFFEF4444)
+val ChartGreen = Color(0xFF34D399)
+val SearchBarBg = Color(0xFF0D1E33)
 
 private val LightColorScheme = lightColorScheme(
     primary = Cyan500,

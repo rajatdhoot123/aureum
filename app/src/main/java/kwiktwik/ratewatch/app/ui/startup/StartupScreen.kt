@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kwiktwik.ratewatch.app.ui.navigation.Screen
 
 @Composable
 fun StartupScreen(
@@ -17,13 +18,13 @@ fun StartupScreen(
     viewModel: StartupViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        Log.d("RateWatch", "StartupScreen: LaunchedEffect started, reading onboarding status...")
+        Log.d("Aureum", "StartupScreen: LaunchedEffect started, reading onboarding status...")
         try {
             val completed = viewModel.isOnboardingCompleted()
-            Log.d("RateWatch", "StartupScreen: Got value = $completed, navigating...")
+            Log.d("Aureum", "StartupScreen: Got value = $completed, navigating...")
             
             if (completed) {
-                navController.navigate("home") {
+                navController.navigate(Screen.Overview.route) {
                     popUpTo("startup") { inclusive = true }
                 }
             } else {
@@ -32,7 +33,7 @@ fun StartupScreen(
                 }
             }
         } catch (e: Exception) {
-            Log.e("RateWatch", "StartupScreen: ERROR while reading onboarding status", e)
+            Log.e("Aureum", "StartupScreen: ERROR while reading onboarding status", e)
         }
     }
 

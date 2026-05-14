@@ -25,12 +25,20 @@ import kwiktwik.ratewatch.app.ui.startup.StartupScreen
 import kwiktwik.ratewatch.app.ui.stocks.StocksScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.AureumBg
+import kwiktwik.ratewatch.app.ui.theme.GoldAccent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.LibraryBooks
 
-sealed class Screen(val route: String, val labelRes: Int, val emoji: String) {
-    object Overview : Screen("overview", R.string.nav_overview, "📊")
-    object Portfolio : Screen("portfolio", R.string.nav_portfolio, "💰")
-    object Alerts : Screen("alerts", R.string.nav_alerts, "🔔")
-    object News : Screen("news", R.string.nav_news, "📰")
+sealed class Screen(val route: String, val labelRes: Int, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    object Overview : Screen("overview", R.string.nav_overview, Icons.Outlined.GridView)
+    object Portfolio : Screen("portfolio", R.string.nav_portfolio, Icons.Outlined.AccountBalanceWallet)
+    object Alerts : Screen("alerts", R.string.nav_alerts, Icons.Outlined.Notifications)
+    object News : Screen("news", R.string.nav_news, Icons.Outlined.LibraryBooks)
 }
 
 private val bottomNavItems = listOf(
@@ -98,10 +106,9 @@ private fun MainScaffold(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-                    .clip(RoundedCornerShape(24.dp)),
-                color = GlassMorphism.surfaceColor(isDark),
-                border = androidx.compose.foundation.BorderStroke(1.dp, GlassMorphism.strokeColor(isDark))
+                    .padding(0.dp),
+                color = AureumBg,
+                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
             ) {
                 NavigationBar(
                     containerColor = Color.Transparent,
@@ -116,15 +123,11 @@ private fun MainScaffold(
                         
                         NavigationBarItem(
                             icon = { 
-                                Box(
-                                    modifier = Modifier
-                                        .size(32.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(screen.emoji, style = MaterialTheme.typography.titleMedium) 
-                                }
+                                Icon(
+                                    screen.icon, 
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
                             },
                             label = { 
                                 Text(
@@ -144,10 +147,10 @@ private fun MainScaffold(
                                 }
                             },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.primary,
-                                selectedTextColor = MaterialTheme.colorScheme.primary,
-                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                selectedIconColor = GoldAccent,
+                                selectedTextColor = GoldAccent,
+                                unselectedIconColor = Color.White.copy(alpha = 0.4f),
+                                unselectedTextColor = Color.White.copy(alpha = 0.4f),
                                 indicatorColor = Color.Transparent
                             )
                         )

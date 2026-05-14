@@ -39,7 +39,6 @@ fun StocksScreen(
         Modifier
             .fillMaxSize()
             .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
-            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         Column(
             Modifier

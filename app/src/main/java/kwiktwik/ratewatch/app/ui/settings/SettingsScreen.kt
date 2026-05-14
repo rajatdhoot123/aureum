@@ -35,7 +35,6 @@ fun SettingsScreen(
         Modifier
             .fillMaxSize()
             .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
-            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

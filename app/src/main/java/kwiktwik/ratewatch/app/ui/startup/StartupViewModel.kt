@@ -17,9 +17,9 @@ class StartupViewModel @Inject constructor(
      * than collecting a StateFlow.
      */
     suspend fun isOnboardingCompleted(): Boolean {
-        Log.d("RateWatch", "StartupViewModel: Reading onboarding status from DataStore...")
+        Log.d("Aureum", "StartupViewModel: Reading onboarding status from DataStore...")
         val completed = prefs.isOnboardingCompletedFlow().first()
-        Log.d("RateWatch", "StartupViewModel: isOnboardingCompleted = $completed")
+        Log.d("Aureum", "StartupViewModel: isOnboardingCompleted = $completed")
         return completed
     }
 }

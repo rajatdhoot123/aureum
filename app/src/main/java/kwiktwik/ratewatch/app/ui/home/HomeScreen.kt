@@ -2,36 +2,37 @@ package kwiktwik.ratewatch.app.ui.home
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.ui.stocks.StocksViewModel
 import kwiktwik.ratewatch.app.ui.stocks.StocksUiState
-import kwiktwik.ratewatch.app.ui.theme.Cyan400
-import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
-import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
-import kwiktwik.ratewatch.app.ui.theme.GoldAccent
-import kwiktwik.ratewatch.app.ui.theme.RubyRed
+import kwiktwik.ratewatch.app.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,8 +52,7 @@ fun HomeScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
-            .windowInsetsPadding(WindowInsets.statusBars)
+            .background(AureumBg)
     ) {
         Column(
             modifier = Modifier
@@ -62,484 +62,565 @@ fun HomeScreen(
         ) {
             Spacer(Modifier.height(16.dp))
 
-            // Aureum Header matching design brief
+            // 1. Aureum Header
+            AureumHeader()
+
+            Spacer(Modifier.height(24.dp))
+
+            // 2. Search Bar
+            SearchBar()
+
+            Spacer(Modifier.height(24.dp))
+
+            // 3. Quick Actions
+            Text(
+                "Quick Actions",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                QuickActionCard(
+                    title = "Check Price",
+                    icon = Icons.Outlined.TrendingUp,
+                    modifier = Modifier.weight(1f)
+                )
+                QuickActionCard(
+                    title = "Set Alert",
+                    icon = Icons.Outlined.NotificationsActive,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(Modifier.height(32.dp))
+
+            // 4. Current Market Prices
+            Text(
+                "Current Market Prices",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(Modifier.height(16.dp))
+
+            // Gold Card (Large)
+            GoldPriceCard(uiState)
+
+            Spacer(Modifier.height(16.dp))
+
+            // Silver Card (Large)
+            SilverPriceCard(uiState)
+
+            Spacer(Modifier.height(16.dp))
+
+            // NIFTY & SENSEX Row
+            IndicesRow(stocksState)
+
+            Spacer(Modifier.height(32.dp))
+
+            // 5. Top Performers
+            TopPerformersSection(stocksState)
+
+            Spacer(Modifier.height(120.dp)) // Padding for bottom nav
+        }
+    }
+}
+
+@Composable
+fun AureumHeader() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { /* TODO: Menu */ }) {
+            Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
+        }
+        
+        Text(
+            "AUREUM",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.ExtraBold,
+            color = AureumGold,
+            letterSpacing = 1.sp
+        )
+
+        // User avatar - Using the generated image if possible, fallback to icon
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .border(1.5.dp, GoldAccent.copy(alpha = 0.5f), CircleShape)
+                .clickable { /* TODO: Profile */ }
+        ) {
+            AsyncImage(
+                model = kwiktwik.ratewatch.app.R.drawable.user_profile,
+                contentDescription = "Profile",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
+}
+
+@Composable
+fun SearchBar() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        shape = RoundedCornerShape(16.dp),
+        color = SearchBarBg,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.Search, 
+                contentDescription = "Search", 
+                tint = Color.White.copy(alpha = 0.4f),
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(Modifier.width(12.dp))
+            Text(
+                "Search gold, silver, or stocks...",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White.copy(alpha = 0.4f)
+            )
+        }
+    }
+}
+
+@Composable
+fun QuickActionCard(title: String, icon: androidx.compose.ui.graphics.vector.ImageVector, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier.height(110.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = RoundedCornerShape(12.dp),
+                color = Color.White.copy(alpha = 0.05f)
+            ) {
+                Icon(
+                    icon, 
+                    contentDescription = title, 
+                    tint = GoldAccent, 
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                title,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Medium,
+                color = Color.White.copy(alpha = 0.8f)
+            )
+        }
+    }
+}
+
+@Composable
+fun GoldPriceCard(uiState: HomeUiState) {
+    val price = uiState.prices.firstOrNull()?.gold24kPer10g?.toDouble()
+    val change = uiState.prices.firstOrNull()?.gold24kChange
+    
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(modifier = Modifier.padding(24.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Column {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.White.copy(alpha = 0.05f)
+                    ) {
+                        Text(
+                            "GOLD (24K)",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = AureumGold
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
                     Text(
-                        "Aureum",
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.ExtraBold,
+                        "per 10g",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        if (price != null) "₹${"%,.0f".format(price)}" else "₹---",
+                        style = MaterialTheme.typography.displaySmall.copy(fontSize = 38.sp),
+                        fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
-                    Spacer(Modifier.width(8.dp))
-                    LivePulseIndicator()
+                    Spacer(Modifier.height(8.dp))
+                    if (change != null) {
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = EmeraldGreen.copy(alpha = 0.15f)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                            ) {
+                                Icon(Icons.Default.ArrowUpward, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(12.dp))
+                                Spacer(Modifier.width(4.dp))
+                                Text(
+                                    change,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = EmeraldGreen
+                                )
+                            }
+                        }
+                    }
                 }
-                // User avatar
+                
                 Surface(
-                    shape = RoundedCornerShape(50),
-                    color = GoldAccent,
-                    modifier = Modifier.size(42.dp).clickable { /* open profile */ }
+                    modifier = Modifier.size(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color.Black.copy(alpha = 0.3f),
+                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Text(
-                            "R",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF031427)
-                        )
+                        Icon(Icons.Default.MonetizationOn, contentDescription = null, tint = AureumGold, modifier = Modifier.size(28.dp))
                     }
                 }
             }
-
-            Spacer(Modifier.height(12.dp))
-
-            // Greeting - local context
-            val greeting = getTimeBasedGreeting()
-            Text(
-                "$greeting, Rajat",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFFF1F5F9)
+            
+            Spacer(Modifier.height(32.dp))
+            
+            // Bar Chart
+            BarChart(
+                data = listOf(0.2f, 0.3f, 0.5f, 0.4f, 0.6f, 0.5f, 0.8f, 0.7f, 0.9f, 0.8f),
+                modifier = Modifier.fillMaxWidth().height(60.dp)
             )
+        }
+    }
+}
 
-            Spacer(Modifier.height(16.dp))
+@Composable
+fun SilverPriceCard(uiState: HomeUiState) {
+    val price = uiState.prices.firstOrNull()?.silverPerKg?.toDouble()
+    val change = uiState.prices.firstOrNull()?.silverChange
 
-            // Top tabs visual (Overview | Portfolio | Alerts | News) - Overview active
-            TabChips(selectedTab = 0)
-
-            Spacer(Modifier.height(20.dp))
-
-            // Market Overview - 4 asset cards (Gold, Silver, NIFTY, SENSEX)
-            Text(
-                "Market Overview",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Column {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.White.copy(alpha = 0.05f)
+                    ) {
+                        Text(
+                            "SILVER",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = SilverAccent
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "per 1kg",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        if (price != null) "₹${"%,.0f".format(price)}" else "₹---",
+                        style = MaterialTheme.typography.displaySmall.copy(fontSize = 38.sp),
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    if (change != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.ArrowUpward, contentDescription = null, tint = EmeraldGreen, modifier = Modifier.size(12.dp))
+                            Spacer(Modifier.width(4.dp))
+                            Text(
+                                change,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = EmeraldGreen
+                            )
+                        }
+                    }
+                }
+            }
+            
+            Spacer(Modifier.height(32.dp))
+            
+            // Line Chart
+            LineChart(
+                data = listOf(0.1f, 0.2f, 0.15f, 0.3f, 0.25f, 0.4f, 0.35f, 0.5f, 0.45f, 0.6f),
+                modifier = Modifier.fillMaxWidth().height(60.dp),
+                color = ChartGreen
             )
-            Spacer(Modifier.height(12.dp))
+        }
+    }
+}
 
-            MarketOverviewSection(uiState = uiState, stocksState = stocksState)
+@Composable
+fun IndicesRow(stocksState: StocksUiState) {
+    val nifty = stocksState.quotes.firstOrNull { it.symbol.contains("NIFTY", true) }
+    val sensex = stocksState.quotes.firstOrNull { it.symbol.contains("SENSEX", true) }
+    
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        IndexCard(
+            name = "NIFTY 50",
+            price = nifty?.price,
+            change = "+0.65%",
+            modifier = Modifier.weight(1f)
+        )
+        IndexCard(
+            name = "SENSEX",
+            price = sensex?.price,
+            change = "-0.12%",
+            isPositive = false,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
 
-            Spacer(Modifier.height(28.dp))
-
-            // Savings Summary - Portfolio snapshot (from brief)
+@Composable
+fun IndexCard(name: String, price: Double?, change: String, isPositive: Boolean = true, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier.height(130.dp),
+        shape = RoundedCornerShape(24.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Savings Summary",
-                    style = MaterialTheme.typography.titleLarge,
+                    name,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.6f)
+                )
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = (if (isPositive) EmeraldGreen else RubyRed).copy(alpha = 0.1f)
+                ) {
+                    Text(
+                        "${if (isPositive) "↑" else "↓"} $change",
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (isPositive) EmeraldGreen else RubyRed
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                if (price != null) "%,.2f".format(price) else "---",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(Modifier.weight(1f))
+            LineChart(
+                data = if (isPositive) listOf(0.4f, 0.3f, 0.5f, 0.45f, 0.6f) else listOf(0.6f, 0.5f, 0.4f, 0.45f, 0.3f),
+                modifier = Modifier.fillMaxWidth().height(24.dp),
+                color = if (isPositive) EmeraldGreen else RubyRed
+            )
+        }
+    }
+}
+
+@Composable
+fun TopPerformersSection(stocksState: StocksUiState) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = AureumCard,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier.size(8.dp).clip(CircleShape).background(EmeraldGreen)
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    "Top Performers",
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Text(
-                    "View all",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Cyan400,
-                    modifier = Modifier.clickable { /* navigate to Portfolio */ }
-                )
             }
-            Spacer(Modifier.height(12.dp))
-
-            SavingsSummarySection()
-
-            Spacer(Modifier.height(100.dp)) // Extra space for navigation bar
-        }
-    }
-}
-
-@Composable
-fun LivePulseIndicator() {
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 0.5f,
-        targetValue = 1.2f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "scale"
-    )
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.8f,
-        targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "alpha"
-    )
-
-    Box(contentAlignment = Alignment.Center) {
-        Canvas(modifier = Modifier.size(16.dp)) {
-            drawCircle(
-                color = EmeraldGreen.copy(alpha = alpha),
-                radius = size.minDimension / 2 * scale
-            )
-            drawCircle(
-                color = EmeraldGreen,
-                radius = size.minDimension / 4
-            )
-        }
-    }
-}
-
-@Composable
-fun LoadingState() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary,
-            strokeWidth = 3.dp,
-            modifier = Modifier.size(48.dp)
-        )
-        Spacer(Modifier.height(24.dp))
-        Text(
-            "Tracking market rates...",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-
-@Composable
-private fun EmptyMetalsState(onForceScrape: () -> Unit) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-        shape = RoundedCornerShape(24.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("📭", style = MaterialTheme.typography.displaySmall)
-            Spacer(Modifier.height(12.dp))
-            Text(
-                "No gold/silver data yet",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "The scraper hasn't fetched fresh rates from Goodreturns.in.\nTrigger a manual scrape to load the latest prices.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-            Spacer(Modifier.height(20.dp))
-            Button(
-                onClick = onForceScrape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Text("Force Scrape Now")
-            }
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "Rate limit: once every 5 minutes",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun ErrorState(message: String, onRetry: () -> Unit) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(24.dp),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.2f))
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("⚠️", style = MaterialTheme.typography.displaySmall)
-            Spacer(Modifier.height(16.dp))
-            Text(
-                message, 
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                color = MaterialTheme.colorScheme.error
-            )
+            
             Spacer(Modifier.height(24.dp))
-            Button(
-                onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text(androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.retry))
-            }
+            
+            StockItem(
+                symbol = "RELI",
+                name = "Reliance Ind.",
+                sector = "Energy",
+                price = 2954.20,
+                change = "+1.85%",
+                isPositive = true
+            )
+            
+            Divider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
+            
+            StockItem(
+                symbol = "TCS",
+                name = "TCS Ltd.",
+                sector = "Technology",
+                price = 3980.50,
+                change = "+1.20%",
+                isPositive = true
+            )
         }
-    }
-}
-
-private fun formatTime(isoString: String?): String {
-    if (isoString == null) return "--"
-    return try {
-        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).apply {
-            timeZone = TimeZone.getTimeZone("UTC")
-        }
-        val date = parser.parse(isoString.substringBefore("."))
-        val formatter = SimpleDateFormat("hh:mm a", Locale.getDefault()).apply {
-            timeZone = TimeZone.getTimeZone("Asia/Kolkata")
-        }
-        formatter.format(date ?: Date())
-    } catch (e: Exception) {
-        isoString.take(16)
     }
 }
 
 @Composable
-fun getTimeBasedGreeting(): String {
-    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    return when (hour) {
-        in 5..11 -> "Good morning"
-        in 12..16 -> "Good afternoon"
-        else -> "Good evening"
-    }
-}
-
-@Composable
-fun TabChips(selectedTab: Int) {
-    val tabs = listOf("Overview", "Portfolio", "Alerts", "News")
+fun StockItem(symbol: String, name: String, sector: String, price: Double, change: String, isPositive: Boolean) {
     Row(
-        modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        tabs.forEachIndexed { index, tab ->
-            val isSelected = index == selectedTab
-            Surface(
-                shape = RoundedCornerShape(20.dp),
-                color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else GlassMorphism.surfaceColor(isSystemInDarkTheme()),
-                border = BorderStroke(
-                    1.dp,
-                    if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else GlassMorphism.strokeColor(isSystemInDarkTheme())
-                ),
-                modifier = Modifier.clickable { /* TODO: switch tab or navigate */ }
-            ) {
-                Text(
-                    tab,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MarketOverviewSection(uiState: HomeUiState, stocksState: StocksUiState) {
-    val isDark = isSystemInDarkTheme()
-    // Extract live gold/silver (use first city or India approx)
-    val price = uiState.prices.firstOrNull()
-    val goldPrice = price?.gold24kPer10g ?: 7812.0
-    val goldChange = price?.gold24kChange ?: "+0.8%"
-    val silverPrice = price?.silverPerKg ?: 91200.0
-    val silverChange = price?.silverChange ?: "+1.2%"
-
-    // Find NIFTY and SENSEX from stocks
-    val nifty = stocksState.quotes.firstOrNull { it.symbol.contains("NIFTY", true) || it.shortName.contains("Nifty", true) }
-    val sensex = stocksState.quotes.firstOrNull { it.symbol.contains("SENSEX", true) || it.shortName.contains("Sensex", true) || it.shortName.contains("BSE", true) }
-
-    val niftyPrice = nifty?.price ?: 24823.15
-    val niftyPct = nifty?.changePercent ?: -0.3
-    val niftyChange = if (niftyPct >= 0) "+${"%.1f".format(niftyPct)}%" else "${"%.1f".format(niftyPct)}%"
-    val sensexPrice = sensex?.price ?: 81785.67
-    val sensexPct = sensex?.changePercent ?: -0.2
-    val sensexChange = if (sensexPct >= 0) "+${"%.1f".format(sensexPct)}%" else "${"%.1f".format(sensexPct)}%"
-
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-            MarketAssetCard(
-                name = "Gold 24K",
-                price = "₹${"%,.0f".format(goldPrice)}",
-                unit = "/10g",
-                change = goldChange,
-                icon = "🪙",
-                isPositive = goldChange.startsWith("+", ignoreCase = true)
-            )
-        }
-        item {
-            MarketAssetCard(
-                name = "Silver",
-                price = "₹${"%,.0f".format(silverPrice)}",
-                unit = "/kg",
-                change = silverChange,
-                icon = "🥈",
-                isPositive = silverChange.startsWith("+", ignoreCase = true)
-            )
-        }
-        item {
-            MarketAssetCard(
-                name = "NIFTY 50",
-                price = "₹${"%,.0f".format(niftyPrice)}",
-                unit = "",
-                change = niftyChange,
-                icon = "📈",
-                isPositive = niftyChange.startsWith("+", ignoreCase = true)
-            )
-        }
-        item {
-            MarketAssetCard(
-                name = "SENSEX",
-                price = "₹${"%,.0f".format(sensexPrice)}",
-                unit = "",
-                change = sensexChange,
-                icon = "📊",
-                isPositive = sensexChange.startsWith("+", ignoreCase = true)
-            )
-        }
-    }
-}
-
-@Composable
-fun MarketAssetCard(
-    name: String,
-    price: String,
-    unit: String,
-    change: String,
-    icon: String,
-    isPositive: Boolean
-) {
-    Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
-        border = BorderStroke(1.dp, GlassMorphism.strokeColor(isSystemInDarkTheme())),
-        modifier = Modifier.width(140.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+        Surface(
+            modifier = Modifier.size(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            color = Color.Black.copy(alpha = 0.2f),
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(icon, style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.width(6.dp))
+            Box(contentAlignment = Alignment.Center) {
                 Text(
-                    name,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFFB0B8C4)
-                )
-            }
-            Text(
-                price,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            if (unit.isNotEmpty()) {
-                Text(unit, style = MaterialTheme.typography.labelSmall, color = Color(0xFF8A96A6))
-            }
-            Surface(
-                shape = RoundedCornerShape(12.dp),
-                color = (if (isPositive) EmeraldGreen else RubyRed).copy(alpha = 0.12f)
-            ) {
-                Text(
-                    "${if (isPositive) "↑" else "↓"} $change",
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    symbol,
                     style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = if (isPositive) EmeraldGreen else RubyRed
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White.copy(alpha = 0.6f)
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SavingsSummarySection() {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        item {
-            PortfolioSummaryCard(
-                name = "Physical Gold",
-                value = "₹45,200",
-                pnl = "+₹2,100 (4.8%)",
-                isPositive = true,
-                icon = "🪙"
-            )
-        }
-        item {
-            PortfolioSummaryCard(
-                name = "Global Equities",
-                value = "₹1,24,500",
-                pnl = "+₹8,750 (7.5%)",
-                isPositive = true,
-                icon = "🌍"
-            )
-        }
-        item {
-            PortfolioSummaryCard(
-                name = "Cash Reserves",
-                value = "₹28,000",
-                pnl = "—",
-                isPositive = true,
-                icon = "💵"
-            )
-        }
-    }
-}
-
-@Composable
-fun PortfolioSummaryCard(
-    name: String,
-    value: String,
-    pnl: String,
-    isPositive: Boolean,
-    icon: String
-) {
-    Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = GlassMorphism.surfaceColor(isSystemInDarkTheme()),
-        border = BorderStroke(1.dp, GlassMorphism.strokeColor(isSystemInDarkTheme())),
-        modifier = Modifier.width(160.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(icon, style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    name,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFFB0B8C4)
-                )
-            }
+        
+        Spacer(Modifier.width(16.dp))
+        
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                value,
-                style = MaterialTheme.typography.headlineSmall,
+                name,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Text(
-                pnl,
-                style = MaterialTheme.typography.labelMedium,
+                sector,
+                style = MaterialTheme.typography.labelSmall,
+                color = Color.White.copy(alpha = 0.5f)
+            )
+        }
+        
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                "₹${"%,.2f".format(price)}",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Text(
+                change,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = if (pnl.contains("+") || pnl == "—") EmeraldGreen else RubyRed
+                color = if (isPositive) EmeraldGreen else RubyRed
             )
         }
     }
 }
 
+@Composable
+fun BarChart(data: List<Float>, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier) {
+        val spacing = size.width / (data.size * 1.5f)
+        val barWidth = spacing * 0.8f
+        
+        data.forEachIndexed { index, value ->
+            val barHeight = size.height * value
+            drawRoundRect(
+                color = ChartGreen,
+                topLeft = Offset(index * spacing * 1.5f, size.height - barHeight),
+                size = androidx.compose.ui.geometry.Size(barWidth, barHeight),
+                cornerRadius = androidx.compose.ui.geometry.CornerRadius(4.dp.toPx())
+            )
+        }
+    }
+}
+
+@Composable
+fun LineChart(data: List<Float>, modifier: Modifier = Modifier, color: Color = ChartGreen) {
+    Canvas(modifier = modifier) {
+        val path = Path()
+        val spacing = size.width / (data.size - 1)
+        
+        data.forEachIndexed { index, value ->
+            val x = index * spacing
+            val y = size.height - (size.height * value)
+            if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        
+        drawPath(
+            path = path,
+            color = color,
+            style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
+        )
+        
+        // Gradient fill below path
+        val fillPath = Path().apply {
+            addPath(path)
+            lineTo(size.width, size.height)
+            lineTo(0f, size.height)
+            close()
+        }
+        
+        drawPath(
+            path = fillPath,
+            brush = Brush.verticalGradient(
+                colors = listOf(color.copy(alpha = 0.2f), Color.Transparent)
+            )
+        )
+    }
+}
