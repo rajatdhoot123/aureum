@@ -30,11 +30,17 @@ import androidx.compose.foundation.verticalScroll
 fun StockDetailsSheet(
     quote: StockQuote,
     onDismiss: () -> Unit,
-    onAddToWatchlist: (String) -> Unit
+    onAddToWatchlist: (String) -> Unit,
+    onPeerClick: (String) -> Unit = {},
+    isLoading: Boolean = false
 ) {
     val isPositive = quote.changePercent >= 0
     val accentColor = if (isPositive) EmeraldGreen else RubyRed
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(quote.symbol, quote.searchId) {
+        scrollState.animateScrollTo(0)
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -42,6 +48,14 @@ fun StockDetailsSheet(
         dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) },
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
     ) {
+        if (isLoading) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().height(2.dp),
+                color = GoldAccent,
+                trackColor = Color.Transparent
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -207,7 +221,10 @@ fun StockDetailsSheet(
                 Spacer(Modifier.height(16.dp))
                 quote.peers.forEach { peer ->
                     Surface(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        onClick = { onPeerClick(peer.isin) },
                         shape = RoundedCornerShape(16.dp),
                         color = SonarCard,
                         border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
@@ -227,6 +244,7 @@ fun StockDetailsSheet(
                 }
                 Spacer(Modifier.height(40.dp))
             }
+
         }
     }
 }

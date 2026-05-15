@@ -129,12 +129,29 @@ fun SonarNavigation() {
             val watchlistViewModel: WatchlistViewModel = hiltViewModel()
             val quote = pendingDetailQuote
             if (quote != null) {
+                // Observe the selected stock from watchlistViewModel to update the detail screen when a peer is clicked
+                val fetchedQuote by watchlistViewModel.selectedStock.collectAsState()
+                val isDetailsLoading by watchlistViewModel.isDetailsLoading.collectAsState()
+                
+                LaunchedEffect(fetchedQuote) {
+                    if (fetchedQuote != null && fetchedQuote != pendingDetailQuote) {
+                        pendingDetailQuote = fetchedQuote
+                    }
+                }
+
                 StockDetailScreen(
                     quote = quote,
-                    onBack = { navController.popBackStack() },
+                    onBack = { 
+                        navController.popBackStack()
+                        watchlistViewModel.clearDetails()
+                    },
                     onAddToWatchlist = { symbol ->
                         watchlistViewModel.addToWatchlist(symbol)
-                    }
+                    },
+                    onPeerClick = { peerId ->
+                        watchlistViewModel.fetchDetails(peerId)
+                    },
+                    isLoading = isDetailsLoading
                 )
             }
         }

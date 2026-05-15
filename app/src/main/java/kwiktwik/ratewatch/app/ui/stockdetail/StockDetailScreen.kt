@@ -30,31 +30,48 @@ import kwiktwik.ratewatch.app.ui.theme.*
 fun StockDetailScreen(
     quote: StockQuote,
     onBack: () -> Unit,
-    onAddToWatchlist: (String) -> Unit
+    onAddToWatchlist: (String) -> Unit,
+    onPeerClick: (String) -> Unit = {},
+    isLoading: Boolean = false
 ) {
     val isPositive = quote.changePercent >= 0
     val accentColor = if (isPositive) EmeraldGreen else RubyRed
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(quote.symbol, quote.searchId) {
+        listState.animateScrollToItem(0)
+    }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {},
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, null, tint = Color.White)
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { onAddToWatchlist(quote.symbol) }) {
-                        Icon(Icons.Outlined.StarOutline, null, tint = GoldAccent)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = SonarBg)
-            )
+            Column {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.Default.ArrowBack, null, tint = Color.White)
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { onAddToWatchlist(quote.symbol) }) {
+                            Icon(Icons.Outlined.StarOutline, null, tint = GoldAccent)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = SonarBg)
+                )
+                if (isLoading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth().height(2.dp),
+                        color = GoldAccent,
+                        trackColor = Color.Transparent
+                    )
+                }
+            }
         },
         containerColor = Color.Transparent
     ) { padding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
@@ -96,7 +113,7 @@ fun StockDetailScreen(
 
             // 10. Peer Comparison
             if (!quote.peers.isNullOrEmpty() || !quote.stockPeers.isNullOrEmpty()) {
-                item { PeerComparisonSection(quote) }
+                item { PeerComparisonSection(quote, onPeerClick) }
             }
         }
     }
@@ -462,7 +479,7 @@ private fun FundInfoSection(quote: StockQuote) {
 }
 
 @Composable
-private fun PeerComparisonSection(quote: StockQuote) {
+private fun PeerComparisonSection(quote: StockQuote, onPeerClick: (String) -> Unit) {
     val simplePeers = quote.peers
     val stockPeers = quote.stockPeers
 
@@ -475,12 +492,12 @@ private fun PeerComparisonSection(quote: StockQuote) {
         Spacer(Modifier.height(12.dp))
 
         simplePeers?.forEach { peer ->
-            EtfPeerCard(peer)
+            EtfPeerCard(peer, onClick = { onPeerClick(peer.isin) })
             Spacer(Modifier.height(8.dp))
         }
 
         stockPeers?.take(5)?.forEach { peer ->
-            StockPeerCard(peer)
+            StockPeerCard(peer, onClick = { onPeerClick(peer.searchId) })
             Spacer(Modifier.height(8.dp))
         }
     }
@@ -502,9 +519,12 @@ private fun TypeBadge(text: String) {
 }
 
 @Composable
-private fun SectionCard(content: @Composable () -> Unit) {
+private fun SectionCard(onClick: (() -> Unit)? = null, content: @Composable () -> Unit) {
     Surface(
-        modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
+        shape = RoundedCornerShape(16.dp),
         color = SonarCard, border = BorderStroke(1.dp, Color.White.copy(alpha = 0.06f))
     ) { content() }
 }
@@ -535,11 +555,11 @@ private fun StatChip(label: String, value: String, modifier: Modifier = Modifier
 }
 
 @Composable
-private fun EtfPeerCard(peer: PeerInfo) {
+private fun EtfPeerCard(peer: PeerInfo, onClick: () -> Unit) {
     val isPos = (peer.dayChangePerc ?: 0.0) >= 0
     val changeColor = if (isPos) EmeraldGreen else RubyRed
 
-    SectionCard {
+    SectionCard(onClick = onClick) {
         Row(
             modifier = Modifier.padding(14.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -590,10 +610,10 @@ private fun EtfPeerCard(peer: PeerInfo) {
 }
 
 @Composable
-private fun StockPeerCard(peer: StockPeerInfo) {
+private fun StockPeerCard(peer: StockPeerInfo, onClick: () -> Unit) {
     val isPos = (peer.dayChangePerc ?: 0.0) >= 0
     val color = if (isPos) EmeraldGreen else RubyRed
-    SectionCard {
+    SectionCard(onClick = onClick) {
         Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier.size(38.dp).clip(CircleShape)

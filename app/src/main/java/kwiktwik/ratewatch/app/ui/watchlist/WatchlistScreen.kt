@@ -184,10 +184,15 @@ fun WatchlistScreen(
         }
 
         selectedStock?.let { stock ->
+            val isDetailsLoading by viewModel.isDetailsLoading.collectAsState()
             StockDetailsSheet(
                 quote = stock,
                 onDismiss = { viewModel.clearDetails() },
-                onAddToWatchlist = { viewModel.addToWatchlist(it) }
+                onAddToWatchlist = { viewModel.addToWatchlist(it) },
+                onPeerClick = { peerId ->
+                    viewModel.fetchDetails(peerId)
+                },
+                isLoading = isDetailsLoading
             )
         }
     }
