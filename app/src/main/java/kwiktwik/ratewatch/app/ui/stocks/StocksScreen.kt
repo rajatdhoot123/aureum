@@ -51,8 +51,6 @@ fun StocksScreen(
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(Modifier.height(24.dp))
-            
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = if (isMoversTab) "Movers" else "Markets",

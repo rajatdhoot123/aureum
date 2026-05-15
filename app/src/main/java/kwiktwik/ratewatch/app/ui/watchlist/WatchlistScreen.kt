@@ -55,8 +55,6 @@ fun WatchlistScreen(
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(Modifier.height(16.dp))
-            
             // 1. Top Navigation Bar
             Row(
                 modifier = Modifier.fillMaxWidth(),

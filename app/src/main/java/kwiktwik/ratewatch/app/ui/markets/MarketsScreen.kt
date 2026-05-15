@@ -54,7 +54,6 @@ fun MarketsScreen(viewModel: MarketsViewModel) {
             ) {
                 // Header
                 item {
-                    Spacer(Modifier.height(16.dp))
                     Text(
                         "Gold Rates by City",
                         modifier = Modifier.padding(horizontal = 20.dp),

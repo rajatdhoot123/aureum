@@ -42,7 +42,6 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Spacer(Modifier.height(24.dp))
                 Text(
                     text = "News",
                     style = MaterialTheme.typography.headlineLarge,
