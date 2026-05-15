@@ -92,7 +92,11 @@ fun SonarNavigation() {
             MainScaffold(navController) {
                 WatchlistScreen(
                     viewModel = hiltViewModel(),
-                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) },
+                    onNavigateToDetail = { quote ->
+                        pendingDetailQuote = quote
+                        navController.navigate("stock_detail")
+                    }
                 )
             }
         }
@@ -139,19 +143,24 @@ fun SonarNavigation() {
                     }
                 }
 
+                val watchlistSymbols by watchlistViewModel.watchlistSymbols.collectAsState()
+                val isInWatchlist = watchlistSymbols.contains(quote.symbol)
+
                 StockDetailScreen(
                     quote = quote,
                     onBack = { 
                         navController.popBackStack()
                         watchlistViewModel.clearDetails()
                     },
-                    onAddToWatchlist = { symbol ->
-                        watchlistViewModel.addToWatchlist(symbol)
+                    onToggleWatchlist = {
+                        watchlistViewModel.toggleWatchlist(quote.symbol)
                     },
+                    isInWatchlist = isInWatchlist,
                     onPeerClick = { peerId ->
                         watchlistViewModel.fetchDetails(peerId)
                     },
-                    isLoading = isDetailsLoading
+                    isLoading = isDetailsLoading,
+                    events = watchlistViewModel.events
                 )
             }
         }

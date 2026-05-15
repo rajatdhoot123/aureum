@@ -30,16 +30,26 @@ import kwiktwik.ratewatch.app.ui.theme.*
 fun StockDetailScreen(
     quote: StockQuote,
     onBack: () -> Unit,
-    onAddToWatchlist: (String) -> Unit,
+    onToggleWatchlist: () -> Unit,
+    isInWatchlist: Boolean,
     onPeerClick: (String) -> Unit = {},
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    events: kotlinx.coroutines.flow.Flow<String>? = null
 ) {
     val isPositive = quote.changePercent >= 0
     val accentColor = if (isPositive) EmeraldGreen else RubyRed
     val listState = rememberLazyListState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    
     LaunchedEffect(quote.symbol, quote.searchId) {
         listState.animateScrollToItem(0)
+    }
+
+    LaunchedEffect(events) {
+        events?.collect { message ->
+            snackbarHostState.showSnackbar(message)
+        }
     }
 
     Scaffold(
@@ -53,8 +63,12 @@ fun StockDetailScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { onAddToWatchlist(quote.symbol) }) {
-                            Icon(Icons.Outlined.StarOutline, null, tint = GoldAccent)
+                        IconButton(onClick = onToggleWatchlist) {
+                            Icon(
+                                if (isInWatchlist) Icons.Default.Star else Icons.Outlined.StarOutline,
+                                null,
+                                tint = GoldAccent
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = SonarBg)
@@ -68,6 +82,7 @@ fun StockDetailScreen(
                 }
             }
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = Color.Transparent
     ) { padding ->
         LazyColumn(

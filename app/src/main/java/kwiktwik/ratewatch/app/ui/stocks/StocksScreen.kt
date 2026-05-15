@@ -30,6 +30,8 @@ fun StocksScreen(
     isMoversTab: Boolean = true
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val watchlistSymbols by viewModel.watchlistSymbols.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
     var selectedMoverType by remember { mutableStateOf("top-gainers") }
 
     LaunchedEffect(isMoversTab) {
@@ -37,6 +39,12 @@ fun StocksScreen(
             viewModel.loadStocks(selectedMoverType)
         } else {
             viewModel.loadLatestIndices()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { message ->
+            snackbarHostState.showSnackbar(message)
         }
     }
 
@@ -96,7 +104,8 @@ fun StocksScreen(
                 items(displayQuotes) { quote ->
                     StockQuoteCard(
                         quote = quote, 
-                        onAddToWatchlist = { viewModel.addToWatchlist(quote.symbol) }
+                        onToggleWatchlist = { viewModel.toggleWatchlist(quote.symbol) },
+                        isInWatchlist = watchlistSymbols.contains(quote.symbol)
                     )
                 }
             }
@@ -141,6 +150,11 @@ fun StocksScreen(
                 }
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp)
+        )
     }
 }
 

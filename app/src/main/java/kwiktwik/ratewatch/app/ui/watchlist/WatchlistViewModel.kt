@@ -19,6 +19,9 @@ class WatchlistViewModel @Inject constructor(
     val watchlistSymbols: StateFlow<Set<String>> = prefs.watchlistFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
 
+    private val _events = MutableSharedFlow<String>()
+    val events = _events.asSharedFlow()
+
     private val _selectedCategory = MutableStateFlow("Indian Market")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
@@ -84,12 +87,27 @@ class WatchlistViewModel @Inject constructor(
     fun addToWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.addToWatchlist(symbol)
+            _events.emit("Added $symbol to watchlist")
         }
     }
 
     fun removeFromWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.removeFromWatchlist(symbol)
+            _events.emit("Removed $symbol from watchlist")
+        }
+    }
+
+    fun toggleWatchlist(symbol: String) {
+        viewModelScope.launch {
+            val current = watchlistSymbols.value
+            if (current.contains(symbol)) {
+                prefs.removeFromWatchlist(symbol)
+                _events.emit("Removed $symbol from watchlist")
+            } else {
+                prefs.addToWatchlist(symbol)
+                _events.emit("Added $symbol to watchlist")
+            }
         }
     }
 

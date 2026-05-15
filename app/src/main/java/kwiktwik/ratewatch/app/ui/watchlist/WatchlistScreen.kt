@@ -27,22 +27,28 @@ import androidx.compose.ui.res.stringResource
 import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.ui.components.LineChart
-import kwiktwik.ratewatch.app.ui.components.StockDetailsSheet
 import kwiktwik.ratewatch.app.ui.theme.*
 
 @Composable
 fun WatchlistScreen(
     viewModel: WatchlistViewModel,
-    onNavigateToSearch: () -> Unit
+    onNavigateToSearch: () -> Unit,
+    onNavigateToDetail: (StockQuote) -> Unit
 ) {
     val quotes by viewModel.quotes.collectAsState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val selectedStock by viewModel.selectedStock.collectAsState()
-    val isDetailsLoading by viewModel.isDetailsLoading.collectAsState()
+    val watchlistSymbols by viewModel.watchlistSymbols.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.loadWatchlistQuotes()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { message ->
+            snackbarHostState.showSnackbar(message)
+        }
     }
 
     val categories = listOf("Indian Market", "Gold & Silver", "Global")
@@ -167,8 +173,9 @@ fun WatchlistScreen(
                         WatchlistItem(
                             quote = quote,
                             onClick = { 
-                                // Use searchId if available, otherwise symbol
+                                // Use searchId if available to fetch rich details, then navigate
                                 quote.searchId?.let { viewModel.fetchDetails(it) }
+                                onNavigateToDetail(quote)
                             },
                             onRemove = { viewModel.removeFromWatchlist(quote.symbol) }
                         )
@@ -177,24 +184,12 @@ fun WatchlistScreen(
             }
         }
 
-        if (isDetailsLoading) {
-            Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = GoldAccent)
-            }
-        }
 
-        selectedStock?.let { stock ->
-            val isDetailsLoading by viewModel.isDetailsLoading.collectAsState()
-            StockDetailsSheet(
-                quote = stock,
-                onDismiss = { viewModel.clearDetails() },
-                onAddToWatchlist = { viewModel.addToWatchlist(it) },
-                onPeerClick = { peerId ->
-                    viewModel.fetchDetails(peerId)
-                },
-                isLoading = isDetailsLoading
-            )
-        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp)
+        )
     }
 }
 

@@ -27,6 +27,12 @@ class StocksViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(StocksUiState(isLoading = true))
     val uiState: StateFlow<StocksUiState> = _uiState.asStateFlow()
 
+    val watchlistSymbols: StateFlow<Set<String>> = prefs.watchlistFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
+
+    private val _events = MutableSharedFlow<String>()
+    val events = _events.asSharedFlow()
+
     fun loadStocks(type: String = "top-gainers", index: String = "GIDXNIFTYTOTALMCAP") {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
@@ -97,6 +103,20 @@ class StocksViewModel @Inject constructor(
     fun addToWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.addToWatchlist(symbol)
+            _events.emit("Added $symbol to watchlist")
+        }
+    }
+
+    fun toggleWatchlist(symbol: String) {
+        viewModelScope.launch {
+            val current = watchlistSymbols.value
+            if (current.contains(symbol)) {
+                prefs.removeFromWatchlist(symbol)
+                _events.emit("Removed $symbol from watchlist")
+            } else {
+                prefs.addToWatchlist(symbol)
+                _events.emit("Added $symbol to watchlist")
+            }
         }
     }
 }

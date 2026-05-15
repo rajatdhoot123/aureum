@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,12 +19,14 @@ import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.GoldAccent
 import kwiktwik.ratewatch.app.ui.theme.RubyRed
 
 @Composable
 fun StockQuoteCard(
     quote: StockQuote,
-    onAddToWatchlist: () -> Unit
+    onToggleWatchlist: () -> Unit,
+    isInWatchlist: Boolean
 ) {
     val isDark = isSystemInDarkTheme()
     val isPositive = quote.change >= 0
@@ -119,14 +122,18 @@ fun StockQuoteCard(
             Spacer(Modifier.width(8.dp))
             
             IconButton(
-                onClick = onAddToWatchlist,
+                onClick = onToggleWatchlist,
                 colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                    contentColor = MaterialTheme.colorScheme.primary
+                    containerColor = if (isInWatchlist) GoldAccent.copy(alpha = 0.15f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                    contentColor = if (isInWatchlist) GoldAccent else MaterialTheme.colorScheme.primary
                 ),
                 modifier = Modifier.size(36.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add to watchlist", modifier = Modifier.size(20.dp))
+                Icon(
+                    if (isInWatchlist) Icons.Default.Star else Icons.Default.Add,
+                    contentDescription = if (isInWatchlist) "Remove from watchlist" else "Add to watchlist",
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
     }
