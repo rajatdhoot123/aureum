@@ -28,6 +28,7 @@ import kwiktwik.ratewatch.app.ui.onboarding.OnboardingScreen
 import kwiktwik.ratewatch.app.ui.settings.SettingsScreen
 import kwiktwik.ratewatch.app.ui.startup.StartupScreen
 import kwiktwik.ratewatch.app.ui.stocks.StocksScreen
+import kwiktwik.ratewatch.app.ui.markets.MarketsScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistViewModel
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
@@ -101,7 +102,7 @@ fun AureumNavigation(
         }
         composable(Screen.Markets.route) {
             MainScaffold(navController) {
-                StocksScreen(viewModel = hiltViewModel(), isMoversTab = false)
+                MarketsScreen(viewModel = hiltViewModel())
             }
         }
         composable(Screen.Movers.route) {

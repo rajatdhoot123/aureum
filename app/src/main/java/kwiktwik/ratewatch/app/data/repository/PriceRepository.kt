@@ -283,8 +283,11 @@ class PriceRepository @Inject constructor(
 
             // ETF fields
             var aum: String? = null; var expenseRatio: String? = null; var trackingError: String? = null; var nav: String? = null
-            var return1M: String? = null; var return6M: String? = null; var return1Y: String? = null
+            var return1M: String? = null; var return3M: String? = null; var return6M: String? = null
+            var return1Y: String? = null; var returnAll: String? = null
             var description: String? = null; var etfPeers: List<PeerInfo>? = null
+            var fundManagers: List<String>? = null; var etfAmc: String? = null
+            var foundationDate: String? = null; var benchmarkIndex: String? = null; var etfCategory: String? = null
 
             data.getAsJsonObject("fundamentalsData")?.let { f ->
                 aum = f.get("aumInCrores")?.takeIf { !it.isJsonNull }?.asString?.let { "₹$it Cr" }

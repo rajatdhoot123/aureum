@@ -29,10 +29,17 @@ data class StockQuote(
     val trackingError: String? = null,
     val nav: String? = null,
     val return1M: String? = null,
+    val return3M: String? = null,
     val return6M: String? = null,
     val return1Y: String? = null,
+    val returnAll: String? = null,
     val description: String? = null,
     val peers: List<PeerInfo>? = null,
+    val fundManagers: List<String>? = null,
+    val amc: String? = null,
+    val foundationDate: String? = null,
+    val benchmarkIndex: String? = null,
+    val etfCategory: String? = null,
     // Stock-specific enriched fields
     val fullName: String? = null,
     val headquarters: String? = null,
@@ -72,7 +79,14 @@ data class StockQuote(
 data class PeerInfo(
     val name: String,
     val expenseRatio: String,
-    val isin: String
+    val isin: String,
+    val logoUrl: String? = null,
+    val ltp: Double? = null,
+    val dayChange: Double? = null,
+    val dayChangePerc: Double? = null,
+    val return1Y: Double? = null,
+    val aumInCrores: Double? = null,
+    val trackingError: Double? = null
 )
 
 data class FundamentalItem(
