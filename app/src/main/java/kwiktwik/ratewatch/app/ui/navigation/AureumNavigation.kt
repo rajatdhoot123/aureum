@@ -27,7 +27,6 @@ import kwiktwik.ratewatch.app.ui.home.HomeScreen
 import kwiktwik.ratewatch.app.ui.onboarding.OnboardingScreen
 import kwiktwik.ratewatch.app.ui.settings.SettingsScreen
 import kwiktwik.ratewatch.app.ui.startup.StartupScreen
-import kwiktwik.ratewatch.app.ui.stocks.StocksScreen
 import kwiktwik.ratewatch.app.ui.markets.MarketsScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistViewModel
@@ -40,19 +39,19 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.TrendingUp
+import androidx.compose.material.icons.outlined.Settings
 
 sealed class Screen(val route: String, val labelRes: Int, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
     object Home : Screen("home", R.string.nav_home, Icons.Outlined.Home)
     object Watchlist : Screen("watchlist", R.string.nav_watchlist, Icons.Outlined.StarOutline)
     object Alerts : Screen("alerts", R.string.nav_alerts, Icons.Outlined.Notifications)
     object Markets : Screen("markets", R.string.nav_markets, Icons.Outlined.Category)
-    object Movers : Screen("movers", R.string.nav_movers, Icons.Outlined.TrendingUp)
+    object Settings : Screen("settings", R.string.nav_settings, Icons.Outlined.Settings)
     object Search : Screen("search", R.string.nav_home, Icons.Outlined.Home) // Helper for route
 }
 
 private val bottomNavItems = listOf(
-    Screen.Home, Screen.Watchlist, Screen.Alerts, Screen.Markets, Screen.Movers
+    Screen.Home, Screen.Watchlist, Screen.Alerts, Screen.Markets, Screen.Settings
 )
 
 @Composable
@@ -109,9 +108,12 @@ fun AureumNavigation(
                 MarketsScreen(viewModel = hiltViewModel())
             }
         }
-        composable(Screen.Movers.route) {
+        composable(Screen.Settings.route) {
             MainScaffold(navController) {
-                StocksScreen(viewModel = hiltViewModel(), isMoversTab = true)
+                SettingsScreen(
+                    viewModel = hiltViewModel(),
+                    onThemeChange = onThemeChange
+                )
             }
         }
         composable(Screen.Search.route) {

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.data.model.*
@@ -52,10 +53,13 @@ fun StockDetailScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AureumBg)
             )
         },
-        containerColor = AureumBg
+        containerColor = Color.Transparent
     ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme())),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             // 1. Header: Logo + Badges + Name + Symbol

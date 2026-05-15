@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.unit.sp
 import kwiktwik.ratewatch.app.data.model.CityPrice
 import kwiktwik.ratewatch.app.ui.theme.*
@@ -36,7 +37,7 @@ fun MarketsScreen(viewModel: MarketsViewModel) {
     Box(
         Modifier
             .fillMaxSize()
-            .background(AureumBg)
+            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
     ) {
         if (uiState.isLoading && uiState.currentCity == null) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -404,7 +405,7 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
     Box(
         Modifier
             .fillMaxSize()
-            .background(AureumBg),
+            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme())),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

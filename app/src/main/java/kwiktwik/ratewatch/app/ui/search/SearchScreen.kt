@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -53,7 +54,7 @@ fun SearchScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(AureumBg)) {
+    Box(modifier = Modifier.fillMaxSize().background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Search Bar
             Surface(modifier = Modifier.fillMaxWidth(), color = AureumBg, tonalElevation = 0.dp) {

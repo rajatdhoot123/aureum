@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.unit.sp
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.ui.home.LineChart
@@ -48,7 +49,7 @@ fun WatchlistScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .background(AureumBg)
+            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
     ) {
         Column(
             Modifier

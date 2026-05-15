@@ -15,7 +15,7 @@
     <string name="nav_watchlist">Watchlist</string>
     <string name="nav_alerts">Alerts</string>
     <string name="nav_markets">Markets</string>
-    <string name="nav_movers">Movers</string>
+    <string name="nav_settings">Settings</string>
 
     <!-- Gold & Silver -->
     <string name="gold_22k">22K Gold</string>
