@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
 import kwiktwik.ratewatch.app.ui.theme.SonarBg
+import kwiktwik.ratewatch.app.util.findActivity
 
 @Composable
 fun OnboardingScreen(
@@ -123,7 +124,7 @@ fun OnboardingScreen(
                         // Apply the selected language to the activity.
                         // For API 33+ this uses per-app locale; for older APIs it recreates the activity.
                         // Either way, onboarding is already marked complete so the user lands on Home.
-                        (context as? android.app.Activity)?.let { activity ->
+                        context.findActivity()?.let { activity ->
                             viewModel.languageManager.changeAppLanguage(activity, selectedLanguage.code)
                         }
                         onComplete()

@@ -73,19 +73,11 @@ class LanguageManager @Inject constructor(
     }
 
     fun changeAppLanguage(activity: Activity, languageCode: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val localeList = LocaleListCompat.forLanguageTags(languageCode)
-            AppCompatDelegate.setApplicationLocales(localeList)
-        } else {
-            // Apply locale to the running configuration before recreating,
-            // so the new Activity instance picks up the correct resources.
-            val locale = Locale(languageCode)
-            Locale.setDefault(locale)
-            val config = Configuration(activity.resources.configuration)
-            config.setLocale(locale)
-            @Suppress("DEPRECATION")
-            activity.resources.updateConfiguration(config, activity.resources.displayMetrics)
-            activity.recreate()
-        }
+        val localeList = LocaleListCompat.forLanguageTags(languageCode)
+        AppCompatDelegate.setApplicationLocales(localeList)
+        
+        // Manual recreation ensures immediate update even if AppCompatDelegate 
+        // takes a moment or doesn't trigger it on some versions/configurations.
+        activity.recreate()
     }
 }

@@ -9,6 +9,7 @@ import kwiktwik.ratewatch.app.util.LanguageManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kwiktwik.ratewatch.app.util.findActivity
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +25,8 @@ class SettingsViewModel @Inject constructor(
     fun changeLanguage(context: Context, code: String) {
         viewModelScope.launch {
             languageManager.setLanguage(code)
-            if (context is androidx.activity.ComponentActivity) {
-                languageManager.changeAppLanguage(context, code)
+            context.findActivity()?.let { activity ->
+                languageManager.changeAppLanguage(activity, code)
             }
         }
     }
