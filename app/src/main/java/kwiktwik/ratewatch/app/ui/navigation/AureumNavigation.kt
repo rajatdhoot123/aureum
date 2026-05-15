@@ -22,6 +22,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import kwiktwik.ratewatch.app.R
+import kwiktwik.ratewatch.app.ui.alerts.AlertsScreen
 import kwiktwik.ratewatch.app.ui.home.HomeScreen
 import kwiktwik.ratewatch.app.ui.onboarding.OnboardingScreen
 import kwiktwik.ratewatch.app.ui.settings.SettingsScreen
@@ -95,10 +96,7 @@ fun AureumNavigation(
         }
         composable(Screen.Alerts.route) {
             MainScaffold(navController) {
-                WatchlistScreen(
-                    viewModel = hiltViewModel(),
-                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
-                )
+                AlertsScreen(viewModel = hiltViewModel())
             }
         }
         composable(Screen.Markets.route) {
