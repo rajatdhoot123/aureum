@@ -297,10 +297,23 @@ class PriceRepository @Inject constructor(
             }
             data.getAsJsonObject("categoryReturnsData")?.let { r ->
                 return1M = r.get("return1M")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" }
+                return3M = r.get("return3M")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" }
                 return6M = r.get("return6M")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" }
                 return1Y = r.get("return1Y")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" }
+                returnAll = r.get("returnAll")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" }
             }
-            description = data.getAsJsonObject("etfInfoData")?.get("description")?.takeIf { !it.isJsonNull }?.asString
+            data.getAsJsonObject("etfInfoData")?.let { info ->
+                description = info.get("description")?.takeIf { !it.isJsonNull }?.asString
+                etfAmc = info.get("amc")?.takeIf { !it.isJsonNull }?.asString
+                foundationDate = info.get("foundationDate")?.takeIf { !it.isJsonNull }?.asString
+                benchmarkIndex = info.get("benchmarkIndex")?.takeIf { !it.isJsonNull }?.asString
+                etfCategory = info.get("category")?.takeIf { !it.isJsonNull }?.asString
+                info.getAsJsonArray("fundManagers")?.let { arr ->
+                    fundManagers = (0 until arr.size()).mapNotNull { i ->
+                        arr.get(i)?.takeIf { !it.isJsonNull }?.asString
+                    }
+                }
+            }
             if (data.has("etfPeersData") && !data.get("etfPeersData").isJsonNull && data.has("companyHeadersByIsin")) {
                 val ep = data.getAsJsonObject("etfPeersData")
                 val hm = data.getAsJsonObject("companyHeadersByIsin")
