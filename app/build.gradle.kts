@@ -25,7 +25,7 @@ android {
         applicationId = "kwiktwik.ratewatch.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -88,6 +88,10 @@ android {
             excludes += "META-INF/DEPENDENCIES"
         }
     }
+
+    lint {
+        disable += "NullSafeMutableLiveData"
+    }
 }
 
 dependencies {
@@ -127,6 +131,11 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Image loading
     implementation(libs.coil.compose)

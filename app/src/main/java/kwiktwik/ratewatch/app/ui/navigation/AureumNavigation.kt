@@ -103,12 +103,12 @@ fun AureumNavigation(
         }
         composable(Screen.Markets.route) {
             MainScaffold(navController) {
-                StocksScreen(viewModel = hiltViewModel())
+                StocksScreen(viewModel = hiltViewModel(), isMoversTab = false)
             }
         }
         composable(Screen.Movers.route) {
             MainScaffold(navController) {
-                StocksScreen(viewModel = hiltViewModel())
+                StocksScreen(viewModel = hiltViewModel(), isMoversTab = true)
             }
         }
         composable(Screen.Search.route) {

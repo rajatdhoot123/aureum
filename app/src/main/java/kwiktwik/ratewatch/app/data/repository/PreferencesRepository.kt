@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import kwiktwik.ratewatch.app.data.model.PriceAlert
 import kwiktwik.ratewatch.app.data.model.StockSymbol
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -23,6 +24,7 @@ class PreferencesRepository @Inject constructor(
         val WATCHLIST_SYMBOLS = stringSetPreferencesKey("watchlist_symbols")
         val SELECTED_CITY = stringPreferencesKey("selected_city")
         val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
+        val PRICE_ALERTS = stringSetPreferencesKey("price_alerts")
     }
 
     // Language
@@ -83,5 +85,37 @@ class PreferencesRepository @Inject constructor(
 
     suspend fun setOnboardingCompleted(completed: Boolean) {
         context.dataStore.edit { it[Keys.ONBOARDING_COMPLETED] = completed }
+    }
+
+    // Price Alerts
+    fun alertsFlow(): Flow<List<PriceAlert>> =
+        context.dataStore.data.map { prefs ->
+            PriceAlert.fromJsonSet(prefs[Keys.PRICE_ALERTS] ?: emptySet())
+        }
+
+    suspend fun getAlerts(): List<PriceAlert> =
+        PriceAlert.fromJsonSet(
+            context.dataStore.data.map { it[Keys.PRICE_ALERTS] ?: emptySet() }.first()
+        )
+
+    suspend fun saveAlert(alert: PriceAlert) {
+        context.dataStore.edit { prefs ->
+            val current = PriceAlert.fromJsonSet(prefs[Keys.PRICE_ALERTS] ?: emptySet())
+            val updated = current.filter { it.id != alert.id } + alert
+            prefs[Keys.PRICE_ALERTS] = PriceAlert.toJsonSet(updated)
+        }
+    }
+
+    suspend fun deleteAlert(alertId: String) {
+        context.dataStore.edit { prefs ->
+            val current = PriceAlert.fromJsonSet(prefs[Keys.PRICE_ALERTS] ?: emptySet())
+            prefs[Keys.PRICE_ALERTS] = PriceAlert.toJsonSet(current.filter { it.id != alertId })
+        }
+    }
+
+    suspend fun updateAlerts(alerts: List<PriceAlert>) {
+        context.dataStore.edit { prefs ->
+            prefs[Keys.PRICE_ALERTS] = PriceAlert.toJsonSet(alerts)
+        }
     }
 }

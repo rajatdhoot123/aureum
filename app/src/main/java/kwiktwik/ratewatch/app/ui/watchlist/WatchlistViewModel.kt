@@ -41,20 +41,32 @@ class WatchlistViewModel @Inject constructor(
     private val _isDetailsLoading = MutableStateFlow(false)
     val isDetailsLoading = _isDetailsLoading.asStateFlow()
 
-    fun loadWatchlistQuotes() {
+    init {
+        // Automatically load/refresh quotes whenever the persisted watchlist changes
         viewModelScope.launch {
-            val symbols = watchlistSymbols.value.toList()
-            if (symbols.isEmpty()) {
-                _quotes.value = emptyList()
-                return@launch
+            watchlistSymbols.collectLatest { symbols ->
+                loadQuotesForSymbols(symbols)
             }
+        }
+    }
 
+    private fun loadQuotesForSymbols(symbols: Set<String>) {
+        if (symbols.isEmpty()) {
+            _quotes.value = emptyList()
+            return
+        }
+        viewModelScope.launch {
             _isLoading.value = true
-            priceRepo.getStockQuotes(symbols).collect { result ->
+            priceRepo.getStockQuotes(symbols.toList()).collect { result ->
                 result.onSuccess { _quotes.value = it }
                 _isLoading.value = false
             }
         }
+    }
+
+    fun loadWatchlistQuotes() {
+        // Kept for explicit refresh if needed; init already handles reactive loading
+        loadQuotesForSymbols(watchlistSymbols.value)
     }
 
     fun loadUsStocks() {
@@ -64,14 +76,17 @@ class WatchlistViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+
     fun selectCategory(category: String) {
         _selectedCategory.value = category
     }
+
     fun addToWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.addToWatchlist(symbol)
         }
     }
+
     fun removeFromWatchlist(symbol: String) {
         viewModelScope.launch {
             prefs.removeFromWatchlist(symbol)

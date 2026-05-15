@@ -27,12 +27,18 @@ import kwiktwik.ratewatch.app.ui.theme.RubyRed
 
 @Composable
 fun StocksScreen(
-    viewModel: StocksViewModel
+    viewModel: StocksViewModel,
+    isMoversTab: Boolean = true
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var selectedMoverType by remember { mutableStateOf("top-gainers") }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadStocks()
+    LaunchedEffect(isMoversTab) {
+        if (isMoversTab) {
+            viewModel.loadStocks(selectedMoverType)
+        } else {
+            viewModel.loadLatestIndices()
+        }
     }
 
     Box(
@@ -49,7 +55,7 @@ fun StocksScreen(
             
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Markets",
+                    text = if (isMoversTab) "Movers" else "Markets",
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White
@@ -58,10 +64,21 @@ fun StocksScreen(
                 LivePulseIndicator()
             }
             Text(
-                "Live indices • Top Gainers & Losers",
+                if (isMoversTab) "Top Gainers, Losers & Volume movers" else "Live Indian indices & sectors",
                 style = MaterialTheme.typography.bodyMedium, 
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            if (isMoversTab) {
+                Spacer(Modifier.height(16.dp))
+                MoversTypeSelector(
+                    selectedType = selectedMoverType,
+                    onTypeSelected = { newType ->
+                        selectedMoverType = newType
+                        viewModel.loadStocks(newType)
+                    }
+                )
+            }
 
             Spacer(Modifier.height(24.dp))
 
@@ -74,11 +91,12 @@ fun StocksScreen(
                 Spacer(Modifier.height(16.dp))
             }
 
+            val displayQuotes = if (isMoversTab) uiState.quotes else uiState.latestIndices
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(bottom = 100.dp)
             ) {
-                items(uiState.quotes) { quote ->
+                items(displayQuotes) { quote ->
                     StockQuoteCard(
                         quote = quote, 
                         onAddToWatchlist = { viewModel.addToWatchlist(quote.symbol) }
@@ -86,7 +104,7 @@ fun StocksScreen(
                 }
             }
 
-            if (uiState.quotes.isEmpty() && !uiState.isLoading) {
+            if (displayQuotes.isEmpty() && !uiState.isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Surface(
@@ -111,7 +129,13 @@ fun StocksScreen(
                         )
                         Spacer(Modifier.height(32.dp))
                         Button(
-                            onClick = { viewModel.loadStocks() },
+                            onClick = { 
+                                if (isMoversTab) {
+                                    viewModel.loadStocks(selectedMoverType)
+                                } else {
+                                    viewModel.loadLatestIndices()
+                                }
+                            },
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Text("Retry")
@@ -266,6 +290,48 @@ private fun StockQuoteCard(
                 modifier = Modifier.size(36.dp)
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add to watchlist", modifier = Modifier.size(20.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun MoversTypeSelector(
+    selectedType: String,
+    onTypeSelected: (String) -> Unit
+) {
+    val types = listOf(
+        "top-gainers" to "Gainers",
+        "top-losers" to "Losers",
+        "top-volume" to "Volume"
+    )
+    
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        types.forEach { (type, label) ->
+            val isSelected = selectedType == type
+            Surface(
+                onClick = { onTypeSelected(type) },
+                shape = RoundedCornerShape(20.dp),
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.08f),
+                border = androidx.compose.foundation.BorderStroke(
+                    1.dp, 
+                    if (isSelected) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.15f)
+                ),
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = label,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                    color = if (isSelected) Color.White else Color.White.copy(alpha = 0.7f),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
             }
         }
     }

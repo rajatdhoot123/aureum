@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
@@ -37,6 +38,10 @@ fun WatchlistScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val selectedStock by viewModel.selectedStock.collectAsState()
     val isDetailsLoading by viewModel.isDetailsLoading.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadWatchlistQuotes()
+    }
 
     val categories = listOf("Indian Market", "Gold & Silver", "Global")
 
@@ -131,7 +136,7 @@ fun WatchlistScreen(
                 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { /* Add asset */ }
+                    modifier = Modifier.clickable { onNavigateToSearch() }
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null, tint = Color.White.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
                     Text(
@@ -158,13 +163,14 @@ fun WatchlistScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(bottom = 100.dp)
                 ) {
-                    items(quotes) { quote ->
+                    items(quotes, key = { it.symbol }) { quote ->
                         WatchlistItem(
                             quote = quote,
                             onClick = { 
                                 // Use searchId if available, otherwise symbol
                                 quote.searchId?.let { viewModel.fetchDetails(it) }
-                            }
+                            },
+                            onRemove = { viewModel.removeFromWatchlist(quote.symbol) }
                         )
                     }
                 }
@@ -190,7 +196,8 @@ fun WatchlistScreen(
 @Composable
 fun WatchlistItem(
     quote: StockQuote,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onRemove: () -> Unit
 ) {
     val isPositive = quote.changePercent >= 0
     val chartColor = if (isPositive) EmeraldGreen else RubyRed
@@ -290,6 +297,19 @@ fun WatchlistItem(
                         color = chartColor
                     )
                 }
+            }
+
+            // Remove button
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = "Remove",
+                    tint = Color.White.copy(alpha = 0.35f),
+                    modifier = Modifier.size(18.dp)
+                )
             }
         }
     }
