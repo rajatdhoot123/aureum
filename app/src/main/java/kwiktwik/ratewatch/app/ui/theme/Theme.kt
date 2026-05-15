@@ -6,6 +6,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.foundation.background
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -117,5 +120,16 @@ object GlassMorphism {
     fun strokeColor(darkTheme: Boolean): Color {
         return if (darkTheme) Color(0x22FFFFFF) else Color(0x4D000000)
     }
+}
+
+/**
+ * Reusable modifier for the Aureum glassmorphism gradient background.
+ * Respects system light/dark theme automatically.
+ *
+ * Example:
+ *   Box(Modifier.fillMaxSize().aureumBackground()) { ... }
+ */
+fun Modifier.aureumBackground(): Modifier = composed {
+    background(AureumBg)
 }
 

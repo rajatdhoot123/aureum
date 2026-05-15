@@ -37,7 +37,7 @@ fun OnboardingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(GlassMorphism.backgroundBrush(isDark))
+            .background(kwiktwik.ratewatch.app.ui.theme.AureumBg)
     ) {
         Column(
             modifier = Modifier
@@ -49,7 +49,7 @@ fun OnboardingScreen(
 
             Surface(
                 shape = RoundedCornerShape(28.dp),
-                color = GlassMorphism.surfaceColor(isDark),
+                color = GlassMorphism.surfaceColor(true),
                 modifier = Modifier.size(100.dp)
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -163,8 +163,8 @@ private fun LanguageCard(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(24.dp),
-        color = if (isSelected) MaterialTheme.colorScheme.primary else GlassMorphism.surfaceColor(isDark),
-        border = if (!isSelected) androidx.compose.foundation.BorderStroke(1.dp, GlassMorphism.strokeColor(isDark)) else null,
+        color = if (isSelected) MaterialTheme.colorScheme.primary else GlassMorphism.surfaceColor(true),
+        border = if (!isSelected) androidx.compose.foundation.BorderStroke(1.dp, GlassMorphism.strokeColor(true)) else null,
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)

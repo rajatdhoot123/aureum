@@ -17,7 +17,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
-import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.*
 import kwiktwik.ratewatch.app.util.Language
 
 @Composable
@@ -34,7 +34,7 @@ fun SettingsScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
+            .aureumBackground()
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

@@ -22,9 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.ui.components.StockQuoteCard
-import kwiktwik.ratewatch.app.ui.theme.EmeraldGreen
-import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
-import kwiktwik.ratewatch.app.ui.theme.RubyRed
+import kwiktwik.ratewatch.app.ui.theme.*
 
 @Composable
 fun StocksScreen(
@@ -45,7 +43,7 @@ fun StocksScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .background(GlassMorphism.backgroundBrush(isSystemInDarkTheme()))
+            .aureumBackground()
     ) {
         Column(
             Modifier

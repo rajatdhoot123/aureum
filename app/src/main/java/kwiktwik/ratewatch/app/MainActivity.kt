@@ -29,10 +29,9 @@ class MainActivity : ComponentActivity() {
         Log.d("Aureum", "Language applied, setting Compose content")
 
         setContent {
-            val systemDark = isSystemInDarkTheme()
-            var isDarkTheme by remember { mutableStateOf(systemDark) }
+            var isDarkTheme by remember { mutableStateOf(true) }
 
-            AureumTheme(darkTheme = isDarkTheme) {
+            AureumTheme(darkTheme = true) {
                 AureumNavigation(
                     onThemeChange = { isDarkTheme = it }
                 )
