@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Aureum</string>
-    <string name="tagline">Gold • Silver • Equities • India</string>
+    <string name="app_name">Sonar</string>
+    <string name="tagline">Gold • Silver • Nifty • Sensex</string>
 
     <!-- Onboarding -->
-    <string name="welcome">Welcome to Aureum</string>
+    <string name="welcome">Welcome to Sonar</string>
     <string name="choose_language">Choose your language</string>
     <string name="language_subtitle">You can change this anytime in settings</string>
     <string name="get_started">Get Started</string>
@@ -67,7 +67,7 @@
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="no_internet">No internet connection</string>
 
-    <!-- Aureum Dashboard -->
+    <!-- Sonar Dashboard -->
     <string name="good_morning">Good morning</string>
     <string name="good_afternoon">Good afternoon</string>
     <string name="good_evening">Good evening</string>

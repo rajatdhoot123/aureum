@@ -1,4 +1,4 @@
-# Contributing to Aureum (RateWatch)
+# Contributing to Sonar
 
 Thank you for your interest in contributing to Aureum! This guide will help you get started.
 

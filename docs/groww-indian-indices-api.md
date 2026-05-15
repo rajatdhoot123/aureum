@@ -77,7 +77,7 @@ Returns 20+ popular Indian indices when searching "nifty".
 
 ---
 
-## 3. Live Indian Index Prices (Recommended for RateWatch)
+## 3. Live Indian Index Prices (Recommended for Sonar)
 
 **Best endpoint discovered:** `accord_points` latest_indices_ohlc
 
@@ -130,7 +130,7 @@ curl 'https://groww.in/v1/api/stocks_data/v1/accord_points/exchange/NSE/segment/
 
 ---
 
-## Mapping from Current RateWatch Symbols
+## Mapping from Current Sonar Symbols
 
 | Current (Yahoo) | Groww Equivalent                          |
 |-----------------|-------------------------------------------|
@@ -150,7 +150,7 @@ curl 'https://groww.in/v1/api/stocks_data/v1/accord_points/exchange/NSE/segment/
 
 ---
 
-## Recommendation for KwikTwik Tunnel / RateWatch
+## Recommendation for KwikTwik Tunnel / Sonar
 
 We can add a **Groww Indian Indices provider** (or primary source for Indian symbols) in the stocks proxy:
 
@@ -159,7 +159,7 @@ We can add a **Groww Indian Indices provider** (or primary source for Indian sym
 3. Use the `latest_indices_ohlc` endpoint — it's lightweight, accurate, and low latency for Indian market hours.
 4. The `search_id` endpoint can be used to auto-discover new indices or validate symbols.
 
-This would give RateWatch users **faster and more reliable** Indian index updates compared to Yahoo Finance (which often lags or has timezone/previous-close issues for Indian markets).
+This would give Sonar users **faster and more reliable** Indian index updates compared to Yahoo Finance (which often lags or has timezone/previous-close issues for Indian markets).
 
 ---
 

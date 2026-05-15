@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RateWatch"
+rootProject.name = "Sonar"
 include(":app")

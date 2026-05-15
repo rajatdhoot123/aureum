@@ -66,7 +66,7 @@ fun WatchlistScreen(
                 }
                 
                 Text(
-                    "Aureum",
+                    "SONAR",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.ExtraBold,
                     color = AureumGold

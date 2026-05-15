@@ -21,12 +21,6 @@ class SettingsViewModel @Inject constructor(
         .map { code -> languageManager.supportedLanguages.firstOrNull { it.code == code } ?: languageManager.supportedLanguages[0] }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), languageManager.supportedLanguages[0])
 
-    fun isDarkTheme(): Flow<Boolean?> = prefs.isDarkThemeFlow()
-
-    fun setDarkTheme(enabled: Boolean) {
-        viewModelScope.launch { prefs.setDarkTheme(enabled) }
-    }
-
     fun changeLanguage(context: Context, code: String) {
         viewModelScope.launch {
             languageManager.setLanguage(code)

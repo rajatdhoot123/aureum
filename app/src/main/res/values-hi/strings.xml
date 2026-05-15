@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">रेटवॉच</string>
+    <string name="app_name">सोनार</string>
     <string name="tagline">सोना • चाँदी • शेयर • लाइव भारत</string>
 
-    <string name="welcome">रेटवॉच में आपका स्वागत है</string>
+    <string name="welcome">सोनार में आपका स्वागत है</string>
     <string name="choose_language">अपनी भाषा चुनें</string>
     <string name="language_subtitle">आप इसे कभी भी सेटिंग्स में बदल सकते हैं</string>
     <string name="get_started">शुरू करें</string>

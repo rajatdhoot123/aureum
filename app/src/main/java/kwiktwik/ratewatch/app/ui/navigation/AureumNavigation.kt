@@ -55,9 +55,7 @@ private val bottomNavItems = listOf(
 )
 
 @Composable
-fun AureumNavigation(
-    onThemeChange: (Boolean) -> Unit
-) {
+fun AureumNavigation() {
     val navController = rememberNavController()
     // Shared state to pass StockQuote to detail screen (avoids serialization)
     var pendingDetailQuote by remember { mutableStateOf<StockQuote?>(null) }
@@ -111,8 +109,7 @@ fun AureumNavigation(
         composable(Screen.Settings.route) {
             MainScaffold(navController) {
                 SettingsScreen(
-                    viewModel = hiltViewModel(),
-                    onThemeChange = onThemeChange
+                    viewModel = hiltViewModel()
                 )
             }
         }

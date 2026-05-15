@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">রেটওয়াচ</string>
-    <string name="welcome">রেটওয়াচে স্বাগতম</string>
+    <string name="app_name">সোনার</string>
+    <string name="welcome">সোনারে স্বাগতম</string>
     <string name="choose_language">আপনার ভাষা নির্বাচন করুন</string>
     <string name="get_started">শুরু করুন</string>
     <string name="nav_home">হোম</string>

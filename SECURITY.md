@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Aureum, please report it responsibly:
+If you discover a security vulnerability within Sonar, please report it responsibly:
 
 1. **Do not** create a public GitHub issue for security vulnerabilities.
 2. Email the maintainers directly with details about the issue.
@@ -17,7 +17,7 @@ If you discover a security vulnerability within Aureum, please report it respons
 
 ## Security Best Practices
 
-- Aureum does **not** collect or transmit user data to external servers.
+- Sonar does **not** collect or transmit user data to external servers.
 - All data is stored locally on the device.
 - No analytics or third-party trackers are included.
 - API keys and sensitive configuration are stored in `local.properties` and excluded from version control.

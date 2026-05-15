@@ -75,7 +75,7 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
         ) {
-            // 1. Aureum Header
+            // 1. Sonar Header
             AureumHeader()
 
             Spacer(Modifier.height(24.dp))
@@ -176,7 +176,7 @@ fun AureumHeader() {
         }
         
         Text(
-            "AUREUM",
+            "SONAR",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
             color = AureumGold,

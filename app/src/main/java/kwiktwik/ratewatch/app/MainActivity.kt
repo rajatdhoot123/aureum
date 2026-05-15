@@ -5,8 +5,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.*
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import kwiktwik.ratewatch.app.ui.navigation.AureumNavigation
 import kwiktwik.ratewatch.app.ui.theme.AureumTheme
@@ -29,12 +27,8 @@ class MainActivity : ComponentActivity() {
         Log.d("Aureum", "Language applied, setting Compose content")
 
         setContent {
-            var isDarkTheme by remember { mutableStateOf(true) }
-
             AureumTheme(darkTheme = true) {
-                AureumNavigation(
-                    onThemeChange = { isDarkTheme = it }
-                )
+                AureumNavigation()
             }
         }
         Log.d("Aureum", "=== setContent called ===")

@@ -3,8 +3,6 @@ package kwiktwik.ratewatch.app.ui.settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,11 +20,9 @@ import kwiktwik.ratewatch.app.util.Language
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel,
-    onThemeChange: (Boolean) -> Unit
+    viewModel: SettingsViewModel
 ) {
     val currentLanguage by viewModel.currentLanguage.collectAsState()
-    val isDark by viewModel.isDarkTheme().collectAsState(initial = null)
     val context = LocalContext.current
 
     var showLanguageDialog by remember { mutableStateOf(false) }
@@ -49,7 +45,7 @@ fun SettingsScreen(
                     color = Color.White
                 )
                 Text(
-                    "Preferences • Personalize your RateWatch experience",
+                    "Preferences • Your personal wealth radar",
                     style = MaterialTheme.typography.bodyMedium, 
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -66,34 +62,12 @@ fun SettingsScreen(
                 )
             }
 
-            // Theme
-            item {
-                SettingsSwitchItem(
-                    emoji = "🌙",
-                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.dark_mode),
-                    checked = isDark ?: false,
-                    onCheckedChange = {
-                        viewModel.setDarkTheme(it)
-                        onThemeChange(it)
-                    }
-                )
-            }
-
-            item { 
-                Spacer(Modifier.height(8.dp))
-                HorizontalDivider(
-                    color = GlassMorphism.strokeColor(isSystemInDarkTheme()).copy(alpha = 0.5f),
-                    thickness = 1.dp
-                )
-                Spacer(Modifier.height(8.dp))
-            }
-
             // About
             item {
                 SettingsItem(
                     emoji = "ℹ️",
                     title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.about),
-                    subtitle = "RateWatch v1.0.0 • Made for India",
+                    subtitle = "Sonar v1.0.0 • Made for India",
                     onClick = {}
                 )
             }
@@ -164,48 +138,6 @@ private fun SettingsItem(
             headlineContent = { Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium) },
             supportingContent = { Text(subtitle, style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.clickable(onClick = onClick),
-            colors = ListItemDefaults.colors(containerColor = Color.Transparent)
-        )
-    }
-}
-
-@Composable
-private fun SettingsSwitchItem(
-    emoji: String,
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    val isDark = isSystemInDarkTheme()
-    Surface(
-        shape = RoundedCornerShape(24.dp),
-        color = GlassMorphism.surfaceColor(isDark),
-        border = androidx.compose.foundation.BorderStroke(1.dp, GlassMorphism.strokeColor(isDark)),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        ListItem(
-            leadingContent = { 
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(emoji, style = MaterialTheme.typography.titleLarge) 
-                }
-            },
-            headlineContent = { Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium) },
-            trailingContent = {
-                Switch(
-                    checked = checked, 
-                    onCheckedChange = onCheckedChange,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.primary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                    )
-                )
-            },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent)
         )
     }

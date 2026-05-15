@@ -1,57 +1,94 @@
-# 📱 Play Store Listing: RateWatch (ASO Optimized)
+# 📱 Play Store Listing: Sonar (ASO Optimized for Indian Audience)
 
 ## 🖼️ Media Assets
 *   **App Icon:** ![App Icon](./app_icon.png) (512x512)
-*   **Feature Graphic:** ![Feature Graphic](./feature_graphic.png) (1024x500)
+*   **Feature Graphic:** ![Feature Graphic](./feature_graphic.png) (1024x500) — *Update text to "Sonar • Live Gold & Nifty Radar"*
 *   **Phone Screenshots:**
-    *   ![Screenshot 1](./screenshot_1.png) (Gold & Silver Rates)
-    *   ![Screenshot 2](./screenshot_2.png) (Stock Market Indices)
-    *   ![Screenshot 3](./screenshot_3.png) (Multi-language Support)
-    *   ![Screenshot 4](./screenshot_4.png) (Custom Watchlist)
+    *   ![Screenshot 1](./screenshot_1.png) (Gold & Silver Rates — consider adding "22K Gold Rate Today")
+    *   ![Screenshot 2](./screenshot_2.png) (Nifty 50, Sensex, Bank Nifty)
+    *   ![Screenshot 3](./screenshot_3.png) (Multi-language: Hindi, Tamil, etc.)
+    *   ![Screenshot 4](./screenshot_4.png) (Watchlist + Price Alerts)
 
 ## ⚖️ Compulsory Information
 *   **Privacy Policy:** [Insert Your Privacy Policy URL Here]
 *   **Target Audience:** 13+ (Financial Information)
 *   **Category:** Finance
 
-## 🏷️ Title (Max 30 chars)
-**Live Gold Rate & Stock Market**
-*(Alternative: RateWatch: Gold & Stock Market)*
+---
 
-## 📝 Short Description (Max 80 chars)
-Live gold price in India, silver rates & stock market (Nifty, Sensex) in Hindi.
+## 🏷️ Title (Max 30 characters)
+**Sonar - Gold Rate & Nifty 50**
 
-## 📖 Full Description (ASO Optimized)
+*(29 characters — strong brand + primary keywords)*
 
-**Stay ahead of the market with RateWatch — Your ultimate app for Live Gold Rate, Silver Price Today, and Indian Stock Market updates!**
+**Alternative high-ranking options:**
+- `Sonar: Live Gold & Nifty`
+- `Gold Rate Live - Sonar Nifty`
 
-Whether you are an investor, a jeweler, or someone planning to buy gold, **RateWatch** is the perfect premium app for monitoring live precious metal rates and stock market performance in India. Enjoy real-time, accurate data with a beautiful Material 3 interface, perfectly localized in your native language.
+---
 
-### ✨ Key Features:
+## 📝 Short Description (Max 80 characters)
+Live 22K gold rate today, silver price & Nifty 50, Sensex in Hindi, Tamil & 8 Indian languages.
 
-📈 **Live Gold Rate & Silver Price Today**
-*   Track **22K and 24K Gold Price in India** (per 1g, 8g, 10g, 100g) in real-time.
-*   Monitor live silver rates (per kg) instantly.
-*   City-wise rates for 50+ major Indian cities including Delhi, Mumbai, Chennai, Bangalore, Hyderabad, Kolkata, Pune, and more.
+---
 
-📊 **Indian Stock Market & Indices**
-*   Get live updates on the **Indian Stock Market**.
-*   Track major indices: **Nifty 50 Live**, **Sensex**, and **Bank Nifty**.
-*   Stay updated with popular stocks and identify market trends to make informed investment decisions.
+## 📖 Full Description (ASO Optimized for India)
 
-⭐ **Custom Watchlist**
-*   Save your favorite metals and stocks to a personalized watchlist for quick, one-tap access to the live rates that matter most to you.
+**Sonar — Live Gold Rate, Silver Price & Nifty 50 Radar for India**
 
-🇮🇳 **Available in 10+ Indian Languages**
-*   We speak your language! RateWatch offers full support for 10 Indic languages: **Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi**, and English. Switch languages seamlessly on the go.
+Track real-time **22K gold rate today**, **24K gold price**, silver rate, **Nifty 50 live**, Bank Nifty and Sensex — all in one beautiful, fast app made for Indians. Get city-wise gold rates across Delhi, Mumbai, Bangalore, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad, Jaipur and 40+ cities. Switch between **Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi** and English instantly.
 
-🎨 **Premium Material Design & Dark Mode**
-*   Experience a stunning, fluid UI built with modern Material 3 components.
-*   Dynamic theming and a sleek Dark Mode ensure comfortable viewing day and night.
+### 📈 Live Gold Rate & Silver Price Today
+- **22K & 24K Gold Rate** per 1g, 8g, 10g, 100g — updated live from trusted Indian sources
+- **Silver Rate Today** per kg with city-wise pricing
+- Major Indian cities: Delhi, Mumbai, Chennai, Hyderabad, Bangalore, Kolkata, Pune, Ahmedabad, Lucknow, Jaipur & more
+- Perfect for jewelers, wedding planners & families buying gold for shadi or investment
 
-⚡ **Lightweight, Fast, and Accurate**
-*   Optimized for maximum performance with minimal data consumption, ensuring you never miss a market movement.
+### 📊 Nifty 50, Sensex & Indian Stock Market Live
+- **Nifty 50 Live**, BSE Sensex, Bank Nifty and major sectoral indices
+- Real-time Indian stock market movement at a glance
+- Track indices that matter most to Indian investors and traders
+- Clean charts and previous close comparison
 
-Empowering Indian investors, traders, and shoppers with transparent, real-time pricing information.
+### ⭐ Smart Watchlist & Price Alerts
+- Create your personal watchlist — add any gold, silver or Nifty stock
+- Set **price alerts** for gold rate or Nifty targets — get notified instantly
+- Never miss the right moment to buy or sell
 
-**Download RateWatch now to get the most accurate Live Gold Rate, Silver Price Today, and Indian Stock Market updates!**
+### 🇮🇳 Made for Bharat — 10+ Indian Languages
+Full native support for:
+**हिंदी, தமிழ், తెలుగు, বাংলা, मराठी, ગુજરાતી, ಕನ್ನಡ, മലയാളം, ਪੰਜਾਬੀ** and English
+
+No more language barriers. Your mother tongue, your rates.
+
+### 🎨 Premium Experience, Zero Clutter
+- Beautiful dark mode designed for Indian traders and families
+- Lightning fast, low data usage — works great on 4G/5G and slower connections
+- 100% free • No ads • No spam • Privacy first
+
+Whether you're checking **gold rate in Delhi today**, comparing **Nifty 50 live** before investing, or tracking silver for your business — **Sonar** is your trusted daily radar for wealth.
+
+**Download Sonar now — India's smartest live gold rate, silver price & Nifty tracker.**
+
+---
+
+## 🔑 High-Volume Keywords for Play Console (ASO)
+```
+gold rate today, live gold rate, 22k gold rate, gold price india, gold rate delhi, gold rate mumbai, nifty 50 live, nifty live, sensex live, silver rate today, bank nifty, gold rate today india, 24k gold rate, mc x gold rate, nifty 50 today, gold rate in hindi, live nifty, sensex today, silver price live, gold rate chennai, gold rate hyderabad, gold rate bangalore, gold rate kolkata, nifty bank nifty live
+```
+
+**Primary keyword targets (high intent India):**  
+`gold rate today`, `live gold rate`, `nifty 50 live`, `22k gold rate`, `silver rate today`
+
+**Secondary:** city-specific gold rates + language variants (gold rate hindi, etc.)
+
+---
+
+## 📌 ASO Notes for Indian Market
+- First 2 lines of description contain primary keywords (critical for Play Store ranking)
+- Title balances brand ("Sonar") + high-volume keywords ("Gold Rate & Nifty 50")
+- Heavy emphasis on **Indian languages**, **specific cities**, and **use cases** (shadi/wedding gold, jewelers, family investors)
+- Screenshots should show Hindi/Tamil UI + Indian city names + Nifty 50 / 22K Gold labels
+- Feature graphic should prominently display "22K Gold • Nifty 50 • Live Radar" + Indian map or tricolor accent
+
+*Last updated: For April 2026 Play Store ASO push targeting Bharat users*

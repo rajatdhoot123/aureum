@@ -1,4 +1,4 @@
-# Aureum (RateWatch) 🪙
+# Sonar 🪙 — Live Gold Rate & Nifty 50 Radar for India
 
 [![Android](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://developer.android.com)
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
@@ -9,18 +9,18 @@
 [![Forks](https://img.shields.io/github/forks/aureum-app/RateWatch?style=social)](https://github.com/aureum-app/RateWatch/network/members)
 
 <!-- SEO Description -->
-<meta name="description" content="Aureum is a free, open-source Android app for tracking live gold rate, silver price, NIFTY 50, and SENSEX in India. Real-time precious metals rates across Indian cities with a premium glass-morphic UI.">
-<meta name="keywords" content="gold price India, silver rate tracker, NIFTY 50 app, SENSEX live, Indian stock market, gold rate app download, commodity prices India, equity tracking, investment tracker, Aureum RateWatch">
-<meta name="author" content="RateWatch">
+<meta name="description" content="Sonar is a free, open-source Android app for live gold rate today, silver price, Nifty 50 live & Sensex in India. Real-time 22K gold rates across 50+ Indian cities + Indian stock market indices with premium UI in 10 languages.">
+<meta name="keywords" content="gold rate today, live gold rate, 22k gold rate, nifty 50 live, silver rate today, gold price india, nifty live, sensex live, gold rate delhi mumbai, bank nifty, sonar gold nifty, indian stock market app">
+<meta name="author" content="Sonar">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
-<meta property="og:title" content="Aureum (RateWatch) - Gold Rate & Indian Stock Market Tracker">
-<meta property="og:description" content="Open-source Android app for tracking real-time gold, silver, NIFTY 50, and SENSEX prices in India with premium UI.">
+<meta property="og:title" content="Sonar - Live Gold Rate, Silver Price & Nifty 50 for India">
+<meta property="og:description" content="Free Android app: Real-time 22K/24K gold rate today, silver rates across Indian cities, Nifty 50 live, Sensex & Bank Nifty. 10+ Indian languages. Made for Bharat.">
 <meta property="og:type" content="software">
 <meta property="og:url" content="https://github.com/aureum-app/RateWatch">
 
-**Aureum** is a high-performance, open-source fintech application designed for the Indian market. It provides real-time tracking for **Gold**, **Silver**, and **Indian Stock Market Indices** (NIFTY 50, SENSEX) with a premium glass-morphic design.
+**Sonar** (सोनार) is a high-performance, open-source fintech radar built for the Indian market. Track live **22K & 24K gold rate today**, **silver price**, **Nifty 50 live**, **Sensex**, and Bank Nifty across 50+ Indian cities — all in your preferred language (Hindi, Tamil, Telugu and 8 more).
 
 ---
 
@@ -38,38 +38,38 @@
 ---
 
 ## 🌟 Overview
-Aureum (formerly RateWatch) is built to provide Indian investors with a single, beautiful interface to track their core assets. Whether you are monitoring gold prices for a wedding purchase or tracking NIFTY 50 for your portfolio, Aureum delivers real-time data with minimal latency and a state-of-the-art UI.
+**Sonar** is your daily radar for wealth in India. Built for investors, jewelers, and families, it combines live precious metal rates (gold & silver) with major Indian equity indices (Nifty 50, Sensex, Bank Nifty) in one fast, beautiful app.
 
-Optimized for the **Indian economy**, it supports multi-language localization and city-wise precious metal tracking.
+Whether you're checking **gold rate in Delhi today** for a wedding (shadi), tracking **Nifty 50 live** for your portfolio, or monitoring silver prices for business — Sonar gives you accurate, real-time data in 10+ Indian languages with minimal data usage.
 
 ---
 
 ## 🔍 Frequently Asked Questions (FAQ)
 
-### Does Aureum support gold rate tracking for my city?
-Yes! Aureum tracks 22K and 24K gold prices as well as silver rates across **all major Indian cities**. Rates are updated in real-time.
+### Does Sonar show gold rate for my city?
+Yes! Sonar tracks accurate **22K and 24K gold rate today** and silver rates for **50+ major Indian cities** — Delhi, Mumbai, Bangalore, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad, Jaipur, Lucknow and more. Updated in real-time.
 
-### Can I track NIFTY 50 and SENSEX on Aureum?
-Yes. Aureum provides live index tracking for NIFTY 50, SENSEX, and major sectoral indices.
+### Can I track Nifty 50, Bank Nifty and Sensex?
+Yes. Sonar shows **Nifty 50 live**, BSE Sensex, Bank Nifty and key sectoral indices with clean charts.
 
-### Is Aureum free and open-source?
-Yes. Aureum is 100% free and open-source under the MIT License. No premium paywall, no ads.
+### Is Sonar free?
+100% free, open-source (MIT), no ads, no tracking, no paywall. Built for Bharat.
 
-### Does Aureum work offline?
-Yes. Aureum uses offline-first caching so you can access last-known prices even without an internet connection.
+### Does it work on slow networks?
+Yes. Sonar is offline-first with smart caching. Works beautifully even on 4G or patchy connections.
 
-### What languages does Aureum support?
-Aureum supports 10+ languages including Hindi, English, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.
+### Which languages are supported?
+Full support for **10+ Indian languages**: Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi, and English. Switch anytime.
 
 ---
 
 ## ✨ Key Features
-- **Live Precious Metals** — Real-time 22K & 24K Gold and Silver prices across all major Indian cities.
-- **Stock Market Indices** — Dynamic tracking of NIFTY 50, SENSEX, and sectoral indices.
-- **Aureum Design System** — A custom, premium UI built with glass-morphism, dark mode by default (#031427 navy), and high-fidelity animations.
-- **Multilingual Support** — Available in 10+ Indic languages including Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.
-- **Offline First** — Fast local caching for seamless performance even on slower connections.
-- **Privacy Focused** — No trackers, no data collection. Just your data.
+- **Live Gold & Silver Rates** — Real-time **22K/24K gold rate today** and silver price per kg across 50+ Indian cities.
+- **Nifty 50 & Sensex Live** — Clean tracking of Nifty 50, Bank Nifty, Sensex and major Indian indices.
+- **Sonar Design** — Premium glass-morphic dark UI (#031427 navy) with buttery animations — built for daily use by Indian traders & families.
+- **10+ Indian Languages** — Native experience in Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi & English.
+- **Price Alerts & Watchlist** — Get notified when gold or Nifty hits your target price.
+- **Lightweight & Private** — Minimal data usage, offline caching, zero trackers or ads. Pure focus on rates.
 
 ---
 
@@ -160,8 +160,10 @@ storeFile=ratewatch-release.jks
 ---
 
 ## 🎨 Branding & Metadata
-- **Play Store Listing**: Metadata is located in [listing.md](./playstore_listing/listing.md).
-- **Assets**: High-resolution icons and branding assets are in the `playstore_listing/` directory.
+- **Brand**: Sonar (सोनार) — Live Gold, Silver & Nifty Radar for India
+- **Play Store Listing**: Fully ASO-optimized metadata in [listing.md](./playstore_listing/listing.md) targeting Indian keywords (gold rate today, nifty 50 live, etc.)
+- **Assets**: App icon, feature graphic and screenshots in `playstore_listing/`
+- **Recommended Title**: `Sonar - Gold Rate & Nifty 50` (29 chars)
 
 ---
 
@@ -171,7 +173,7 @@ This project is licensed under the **MIT License**.
 ```text
 MIT License
 
-Copyright (c) 2026 RateWatch
+Copyright (c) 2026 Sonar (KwikTwik)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -186,4 +188,4 @@ copies or substantial portions of the Software.
 
 ---
 
-Made with ❤️ for India. Track your gold, silver & equities with clarity.
+Made with ❤️ for Bharat. Sonar — your daily radar for gold rate, silver price & Nifty 50.

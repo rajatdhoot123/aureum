@@ -18,7 +18,7 @@ object RetrofitClient {
         .addInterceptor(loggingInterceptor)
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .header("User-Agent", "RateWatch-Android/1.0")
+                .header("User-Agent", "Sonar-Android/1.0")
                 .build()
             chain.proceed(request)
         }

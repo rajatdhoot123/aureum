@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ரேட்வாட்ச்</string>
+    <string name="app_name">சோனார்</string>
     <string name="tagline">தங்கம் • வெள்ளி • பங்குகள் • நேரடி இந்தியா</string>
 
-    <string name="welcome">ரேட்வாட்சிற்கு வரவேற்கிறோம்</string>
+    <string name="welcome">சோனாருக்கு வரவேற்கிறோம்</string>
     <string name="choose_language">உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்</string>
     <string name="language_subtitle">இதை அமைப்புகளில் எப்போது வேண்டுமானாலும் மாற்றலாம்</string>
     <string name="get_started">தொடங்கு</string>

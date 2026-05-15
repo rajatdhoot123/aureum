@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">రేట్‌వాచ్</string>
+    <string name="app_name">సోనార్</string>
     <string name="tagline">బంగారం • వెండి • స్టాక్స్ • లైవ్ ఇండియా</string>
 
-    <string name="welcome">రేట్‌వాచ్‌కు స్వాగతం</string>
+    <string name="welcome">సోనార్‌కు స్వాగతం</string>
     <string name="choose_language">మీ భాషను ఎంచుకోండి</string>
     <string name="language_subtitle">ఇది సెట్టింగ్స్‌లో ఎప్పుడైనా మార్చవచ్చు</string>
     <string name="get_started">ప్రారంభించండి</string>

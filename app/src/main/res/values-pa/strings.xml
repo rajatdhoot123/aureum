@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ਰੇਟਵਾਚ</string>
-    <string name="welcome">ਰੇਟਵਾਚ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ</string>
+    <string name="app_name">ਸੋਨਾਰ</string>
+    <string name="welcome">ਸੋਨਾਰ ਵਿੱਚ ਜੀ ਆਇਆਂ ਨੂੰ</string>
     <string name="choose_language">ਆਪਣੀ ਭਾ਷ਾ ਚੁਣੋ</string>
     <string name="gold_22k">22K ਸੋਨਾ</string>
     <string name="gold_24k">24K ਸੋਨਾ</string>

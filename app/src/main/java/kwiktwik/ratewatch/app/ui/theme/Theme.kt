@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.graphics.Brush
 
-// Aureum Modern Fintech Palette - Deep Navy/Charcoal
+// Sonar (Aureum Design System) - Deep Navy/Charcoal Palette for Indian Fintech
 val AureumBg = Color(0xFF031427)
 val AureumSurface = Color(0xFF0A1F3A)
 val AureumCard = Color(0xFF122A47)
@@ -123,7 +123,7 @@ object GlassMorphism {
 }
 
 /**
- * Reusable modifier for the Aureum glassmorphism gradient background.
+ * Reusable modifier for the Sonar glassmorphism gradient background.
  * Respects system light/dark theme automatically.
  *
  * Example:
