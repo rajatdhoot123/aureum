@@ -157,8 +157,8 @@ private fun MainScaffold(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp),
-                color = AureumBg,
-                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
+                color = if (isDark) AureumBg else Color(0xFFF8FAFC),
+                border = BorderStroke(1.dp, if (isDark) Color.White.copy(alpha = 0.05f) else Color.Black.copy(alpha = 0.08f))
             ) {
                 NavigationBar(
                     containerColor = Color.Transparent,
