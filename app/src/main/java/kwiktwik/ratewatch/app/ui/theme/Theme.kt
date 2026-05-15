@@ -15,14 +15,14 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.graphics.Brush
 
-// Sonar (Aureum Design System) - Deep Navy/Charcoal Palette for Indian Fintech
-val AureumBg = Color(0xFF031427)
-val AureumSurface = Color(0xFF0A1F3A)
-val AureumCard = Color(0xFF122A47)
+// Sonar Design System - Deep Navy/Charcoal Palette for Indian Fintech
+val SonarBg = Color(0xFF031427)
+val SonarSurface = Color(0xFF0A1F3A)
+val SonarCard = Color(0xFF122A47)
 val Cyan400 = Color(0xFF22D3EE)
 val Cyan500 = Color(0xFF06B6D4)
 val GoldAccent = Color(0xFFFFD700) // Brighter Gold for accents
-val AureumGold = Color(0xFFFFCC33) // Brand gold color
+val SonarGold = Color(0xFFFFCC33) // Brand gold color
 val SilverAccent = Color(0xFF94A3B8)
 val EmeraldGreen = Color(0xFF10B981)
 val RubyRed = Color(0xFFEF4444)
@@ -34,12 +34,12 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Color.White,
     primaryContainer = Color(0xFFCFFAFE),
     onPrimaryContainer = Color(0xFF083344),
-    secondary = AureumSurface,
+    secondary = SonarSurface,
     onSecondary = Color.White,
     background = Color(0xFFF8FAFC),
-    onBackground = AureumBg,
+    onBackground = SonarBg,
     surface = Color.White,
-    onSurface = AureumBg,
+    onSurface = SonarBg,
     surfaceVariant = Color(0xFFF1F5F9),
     error = Color(0xFFEF4444),
     onError = Color.White,
@@ -47,22 +47,22 @@ private val LightColorScheme = lightColorScheme(
 
 private val DarkColorScheme = darkColorScheme(
     primary = Cyan400,
-    onPrimary = AureumBg,
+    onPrimary = SonarBg,
     primaryContainer = Color(0xFF0A2A4A),
     onPrimaryContainer = Color(0xFFCFFAFE),
     secondary = Color(0xFF94A3B8),
-    onSecondary = AureumBg,
-    background = AureumBg,
+    onSecondary = SonarBg,
+    background = SonarBg,
     onBackground = Color(0xFFF1F5F9),
-    surface = AureumSurface,
+    surface = SonarSurface,
     onSurface = Color(0xFFF1F5F9),
-    surfaceVariant = AureumCard,
+    surfaceVariant = SonarCard,
     error = RubyRed,
     onError = Color.White,
 )
 
 @Composable
-fun AureumTheme(
+fun SonarTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -84,7 +84,7 @@ fun AureumTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AureumTypography,
+        typography = SonarTypography,
         content = content
     )
 }
@@ -95,9 +95,9 @@ object GlassMorphism {
         return if (darkTheme) {
             Brush.verticalGradient(
                 colors = listOf(
-                    AureumBg,
-                    AureumSurface,
-                    AureumBg
+                    SonarBg,
+                    SonarSurface,
+                    SonarBg
                 )
             )
         } else {
@@ -113,7 +113,7 @@ object GlassMorphism {
 
     @Composable
     fun surfaceColor(darkTheme: Boolean): Color {
-        return if (darkTheme) AureumCard else Color(0x66FFFFFF)
+        return if (darkTheme) SonarCard else Color(0x66FFFFFF)
     }
 
     @Composable
@@ -124,12 +124,8 @@ object GlassMorphism {
 
 /**
  * Reusable modifier for the Sonar glassmorphism gradient background.
- * Respects system light/dark theme automatically.
- *
- * Example:
- *   Box(Modifier.fillMaxSize().aureumBackground()) { ... }
  */
-fun Modifier.aureumBackground(): Modifier = composed {
-    background(AureumBg)
+fun Modifier.sonarBackground(): Modifier = composed {
+    background(SonarBg)
 }
 

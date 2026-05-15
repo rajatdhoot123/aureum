@@ -53,10 +53,10 @@ fun SearchScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().aureumBackground()) {
+    Box(modifier = Modifier.fillMaxSize().sonarBackground()) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Search Bar
-            Surface(modifier = Modifier.fillMaxWidth(), color = AureumBg, tonalElevation = 0.dp) {
+            Surface(modifier = Modifier.fillMaxWidth(), color = SonarBg, tonalElevation = 0.dp) {
                 Row(
                     modifier = Modifier.padding(16.dp).statusBarsPadding(),
                     verticalAlignment = Alignment.CenterVertically
@@ -146,7 +146,7 @@ private fun SearchResultCard(result: GrowwSearchResultItem, onClick: () -> Unit)
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {

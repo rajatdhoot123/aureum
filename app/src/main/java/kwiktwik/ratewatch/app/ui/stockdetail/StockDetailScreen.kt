@@ -49,7 +49,7 @@ fun StockDetailScreen(
                         Icon(Icons.Outlined.StarOutline, null, tint = GoldAccent)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = AureumBg)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = SonarBg)
             )
         },
         containerColor = Color.Transparent
@@ -58,7 +58,7 @@ fun StockDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .aureumBackground(),
+                .sonarBackground(),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             // 1. Header: Logo + Badges + Name + Symbol
@@ -110,7 +110,7 @@ private fun StockHeader(quote: StockQuote) {
         Row(verticalAlignment = Alignment.Top) {
             Box(
                 modifier = Modifier.size(56.dp).clip(RoundedCornerShape(14.dp))
-                    .background(AureumCard).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(14.dp)),
+                    .background(SonarCard).border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(14.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (!quote.logoUrl.isNullOrEmpty()) {
@@ -505,7 +505,7 @@ private fun TypeBadge(text: String) {
 private fun SectionCard(content: @Composable () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp),
-        color = AureumCard, border = BorderStroke(1.dp, Color.White.copy(alpha = 0.06f))
+        color = SonarCard, border = BorderStroke(1.dp, Color.White.copy(alpha = 0.06f))
     ) { content() }
 }
 
@@ -525,7 +525,7 @@ private fun FundamentalRow(label: String, value: String) {
 @Composable
 private fun StatChip(label: String, value: String, modifier: Modifier = Modifier) {
     Surface(modifier = modifier, shape = RoundedCornerShape(12.dp),
-        color = AureumSurface, border = BorderStroke(1.dp, Color.White.copy(alpha = 0.06f))) {
+        color = SonarSurface, border = BorderStroke(1.dp, Color.White.copy(alpha = 0.06f))) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(label, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.45f))
             Spacer(Modifier.height(4.dp))

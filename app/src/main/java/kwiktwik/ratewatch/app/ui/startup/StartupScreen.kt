@@ -1,6 +1,5 @@
 package kwiktwik.ratewatch.app.ui.startup
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,22 +17,15 @@ fun StartupScreen(
     viewModel: StartupViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        Log.d("Aureum", "StartupScreen: LaunchedEffect started, reading onboarding status...")
-        try {
-            val completed = viewModel.isOnboardingCompleted()
-            Log.d("Aureum", "StartupScreen: Got value = $completed, navigating...")
-            
-            if (completed) {
-                navController.navigate(Screen.Home.route) {
-                    popUpTo("startup") { inclusive = true }
-                }
-            } else {
-                navController.navigate("onboarding") {
-                    popUpTo("startup") { inclusive = true }
-                }
+        val completed = viewModel.isOnboardingCompleted()
+        if (completed) {
+            navController.navigate(Screen.Home.route) {
+                popUpTo("startup") { inclusive = true }
             }
-        } catch (e: Exception) {
-            Log.e("Aureum", "StartupScreen: ERROR while reading onboarding status", e)
+        } else {
+            navController.navigate("onboarding") {
+                popUpTo("startup") { inclusive = true }
+            }
         }
     }
 

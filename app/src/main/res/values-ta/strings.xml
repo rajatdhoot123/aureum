@@ -57,4 +57,61 @@
     <string name="close">மூடு</string>
     <string name="error_generic">ஏதோ தவறு நேர்ந்தது. மீண்டும் முயற்சிக்கவும்.</string>
     <string name="no_internet">இணைய இணைப்பு இல்லை</string>
+
+    <!-- Navigation (missing) -->
+    <string name="nav_alerts">விழிப்பூட்டல்கள்</string>
+    <string name="nav_settings">அமைப்புகள்</string>
+
+    <!-- Dashboard -->
+    <string name="good_morning">காலை வணக்கம்</string>
+    <string name="good_afternoon">மதிய வணக்கம்</string>
+    <string name="good_evening">மாலை வணக்கம்</string>
+    <string name="market_overview">சந்தை கண்ணோட்டம்</string>
+    <string name="savings_summary">சேமிப்பு சுருக்கம்</string>
+    <string name="physical_gold">இயற்பியல் தங்கம்</string>
+    <string name="global_equities">உலகளாவிய பங்குகள்</string>
+    <string name="cash_reserves">பண இருப்பு</string>
+    <string name="profit">லாபம்</string>
+    <string name="loss">நஷ்டம்</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">கண்ணோட்டம்</string>
+    <string name="tab_portfolio">போர்ட்ஃபோலியோ</string>
+    <string name="tab_alerts">விழிப்பூட்டல்கள்</string>
+    <string name="tab_news">செய்திகள்</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">விலை விழிப்பூட்டல்கள்</string>
+    <string name="alerts_subtitle">விலை உங்கள் இலக்கை எட்டும்போது அறிவிப்பு பெறுங்கள்</string>
+    <string name="create_alert">விழிப்பூட்டல் உருவாக்கு</string>
+    <string name="notify_me_when">எனக்கு அறிவி…</string>
+    <string name="select_asset">சொத்தை தேர்ந்தெடு</string>
+    <string name="price_above">விலை மேலே செல்லும்போது</string>
+    <string name="price_below">விலை கீழே செல்லும்போது</string>
+    <string name="set_target">இலக்கு விலையை அமை</string>
+    <string name="active_alerts">செயலில் உள்ள விழிப்பூட்டல்கள்</string>
+    <string name="no_alerts">விழிப்பூட்டல்கள் இல்லை</string>
+    <string name="alert_created">விழிப்பூட்டல் வெற்றிகரமாக உருவாக்கப்பட்டது</string>
+    <string name="delete_alert">நீக்கு</string>
+
+    <!-- News -->
+    <string name="market_intelligence">சந்தை நுண்ணறிவு</string>
+    <string name="news_subtitle">இந்திய பொருளாதாரம், பணவீக்கம் மற்றும் பொருட்கள் பற்றிய தகவல்கள்</string>
+    <string name="read_more">மேலும் படிக்க</string>
+    <string name="no_news">செய்திகள் இல்லை</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">போர்ட்ஃபோலியோ மதிப்பு</string>
+    <string name="total_pnl">மொத்த லாபம்/நஷ்டம்</string>
+    <string name="add_holding">ஹோல்டிங் சேர்</string>
+    <string name="current_value">தற்போதைய மதிப்பு</string>
+    <string name="your_holdings">உங்கள் ஹோல்டிங்ஸ்</string>
+    <string name="no_holdings">ஹோல்டிங்ஸ் இல்லை</string>
+    <string name="add_first_holding">சேமிப்பை கண்காணிக்க உங்கள் முதல் சொத்தை சேர்க்கவும்</string>
+
+    <!-- Settings extras -->
+    <string name="settings_subtitle">விருப்பங்கள் • உங்கள் தனிப்பட்ட செல்வ ரேடார்</string>
+    <string name="about_subtitle">சோனார் v1.0.0 • இந்தியாவுக்காக உருவாக்கப்பட்டது</string>
+    <string name="data_source_description">தங்கம் மற்றும் வெள்ளி: Goodreturns.in\nபங்குகள்: KwikTwik Stocks API</string>
+    <string name="regional_language_note">இந்தி, தமிழ், தெலுங்கு, வங்காளம், மராத்தி, குஜராத்தி, கன்னடம், மலையாளம் மற்றும் பஞ்சாபி ஆகிய மொழிகளில் ஆதரவு உள்ளது.</string>
 </resources>

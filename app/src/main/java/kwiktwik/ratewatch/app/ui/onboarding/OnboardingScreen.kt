@@ -22,7 +22,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
+import kwiktwik.ratewatch.app.ui.theme.SonarBg
 
 @Composable
 fun OnboardingScreen(
@@ -32,12 +36,12 @@ fun OnboardingScreen(
     val languages = remember { viewModel.languageManager.supportedLanguages }
     var selectedLanguage by remember { mutableStateOf(languages.first { it.code == "en" }) }
     val scope = rememberCoroutineScope()
-    val isDark = isSystemInDarkTheme()
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(kwiktwik.ratewatch.app.ui.theme.AureumBg)
+            .background(SonarBg)
     ) {
         Column(
             modifier = Modifier
@@ -63,7 +67,7 @@ fun OnboardingScreen(
             Spacer(Modifier.height(32.dp))
 
             Text(
-                text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.welcome),
+                text = stringResource(R.string.welcome),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Black,
                 textAlign = TextAlign.Center
@@ -72,7 +76,7 @@ fun OnboardingScreen(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.tagline),
+                text = stringResource(R.string.tagline),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
@@ -82,12 +86,12 @@ fun OnboardingScreen(
 
             Column(horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.choose_language),
+                    text = stringResource(R.string.choose_language),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.language_subtitle),
+                    text = stringResource(R.string.language_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -116,6 +120,12 @@ fun OnboardingScreen(
                 onClick = {
                     scope.launch {
                         viewModel.saveLanguageAndComplete(selectedLanguage.code)
+                        // Apply the selected language to the activity.
+                        // For API 33+ this uses per-app locale; for older APIs it recreates the activity.
+                        // Either way, onboarding is already marked complete so the user lands on Home.
+                        (context as? android.app.Activity)?.let { activity ->
+                            viewModel.languageManager.changeAppLanguage(activity, selectedLanguage.code)
+                        }
                         onComplete()
                     }
                 },
@@ -129,7 +139,7 @@ fun OnboardingScreen(
                 )
             ) {
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.get_started),
+                    text = stringResource(R.string.get_started),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -142,7 +152,7 @@ fun OnboardingScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.skip),
+                    text = stringResource(R.string.skip),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

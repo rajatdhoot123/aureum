@@ -57,4 +57,61 @@
     <string name="close">बंद करें</string>
     <string name="error_generic">कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।</string>
     <string name="no_internet">इंटरनेट कनेक्शन नहीं है</string>
+
+    <!-- Navigation (missing) -->
+    <string name="nav_alerts">अलर्ट</string>
+    <string name="nav_settings">सेटिंग्स</string>
+
+    <!-- Dashboard -->
+    <string name="good_morning">शुभ प्रभात</string>
+    <string name="good_afternoon">शुभ दोपहर</string>
+    <string name="good_evening">शुभ संध्या</string>
+    <string name="market_overview">बाज़ार अवलोकन</string>
+    <string name="savings_summary">बचत सारांश</string>
+    <string name="physical_gold">भौतिक सोना</string>
+    <string name="global_equities">वैश्विक इक्विटी</string>
+    <string name="cash_reserves">नकद भंडार</string>
+    <string name="profit">लाभ</string>
+    <string name="loss">हानि</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">अवलोकन</string>
+    <string name="tab_portfolio">पोर्टफोलियो</string>
+    <string name="tab_alerts">अलर्ट</string>
+    <string name="tab_news">समाचार</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">मूल्य अलर्ट</string>
+    <string name="alerts_subtitle">जब कीमतें आपके लक्ष्य तक पहुँचें तो सूचना पाएं</string>
+    <string name="create_alert">अलर्ट बनाएं</string>
+    <string name="notify_me_when">मुझे सूचित करें जब…</string>
+    <string name="select_asset">एसेट चुनें</string>
+    <string name="price_above">कीमत ऊपर जाए</string>
+    <string name="price_below">कीमत नीचे जाए</string>
+    <string name="set_target">लक्ष्य मूल्य सेट करें</string>
+    <string name="active_alerts">सक्रिय अलर्ट</string>
+    <string name="no_alerts">अभी कोई अलर्ट नहीं</string>
+    <string name="alert_created">अलर्ट सफलतापूर्वक बनाया गया</string>
+    <string name="delete_alert">हटाएं</string>
+
+    <!-- News -->
+    <string name="market_intelligence">बाज़ार जानकारी</string>
+    <string name="news_subtitle">भारतीय अर्थव्यवस्था, मुद्रास्फीति और कमोडिटी पर जानकारी</string>
+    <string name="read_more">और पढ़ें</string>
+    <string name="no_news">कोई समाचार उपलब्ध नहीं</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">पोर्टफोलियो मूल्य</string>
+    <string name="total_pnl">कुल लाभ/हानि</string>
+    <string name="add_holding">होल्डिंग जोड़ें</string>
+    <string name="current_value">वर्तमान मूल्य</string>
+    <string name="your_holdings">आपकी होल्डिंग्स</string>
+    <string name="no_holdings">अभी कोई होल्डिंग नहीं</string>
+    <string name="add_first_holding">बचत ट्रैक करने के लिए अपनी पहली एसेट जोड़ें</string>
+
+    <!-- Settings extras -->
+    <string name="settings_subtitle">प्राथमिकताएं • आपका व्यक्तिगत वेल्थ रडार</string>
+    <string name="about_subtitle">सोनार v1.0.0 • भारत के लिए बनाया गया</string>
+    <string name="data_source_description">सोना और चाँदी: Goodreturns.in\nस्टॉक्स: KwikTwik Stocks API</string>
+    <string name="regional_language_note">हिन्दी, तमिल, तेलुगु, बंगाली, मराठी, गुजराती, कन्नड़, मलयालम और पंजाबी में क्षेत्रीय भाषा सहायता उपलब्ध है।</string>
 </resources>

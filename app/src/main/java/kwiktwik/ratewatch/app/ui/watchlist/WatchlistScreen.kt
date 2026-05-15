@@ -23,8 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.data.model.StockQuote
-import kwiktwik.ratewatch.app.ui.home.LineChart
+import kwiktwik.ratewatch.app.ui.components.LineChart
 import kwiktwik.ratewatch.app.ui.components.StockDetailsSheet
 import kwiktwik.ratewatch.app.ui.theme.*
 
@@ -48,7 +50,7 @@ fun WatchlistScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         Column(
             Modifier
@@ -66,10 +68,10 @@ fun WatchlistScreen(
                 }
                 
                 Text(
-                    "SONAR",
+                    stringResource(R.string.app_name).uppercase(),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.ExtraBold,
-                    color = AureumGold
+                    color = SonarGold
                 )
                 
                 IconButton(onClick = onNavigateToSearch) {
@@ -98,7 +100,7 @@ fun WatchlistScreen(
                             onClick = { viewModel.selectCategory(category) },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
-                            color = if (isSelected) AureumCard else Color.Transparent
+                            color = if (isSelected) SonarCard else Color.Transparent
                         ) {
                             Box(
                                 modifier = Modifier.padding(vertical = 10.dp),
@@ -214,7 +216,7 @@ fun WatchlistItem(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Row(
@@ -322,7 +324,7 @@ private fun EmptyWatchlist() {
     ) {
         Surface(
             shape = CircleShape,
-            color = AureumCard,
+            color = SonarCard,
             modifier = Modifier.size(100.dp),
             border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
         ) {

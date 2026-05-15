@@ -1,7 +1,8 @@
 package kwiktwik.ratewatch.app.data.repository
 
 import kwiktwik.ratewatch.app.data.model.*
-import kwiktwik.ratewatch.app.data.remote.RetrofitClient
+import kwiktwik.ratewatch.app.data.remote.GoldSilverApi
+import kwiktwik.ratewatch.app.data.remote.StocksApi
 import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategoriesData
 import kwiktwik.ratewatch.app.data.remote.CandlesData
 import kwiktwik.ratewatch.app.data.remote.ScrapeResponse
@@ -18,16 +19,14 @@ import javax.inject.Singleton
 
 @Singleton
 class PriceRepository @Inject constructor(
-    private val prefs: PreferencesRepository
+    private val goldSilverApi: GoldSilverApi,
+    private val stocksApi: StocksApi
 ) {
 
     suspend fun getGoldSilverPrices(): Result<GoldSilverResponse> = withContext(Dispatchers.IO) {
         runCatching {
-            RetrofitClient.goldSilverApi.getLatestPrices()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+            goldSilverApi.getLatestPrices()
+        }
     }
 
     /**
@@ -36,11 +35,8 @@ class PriceRepository @Inject constructor(
      */
     suspend fun triggerMetalsScrape(): Result<GoldSilverResponse> = withContext(Dispatchers.IO) {
         runCatching {
-            RetrofitClient.goldSilverApi.triggerScrape()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+            goldSilverApi.triggerScrape()
+        }
     }
 
     /**
@@ -48,11 +44,8 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getScraperHealth(): Result<ScraperHealthResponse> = withContext(Dispatchers.IO) {
         runCatching {
-            RetrofitClient.stocksApi.getHealth()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+            stocksApi.getHealth()
+        }
     }
 
     fun getStockQuotes(symbols: List<String>): Flow<Result<List<StockQuote>>> = flow {
@@ -67,9 +60,9 @@ class PriceRepository @Inject constructor(
 
             // Bulk fetch from Groww indices + global endpoints
             val allItems = mutableListOf<StockQuoteItem>()
-            runCatching { RetrofitClient.stocksApi.getGrowwIndices() }
+            runCatching { stocksApi.getGrowwIndices() }
                 .getOrNull()?.takeIf { it.success }?.data?.let { allItems.addAll(it) }
-            runCatching { RetrofitClient.stocksApi.getGrowwGlobal() }
+            runCatching { stocksApi.getGrowwGlobal() }
                 .getOrNull()?.takeIf { it.success }?.data?.let { allItems.addAll(it) }
 
             for (item in allItems) {
@@ -85,7 +78,7 @@ class PriceRepository @Inject constructor(
             val remaining = symbolSet - matchedSymbols
             for (sym in remaining) {
                 runCatching {
-                    val searchResp = RetrofitClient.stocksApi.searchGroww(sym, 1)
+                    val searchResp = stocksApi.searchGroww(sym, 1)
                     if (searchResp.success && searchResp.data.isNotEmpty()) {
                         getGrowwDetails(searchResp.data.first().searchId)
                             .getOrNull()?.let { matched.add(it) }
@@ -106,35 +99,26 @@ class PriceRepository @Inject constructor(
 
     suspend fun getStocksSummary(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getSummary()
+            val response = stocksApi.getSummary()
             if (!response.success) throw Exception("Stocks API returned failure")
             response.data.map { item -> item.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     suspend fun getLatestStocks(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getLatest()
+            val response = stocksApi.getLatest()
             if (!response.success) throw Exception("Stocks API returned failure")
             response.data.map { item -> item.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     suspend fun searchStocks(query: String): Result<List<SearchResultItem>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.search(query)
+            val response = stocksApi.search(query)
             if (!response.success) throw Exception("Stocks API returned failure")
             response.data
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     suspend fun getStockChart(
@@ -143,13 +127,10 @@ class PriceRepository @Inject constructor(
         range: String = "1d"
     ): Result<CandlesData?> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getChart(symbol, interval, range)
+            val response = stocksApi.getChart(symbol, interval, range)
             if (!response.success) throw Exception("Stocks API returned failure")
             response.data?.candles
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     // --- Groww-powered live market data (recommended primary source) ---
@@ -161,13 +142,10 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getGrowwIndianIndices(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getGrowwIndices()
+            val response = stocksApi.getGrowwIndices()
             if (!response.success) throw Exception("Groww indices endpoint failed")
             response.data.map { it.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     /**
@@ -176,13 +154,10 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getGrowwGlobalInstruments(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getGrowwGlobal()
+            val response = stocksApi.getGrowwGlobal()
             if (!response.success) throw Exception("Groww global endpoint failed")
             response.data.map { it.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     /**
@@ -190,13 +165,10 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getMarketCategories(): Result<GrowwMarketCategoriesData> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getMarketCategories()
+            val response = stocksApi.getMarketCategories()
             if (!response.success) throw Exception("Market categories endpoint failed")
             response.data
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     /**
@@ -204,26 +176,20 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getMarketData(type: String, index: String? = null): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getMarketData(type, index)
+            val response = stocksApi.getMarketData(type, index)
             if (!response.success) throw Exception("Market data endpoint failed")
             response.data.map { it.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
     /**
      * Searches for instruments using Groww's global search API.
      */
     suspend fun searchGroww(query: String): Result<List<GrowwSearchResultItem>> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.searchGroww(query)
+            val response = stocksApi.searchGroww(query)
             if (!response.success) throw Exception("Groww search endpoint failed")
             response.data
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
     /**
@@ -231,7 +197,7 @@ class PriceRepository @Inject constructor(
      */
     suspend fun getGrowwDetails(searchId: String): Result<StockQuote> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = RetrofitClient.stocksApi.getGrowwDetails(searchId)
+            val response = stocksApi.getGrowwDetails(searchId)
             if (!response.get("success").asBoolean) throw Exception("Groww details endpoint failed")
             val data = response.getAsJsonObject("data") ?: throw Exception("Details data missing")
 
@@ -524,23 +490,17 @@ class PriceRepository @Inject constructor(
                 nseScriptCode = nseCode, bseScriptCode = bseCode,
                 volume = volume, totalBuyQty = totalBuyQty, totalSellQty = totalSellQty
             )
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+        }
     }
 
-        /**
+    /**
      * Triggers an immediate background scrape of Groww market data.
      * Use sparingly — the scheduled + 6s cache already provides fresh data.
      */
     suspend fun triggerStocksScrape(): Result<ScrapeResponse> = withContext(Dispatchers.IO) {
         runCatching {
-            RetrofitClient.stocksApi.triggerScrape()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
+            stocksApi.triggerScrape()
+        }
     }
 
     private fun StockQuoteItem.toStockQuote(): StockQuote {

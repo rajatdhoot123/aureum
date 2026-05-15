@@ -19,28 +19,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import androidx.compose.ui.res.stringResource
+import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.data.model.*
 import kwiktwik.ratewatch.app.data.remote.GrowwMarketCategory
 import kwiktwik.ratewatch.app.data.remote.GrowwMarketIndex
 import kwiktwik.ratewatch.app.ui.stocks.StocksViewModel
 import kwiktwik.ratewatch.app.ui.stocks.StocksUiState
+import kwiktwik.ratewatch.app.ui.components.BarChart
+import kwiktwik.ratewatch.app.ui.components.LineChart
 import kwiktwik.ratewatch.app.ui.theme.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun HomeScreen(
@@ -67,7 +62,7 @@ fun HomeScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         Column(
             modifier = Modifier
@@ -76,7 +71,7 @@ fun HomeScreen(
                 .padding(horizontal = 20.dp)
         ) {
             // 1. Sonar Header
-            AureumHeader()
+            SonarHeader()
 
             Spacer(Modifier.height(24.dp))
 
@@ -165,7 +160,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun AureumHeader() {
+fun SonarHeader() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -176,10 +171,10 @@ fun AureumHeader() {
         }
         
         Text(
-            "SONAR",
+            stringResource(R.string.app_name).uppercase(),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
-            color = AureumGold,
+            color = SonarGold,
             letterSpacing = 1.sp
         )
 
@@ -192,7 +187,7 @@ fun AureumHeader() {
                 .clickable { /* TODO: Profile */ }
         ) {
             AsyncImage(
-                model = kwiktwik.ratewatch.app.R.drawable.user_profile,
+                model = R.drawable.user_profile,
                 contentDescription = "Profile",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -239,7 +234,7 @@ fun QuickActionCard(title: String, icon: androidx.compose.ui.graphics.vector.Ima
     Surface(
         modifier = modifier.height(110.dp),
         shape = RoundedCornerShape(20.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(
@@ -278,7 +273,7 @@ fun GoldPriceCard(uiState: HomeUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -297,7 +292,7 @@ fun GoldPriceCard(uiState: HomeUiState) {
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = AureumGold
+                            color = SonarGold
                         )
                     }
                     Spacer(Modifier.height(8.dp))
@@ -343,7 +338,7 @@ fun GoldPriceCard(uiState: HomeUiState) {
                     border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.MonetizationOn, contentDescription = null, tint = AureumGold, modifier = Modifier.size(28.dp))
+                        Icon(Icons.Default.MonetizationOn, contentDescription = null, tint = SonarGold, modifier = Modifier.size(28.dp))
                     }
                 }
             }
@@ -367,7 +362,7 @@ fun SilverPriceCard(uiState: HomeUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -448,7 +443,7 @@ fun IndicesRow(stocksState: StocksUiState) {
                                 .weight(1f)
                                 .height(145.dp)
                                 .clip(RoundedCornerShape(24.dp))
-                                .background(AureumCard.copy(alpha = 0.5f))
+                                .background(SonarCard.copy(alpha = 0.5f))
                         )
                     }
                 }
@@ -482,7 +477,7 @@ fun IndexCard(quote: StockQuote, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.height(145.dp), // Increased height for more data
         shape = RoundedCornerShape(24.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -575,57 +570,6 @@ fun IndexCard(quote: StockQuote, modifier: Modifier = Modifier) {
     }
 }
 
-// Keep the old one for empty state if needed, or update empty state to use a placeholder
-@Composable
-fun IndexCard(name: String, price: Double?, change: String, isPositive: Boolean = true, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.height(130.dp),
-        shape = RoundedCornerShape(24.dp),
-        color = AureumCard,
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    name,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White.copy(alpha = 0.6f)
-                )
-                Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = (if (isPositive) EmeraldGreen else RubyRed).copy(alpha = 0.1f)
-                ) {
-                    Text(
-                        "${if (isPositive) "↑" else "↓"} $change",
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = if (isPositive) EmeraldGreen else RubyRed
-                    )
-                }
-            }
-            Spacer(Modifier.height(12.dp))
-            Text(
-                if (price != null) "%,.2f".format(price) else "---",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            Spacer(Modifier.weight(1f))
-            LineChart(
-                data = if (isPositive) listOf(0.4f, 0.3f, 0.5f, 0.45f, 0.6f) else listOf(0.6f, 0.5f, 0.4f, 0.45f, 0.3f),
-                modifier = Modifier.fillMaxWidth().height(24.dp),
-                color = if (isPositive) EmeraldGreen else RubyRed
-            )
-        }
-    }
-}
-
 @Composable
 fun MarketInsightsSection(
     uiState: HomeUiState,
@@ -677,7 +621,7 @@ fun MarketInsightsSection(
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
-                        modifier = Modifier.background(AureumCard).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                        modifier = Modifier.background(SonarCard).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
                     ) {
                         indices.forEach { index ->
                             DropdownMenuItem(
@@ -726,7 +670,7 @@ fun MarketInsightsSection(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
-            color = AureumCard,
+            color = SonarCard,
             border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
@@ -756,53 +700,6 @@ fun MarketInsightsSection(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun TopPerformersSection(stocksState: StocksUiState) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(28.dp),
-        color = AureumCard,
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
-    ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier.size(8.dp).clip(CircleShape).background(EmeraldGreen)
-                )
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    "Top Performers",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
-            
-            Spacer(Modifier.height(24.dp))
-            
-            StockItem(
-                symbol = "RELI",
-                name = "Reliance Ind.",
-                sector = "Energy",
-                price = 2954.20,
-                change = "+1.85%",
-                isPositive = true
-            )
-            
-            HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
-            
-            StockItem(
-                symbol = "TCS",
-                name = "TCS Ltd.",
-                sector = "Technology",
-                price = 3980.50,
-                change = "+1.20%",
-                isPositive = true
-            )
         }
     }
 }
@@ -873,55 +770,4 @@ fun StockItem(symbol: String, name: String, sector: String, price: Double, chang
     }
 }
 
-@Composable
-fun BarChart(data: List<Float>, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier) {
-        val spacing = size.width / (data.size * 1.5f)
-        val barWidth = spacing * 0.8f
-        
-        data.forEachIndexed { index, value ->
-            val barHeight = size.height * value
-            drawRoundRect(
-                color = ChartGreen,
-                topLeft = Offset(index * spacing * 1.5f, size.height - barHeight),
-                size = androidx.compose.ui.geometry.Size(barWidth, barHeight),
-                cornerRadius = androidx.compose.ui.geometry.CornerRadius(4.dp.toPx())
-            )
-        }
-    }
-}
 
-@Composable
-fun LineChart(data: List<Float>, modifier: Modifier = Modifier, color: Color = ChartGreen) {
-    Canvas(modifier = modifier) {
-        val path = Path()
-        val spacing = size.width / (data.size - 1)
-        
-        data.forEachIndexed { index, value ->
-            val x = index * spacing
-            val y = size.height - (size.height * value)
-            if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
-        }
-        
-        drawPath(
-            path = path,
-            color = color,
-            style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
-        )
-        
-        // Gradient fill below path
-        val fillPath = Path().apply {
-            addPath(path)
-            lineTo(size.width, size.height)
-            lineTo(0f, size.height)
-            close()
-        }
-        
-        drawPath(
-            path = fillPath,
-            brush = Brush.verticalGradient(
-                colors = listOf(color.copy(alpha = 0.2f), Color.Transparent)
-            )
-        )
-    }
-}

@@ -1,9 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">સોનાર</string>
+    <string name="tagline">સોનું • ચાંદી • શેર • લાઇવ ભારત</string>
+
+    <!-- Onboarding -->
     <string name="welcome">સોનારમાં આપનું સ્વાગત છે</string>
     <string name="choose_language">તમારી ભાષા પસંદ કરો</string>
+    <string name="language_subtitle">તમે આ ગમે ત્યારે સેટિંગ્સમાં બદલી શકો છો</string>
+    <string name="get_started">શરૂ કરો</string>
+    <string name="skip">છોડો</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">હોમ</string>
+    <string name="nav_watchlist">વોચલિસ્ટ</string>
+    <string name="nav_alerts">એલર્ટ</string>
+    <string name="nav_markets">માર્કેટ</string>
+    <string name="nav_settings">સેટિંગ્સ</string>
+
+    <!-- Gold & Silver -->
     <string name="gold_22k">22K સોનું</string>
     <string name="gold_24k">24K સોનું</string>
     <string name="silver">ચાંદી</string>
+    <string name="per_10_grams">પ્રતિ 10 ગ્રામ</string>
+    <string name="per_kg">પ્રતિ કિલો</string>
+    <string name="last_updated">છેલ્લે અપડેટ</string>
+    <string name="select_city">શહેર પસંદ કરો</string>
+    <string name="india_approx">ભારત (અંદાજિત)</string>
+    <string name="pull_to_refresh">રિફ્રેશ કરવા ખેંચો</string>
+    <string name="refresh">રિફ્રેશ</string>
+    <string name="no_data">કોઈ ડેટા ઉપલબ્ધ નથી</string>
+
+    <!-- Stocks -->
+    <string name="stocks">શેર અને ઇન્ડેક્સ</string>
+    <string name="nifty_50">નિફ્ટી 50</string>
+    <string name="sensex">બીએસઈ સેન્સેક્સ</string>
+    <string name="bank_nifty">બેંક નિફ્ટી</string>
+    <string name="add_to_watchlist">વોચલિસ્ટમાં ઉમેરો</string>
+    <string name="live_data">લાઇવ</string>
+    <string name="coming_soon">વધુ શેર ટૂંક સમયમાં</string>
+
+    <!-- Watchlist -->
+    <string name="watchlist">વોચલિસ્ટ</string>
+    <string name="empty_watchlist">તમારી વોચલિસ્ટ ખાલી છે</string>
+    <string name="add_symbols">સોનું, ચાંદી કે શેર ટ્રેક કરવા ઉમેરો</string>
+
+    <!-- Settings -->
+    <string name="settings">સેટિંગ્સ</string>
+    <string name="language">ભાષા</string>
+    <string name="change_language">ભાષા બદલો</string>
+    <string name="theme">થીમ</string>
+    <string name="dark_mode">ડાર્ક મોડ</string>
+    <string name="system_default">સિસ્ટમ ડિફોલ્ટ</string>
+    <string name="about">વિશે</string>
+    <string name="version">વર્ઝન</string>
+    <string name="data_source">ડેટા સ્ત્રોત</string>
+    <string name="goodreturns">Goodreturns.in દ્વારા</string>
+    <string name="rate_us">Play Store પર રેટ કરો</string>
+    <string name="share_app">એપ શેર કરો</string>
+    <string name="privacy_policy">ગોપનીયતા નીતિ</string>
+    <string name="settings_subtitle">પસંદગીઓ • તમારું વ્યક્તિગત વેલ્થ રડાર</string>
+    <string name="about_subtitle">સોનાર v1.0.0 • ભારત માટે બનાવેલું</string>
+    <string name="data_source_description">સોનું અને ચાંદી: Goodreturns.in\nશેર: KwikTwik Stocks API</string>
+    <string name="regional_language_note">હિન્દી, તમિલ, તેલુગુ, બંગાળી, મરાઠી, ગુજરાતી, કન્નડ, મલયાલમ અને પંજાબી ભાષામાં સહાય ઉપલબ્ધ છે.</string>
+
+    <!-- Common -->
+    <string name="retry">ફરી પ્રયાસ કરો</string>
+    <string name="cancel">રદ કરો</string>
+    <string name="save">સેવ કરો</string>
+    <string name="close">બંધ કરો</string>
+    <string name="error_generic">કંઈક ખોટું થયું. કૃપા કરી ફરી પ્રયાસ કરો.</string>
+    <string name="no_internet">ઇન્ટરનેટ કનેક્શન નથી</string>
+
+    <!-- Dashboard -->
+    <string name="good_morning">શુભ સવાર</string>
+    <string name="good_afternoon">શુભ બપોર</string>
+    <string name="good_evening">શુભ સાંજ</string>
+    <string name="market_overview">બજાર ઝાંખી</string>
+    <string name="savings_summary">બચત સારાંશ</string>
+    <string name="physical_gold">ભૌતિક સોનું</string>
+    <string name="global_equities">ગ્લોબલ ઇક્વિટી</string>
+    <string name="cash_reserves">રોકડ અનામત</string>
+    <string name="profit">નફો</string>
+    <string name="loss">નુકસાન</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">ઝાંખી</string>
+    <string name="tab_portfolio">પોર્ટફોલિયો</string>
+    <string name="tab_alerts">એલર્ટ</string>
+    <string name="tab_news">સમાચાર</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">ભાવ એલર્ટ</string>
+    <string name="alerts_subtitle">ભાવ તમારા લક્ષ્ય સુધી પહોંચે ત્યારે સૂચના મેળવો</string>
+    <string name="create_alert">એલર્ટ બનાવો</string>
+    <string name="notify_me_when">મને જણાવો જ્યારે…</string>
+    <string name="select_asset">એસેટ પસંદ કરો</string>
+    <string name="price_above">ભાવ ઉપર જાય</string>
+    <string name="price_below">ભાવ નીચે જાય</string>
+    <string name="set_target">લક્ષ્ય ભાવ સેટ કરો</string>
+    <string name="active_alerts">સક્રિય એલર્ટ</string>
+    <string name="no_alerts">હજુ કોઈ એલર્ટ નથી</string>
+    <string name="alert_created">એલર્ટ સફળતાપૂર્વક બનાવવામાં આવ્યું</string>
+    <string name="delete_alert">કાઢી નાખો</string>
+
+    <!-- News -->
+    <string name="market_intelligence">બજાર માહિતી</string>
+    <string name="news_subtitle">ભારતીય અર્થતંત્ર, ફુગાવો અને કોમોડિટી પર માહિતી</string>
+    <string name="read_more">વધુ વાંચો</string>
+    <string name="no_news">કોઈ સમાચાર ઉપલબ્ધ નથી</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">પોર્ટફોલિયો મૂલ્ય</string>
+    <string name="total_pnl">કુલ નફો/નુકસાન</string>
+    <string name="add_holding">હોલ્ડિંગ ઉમેરો</string>
+    <string name="current_value">વર્તમાન મૂલ્ય</string>
+    <string name="your_holdings">તમારી હોલ્ડિંગ્સ</string>
+    <string name="no_holdings">હજુ કોઈ હોલ્ડિંગ નથી</string>
+    <string name="add_first_holding">બચત ટ્રેક કરવા તમારી પહેલી એસેટ ઉમેરો</string>
 </resources>

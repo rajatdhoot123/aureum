@@ -1,13 +1,16 @@
 package kwiktwik.ratewatch.app
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import kwiktwik.ratewatch.app.ui.navigation.AureumNavigation
-import kwiktwik.ratewatch.app.ui.theme.AureumTheme
+import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
+import kwiktwik.ratewatch.app.ui.navigation.SonarNavigation
+import kwiktwik.ratewatch.app.ui.theme.SonarTheme
+import kwiktwik.ratewatch.app.util.LanguageManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -15,22 +18,23 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var languageManager: kwiktwik.ratewatch.app.util.LanguageManager
+    lateinit var languageManager: LanguageManager
+
+    @Inject
+    lateinit var prefs: PreferencesRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("Aureum", "=== MainActivity onCreate started ===")
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         languageManager.applyLanguage(this)
-        Log.d("Aureum", "Language applied, setting Compose content")
 
         setContent {
-            AureumTheme(darkTheme = true) {
-                AureumNavigation()
+            val isDarkTheme by prefs.isDarkThemeFlow().collectAsState(initial = true)
+            SonarTheme(darkTheme = isDarkTheme ?: true) {
+                SonarNavigation()
             }
         }
-        Log.d("Aureum", "=== setContent called ===")
     }
 }

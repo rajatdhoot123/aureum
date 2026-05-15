@@ -7,40 +7,47 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * Builds OkHttp + Retrofit instances for the app's APIs.
+ * Instances are provided via Hilt in [kwiktwik.ratewatch.app.di.AppModule].
+ */
 object RetrofitClient {
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+    private fun buildBaseUrl(raw: String): String =
+        if (raw.endsWith("/")) "${raw}scraper/" else "$raw/scraper/"
+
+    fun buildOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                    else HttpLoggingInterceptor.Level.NONE
+        }
+        return OkHttpClient.Builder()
+            .addInterceptor(AppIdInterceptor(BuildConfig.APPLICATION_ID))
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .header("User-Agent", "Sonar-Android/${BuildConfig.VERSION_NAME}")
+                    .build()
+                chain.proceed(request)
+            }
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .build()
     }
 
-    private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(AppIdInterceptor("kwiktwik.ratewatch.app"))
-        .addInterceptor(loggingInterceptor)
-        .addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                .header("User-Agent", "Sonar-Android/1.0")
-                .build()
-            chain.proceed(request)
-        }
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
-        .build()
-
-    val goldSilverApi: GoldSilverApi by lazy {
+    fun buildGoldSilverApi(client: OkHttpClient): GoldSilverApi =
         Retrofit.Builder()
-            .baseUrl(BuildConfig.GOLD_SILVER_BASE_URL.let { if (it.endsWith("/")) "${it}scraper/" else "$it/scraper/" })
-            .client(okHttpClient)
+            .baseUrl(buildBaseUrl(BuildConfig.GOLD_SILVER_BASE_URL))
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GoldSilverApi::class.java)
-    }
 
-    val stocksApi: StocksApi by lazy {
+    fun buildStocksApi(client: OkHttpClient): StocksApi =
         Retrofit.Builder()
-            .baseUrl(BuildConfig.STOCK_API_BASE_URL.let { if (it.endsWith("/")) "${it}scraper/" else "$it/scraper/" })
-            .client(okHttpClient)
+            .baseUrl(buildBaseUrl(BuildConfig.STOCK_API_BASE_URL))
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(StocksApi::class.java)
-    }
 }

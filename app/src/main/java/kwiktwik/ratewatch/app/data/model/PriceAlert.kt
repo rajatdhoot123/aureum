@@ -1,7 +1,6 @@
 package kwiktwik.ratewatch.app.data.model
 
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.UUID
 
 enum class AlertAssetType(val displayName: String) {

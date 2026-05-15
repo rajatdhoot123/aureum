@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kwiktwik.ratewatch.app.data.model.AlertAssetType
 import kwiktwik.ratewatch.app.data.model.AlertCondition
+import kwiktwik.ratewatch.app.data.model.CityPrice
 import kwiktwik.ratewatch.app.data.model.PriceAlert
 import kwiktwik.ratewatch.app.ui.theme.*
 import java.text.SimpleDateFormat
@@ -54,7 +55,7 @@ fun AlertsScreen(viewModel: AlertsViewModel) {
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -183,7 +184,7 @@ private fun CurrentPricesCard(uiState: AlertsUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -205,7 +206,7 @@ private fun CurrentPricesCard(uiState: AlertsUiState) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    PricePill("Gold 24K", prices?.gold24kPer10g?.let { "₹${"%,d".format(it)}" } ?: "---", AureumGold)
+                    PricePill("Gold 24K", prices?.gold24kPer10g?.let { "₹${"%,d".format(it)}" } ?: "---", SonarGold)
                     PricePill("Gold 22K", prices?.gold22kPer10g?.let { "₹${"%,d".format(it)}" } ?: "---", GoldAccent)
                     PricePill("Silver", prices?.silverPerKg?.let { "₹${"%,d".format(it)}" } ?: "---", SilverAccent)
                 }
@@ -236,7 +237,7 @@ private fun AlertItem(
             .fillMaxWidth()
             .animateContentSize(),
         shape = RoundedCornerShape(20.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, if (isTriggered) EmeraldGreen.copy(alpha = 0.3f) else Color.White.copy(alpha = 0.05f))
     ) {
         Row(
@@ -311,7 +312,7 @@ private fun AlertItem(
 
 @Composable
 private fun CreateAlertDialog(
-    currentPrices: kwiktwik.ratewatch.app.data.model.CityPrice?,
+    currentPrices: CityPrice?,
     onDismiss: () -> Unit,
     onCreate: (AlertAssetType, AlertCondition, Double) -> Unit
 ) {
@@ -333,7 +334,7 @@ private fun CreateAlertDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AureumSurface,
+        containerColor = SonarSurface,
         shape = RoundedCornerShape(28.dp),
         title = {
             Text("Create Alert", fontWeight = FontWeight.ExtraBold, color = Color.White)

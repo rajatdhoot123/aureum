@@ -31,7 +31,7 @@ import kwiktwik.ratewatch.app.ui.markets.MarketsScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistScreen
 import kwiktwik.ratewatch.app.ui.watchlist.WatchlistViewModel
 import kwiktwik.ratewatch.app.ui.theme.GlassMorphism
-import kwiktwik.ratewatch.app.ui.theme.AureumBg
+import kwiktwik.ratewatch.app.ui.theme.SonarBg
 import kwiktwik.ratewatch.app.ui.theme.GoldAccent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.icons.Icons
@@ -55,7 +55,7 @@ private val bottomNavItems = listOf(
 )
 
 @Composable
-fun AureumNavigation() {
+fun SonarNavigation() {
     val navController = rememberNavController()
     // Shared state to pass StockQuote to detail screen (avoids serialization)
     var pendingDetailQuote by remember { mutableStateOf<StockQuote?>(null) }
@@ -154,7 +154,7 @@ private fun MainScaffold(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp),
-                color = AureumBg,
+                color = SonarBg,
                 border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
             ) {
                 NavigationBar(

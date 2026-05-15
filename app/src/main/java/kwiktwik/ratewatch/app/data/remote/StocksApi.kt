@@ -278,8 +278,3 @@ data class GrowwSearchResultItem(
     val id: String? = null
 )
 
-data class GrowwDetailsResponse(
-    val success: Boolean,
-    val data: StockQuoteItem? = null,
-    val source: String? = null
-)

@@ -57,4 +57,61 @@
     <string name="close">మూసివేయి</string>
     <string name="error_generic">ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
     <string name="no_internet">ఇంటర్నెట్ కనెక్షన్ లేదు</string>
+
+    <!-- Navigation (missing) -->
+    <string name="nav_alerts">అలర్ట్‌లు</string>
+    <string name="nav_settings">సెట్టింగ్స్</string>
+
+    <!-- Dashboard -->
+    <string name="good_morning">శుభోదయం</string>
+    <string name="good_afternoon">శుభ మధ్యాహ్నం</string>
+    <string name="good_evening">శుభ సాయంత్రం</string>
+    <string name="market_overview">మార్కెట్ అవలోకనం</string>
+    <string name="savings_summary">పొదుపు సారాంశం</string>
+    <string name="physical_gold">భౌతిక బంగారం</string>
+    <string name="global_equities">గ్లోబల్ ఈక్విటీలు</string>
+    <string name="cash_reserves">నగదు నిల్వలు</string>
+    <string name="profit">లాభం</string>
+    <string name="loss">నష్టం</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">అవలోకనం</string>
+    <string name="tab_portfolio">పోర్ట్‌ఫోలియో</string>
+    <string name="tab_alerts">అలర్ట్‌లు</string>
+    <string name="tab_news">వార్తలు</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">ధర అలర్ట్‌లు</string>
+    <string name="alerts_subtitle">ధరలు మీ లక్ష్యానికి చేరినప్పుడు నోటిఫికేషన్ పొందండి</string>
+    <string name="create_alert">అలర్ట్ సృష్టించు</string>
+    <string name="notify_me_when">నాకు తెలియజేయండి…</string>
+    <string name="select_asset">ఆస్తిని ఎంచుకోండి</string>
+    <string name="price_above">ధర పైకి వెళ్తే</string>
+    <string name="price_below">ధర కిందికి వెళ్తే</string>
+    <string name="set_target">లక్ష్య ధరను సెట్ చేయండి</string>
+    <string name="active_alerts">యాక్టివ్ అలర్ట్‌లు</string>
+    <string name="no_alerts">ఇంకా అలర్ట్‌లు లేవు</string>
+    <string name="alert_created">అలర్ట్ విజయవంతంగా సృష్టించబడింది</string>
+    <string name="delete_alert">తొలగించు</string>
+
+    <!-- News -->
+    <string name="market_intelligence">మార్కెట్ ఇంటెలిజెన్స్</string>
+    <string name="news_subtitle">భారత ఆర్థిక వ్యవస్థ, ద్రవ్యోల్బణం మరియు కమోడిటీలపై అంతర్దృష్టులు</string>
+    <string name="read_more">మరింత చదవండి</string>
+    <string name="no_news">వార్తలు అందుబాటులో లేవు</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">పోర్ట్‌ఫోలియో విలువ</string>
+    <string name="total_pnl">మొత్తం లాభం/నష్టం</string>
+    <string name="add_holding">హోల్డింగ్ జోడించు</string>
+    <string name="current_value">ప్రస్తుత విలువ</string>
+    <string name="your_holdings">మీ హోల్డింగ్‌లు</string>
+    <string name="no_holdings">ఇంకా హోల్డింగ్‌లు లేవు</string>
+    <string name="add_first_holding">పొదుపును ట్రాక్ చేయడానికి మీ మొదటి ఆస్తిని జోడించండి</string>
+
+    <!-- Settings extras -->
+    <string name="settings_subtitle">ప్రాధాన్యతలు • మీ వ్యక్తిగత వెల్త్ రాడార్</string>
+    <string name="about_subtitle">సోనార్ v1.0.0 • భారతదేశం కోసం రూపొందించబడింది</string>
+    <string name="data_source_description">బంగారం మరియు వెండి: Goodreturns.in\nస్టాక్స్: KwikTwik Stocks API</string>
+    <string name="regional_language_note">హిందీ, తమిళం, తెలుగు, బెంగాలీ, మరాఠీ, గుజరాతీ, కన్నడ, మలయాళం మరియు పంజాబీ భాషల్లో ప్రాంతీయ భాషా సపోర్ట్ అందుబాటులో ఉంది.</string>
 </resources>

@@ -36,7 +36,7 @@ fun MarketsScreen(viewModel: MarketsViewModel) {
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         if (uiState.isLoading && uiState.currentCity == null) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -219,7 +219,7 @@ private fun CurrentLocationCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.08f))
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -325,7 +325,7 @@ private fun CityPriceCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Row(
@@ -404,7 +404,7 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground(),
+            .sonarBackground(),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

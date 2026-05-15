@@ -43,7 +43,7 @@ fun StocksScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         Column(
             Modifier

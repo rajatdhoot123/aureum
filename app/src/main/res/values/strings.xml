@@ -58,6 +58,10 @@
     <string name="rate_us">Rate us on Play Store</string>
     <string name="share_app">Share App</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="settings_subtitle">Preferences • Your personal wealth radar</string>
+    <string name="about_subtitle">Sonar v1.0.0 • Made for India</string>
+    <string name="data_source_description">Gold &amp; Silver: Goodreturns.in\nStocks: KwikTwik Stocks API</string>
+    <string name="regional_language_note">Regional language support available in Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.</string>
 
     <!-- Common -->
     <string name="retry">Retry</string>
@@ -66,24 +70,6 @@
     <string name="close">Close</string>
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="no_internet">No internet connection</string>
-
-    <!-- Sonar Dashboard -->
-    <string name="good_morning">Good morning</string>
-    <string name="good_afternoon">Good afternoon</string>
-    <string name="good_evening">Good evening</string>
-    <string name="market_overview">Market Overview</string>
-    <string name="savings_summary">Savings Summary</string>
-    <string name="physical_gold">Physical Gold</string>
-    <string name="global_equities">Global Equities</string>
-    <string name="cash_reserves">Cash Reserves</string>
-    <string name="profit">Profit</string>
-    <string name="loss">Loss</string>
-
-    <!-- Tabs -->
-    <string name="tab_overview">Overview</string>
-    <string name="tab_portfolio">Portfolio</string>
-    <string name="tab_alerts">Alerts</string>
-    <string name="tab_news">News</string>
 
     <!-- Alerts -->
     <string name="alerts_title">Price Alerts</string>
@@ -99,18 +85,4 @@
     <string name="alert_created">Alert created successfully</string>
     <string name="delete_alert">Delete</string>
 
-    <!-- News -->
-    <string name="market_intelligence">Market Intelligence</string>
-    <string name="news_subtitle">Insights on Indian economy, inflation &amp; commodities</string>
-    <string name="read_more">Read more</string>
-    <string name="no_news">No news available</string>
-
-    <!-- Portfolio -->
-    <string name="portfolio_value">Portfolio Value</string>
-    <string name="total_pnl">Total P&amp;L</string>
-    <string name="add_holding">Add Holding</string>
-    <string name="current_value">Current Value</string>
-    <string name="your_holdings">Your Holdings</string>
-    <string name="no_holdings">No holdings yet</string>
-    <string name="add_first_holding">Add your first asset to track savings</string>
 </resources>

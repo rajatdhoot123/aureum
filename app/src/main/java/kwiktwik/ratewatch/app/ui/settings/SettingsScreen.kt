@@ -15,6 +15,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.ui.theme.*
 import kwiktwik.ratewatch.app.util.Language
 
@@ -30,7 +32,7 @@ fun SettingsScreen(
     Box(
         Modifier
             .fillMaxSize()
-            .aureumBackground()
+            .sonarBackground()
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -39,13 +41,13 @@ fun SettingsScreen(
         ) {
             item {
                 Text(
-                    text = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.settings),
+                    text = stringResource(R.string.settings),
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White
                 )
                 Text(
-                    "Preferences • Your personal wealth radar",
+                    stringResource(R.string.settings_subtitle),
                     style = MaterialTheme.typography.bodyMedium, 
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -56,7 +58,7 @@ fun SettingsScreen(
             item {
                 SettingsItem(
                     emoji = "🌐",
-                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.language),
+                    title = stringResource(R.string.language),
                     subtitle = currentLanguage.nativeName,
                     onClick = { showLanguageDialog = true }
                 )
@@ -66,8 +68,8 @@ fun SettingsScreen(
             item {
                 SettingsItem(
                     emoji = "ℹ️",
-                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.about),
-                    subtitle = "Sonar v1.0.0 • Made for India",
+                    title = stringResource(R.string.about),
+                    subtitle = stringResource(R.string.about_subtitle),
                     onClick = {}
                 )
             }
@@ -75,8 +77,8 @@ fun SettingsScreen(
             item {
                 SettingsItem(
                     emoji = "📡",
-                    title = androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.data_source),
-                    subtitle = "Gold & Silver: Goodreturns.in\nStocks: KwikTwik Stocks API",
+                    title = stringResource(R.string.data_source),
+                    subtitle = stringResource(R.string.data_source_description),
                     onClick = {}
                 )
             }
@@ -84,7 +86,7 @@ fun SettingsScreen(
             item { 
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    "Regional language support available in Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, and Punjabi.",
+                    stringResource(R.string.regional_language_note),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -154,7 +156,7 @@ private fun LanguagePickerDialog(
         onDismissRequest = onDismiss,
         title = { 
             Text(
-                androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.change_language),
+                stringResource(R.string.change_language),
                 fontWeight = FontWeight.ExtraBold
             ) 
         },
@@ -187,7 +189,7 @@ private fun LanguagePickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(androidx.compose.ui.res.stringResource(kwiktwik.ratewatch.app.R.string.close), fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.close), fontWeight = FontWeight.Bold)
             }
         }
     )

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
-class AureumApplication : Application(), Configuration.Provider {
+class SonarApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
@@ -28,7 +28,7 @@ class AureumApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("Aureum", "=== Application onCreate ===")
+        Log.d(TAG, "=== Application onCreate ===")
         createNotificationChannel()
         schedulePriceAlertWork()
     }
@@ -57,6 +57,11 @@ class AureumApplication : Application(), Configuration.Provider {
             ExistingPeriodicWorkPolicy.KEEP,
             request
         )
-        Log.d("Aureum", "Price alert periodic work scheduled")
+        Log.d(TAG, "Price alert periodic work scheduled")
+    }
+
+    companion object {
+        const val TAG = "Sonar"
+        const val APP_NAME = "Sonar"
     }
 }

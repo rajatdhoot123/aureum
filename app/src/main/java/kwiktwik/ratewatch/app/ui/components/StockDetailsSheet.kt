@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kwiktwik.ratewatch.app.data.model.StockQuote
-import kwiktwik.ratewatch.app.ui.home.LineChart
+import kwiktwik.ratewatch.app.ui.components.LineChart
 import kwiktwik.ratewatch.app.ui.theme.*
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
@@ -38,7 +38,7 @@ fun StockDetailsSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        containerColor = AureumSurface,
+        containerColor = SonarSurface,
         dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) },
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
     ) {
@@ -156,7 +156,7 @@ fun StockDetailsSheet(
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    color = AureumCard,
+                    color = SonarCard,
                     border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -188,7 +188,7 @@ fun StockDetailsSheet(
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    color = AureumCard,
+                    color = SonarCard,
                     border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
                 ) {
                     Text(
@@ -209,7 +209,7 @@ fun StockDetailsSheet(
                     Surface(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                         shape = RoundedCornerShape(16.dp),
-                        color = AureumCard,
+                        color = SonarCard,
                         border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
                     ) {
                         Row(
@@ -249,7 +249,7 @@ private fun ReturnCard(label: String, value: String, modifier: Modifier = Modifi
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(
@@ -268,7 +268,7 @@ private fun StatCard(label: String, value: String, modifier: Modifier = Modifier
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        color = AureumCard,
+        color = SonarCard,
         border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

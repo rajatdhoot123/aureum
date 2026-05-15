@@ -1,8 +1,6 @@
 package kwiktwik.ratewatch.app.worker
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -18,14 +16,15 @@ import dagger.assisted.AssistedInject
 import kwiktwik.ratewatch.app.R
 import kwiktwik.ratewatch.app.data.model.AlertAssetType
 import kwiktwik.ratewatch.app.data.model.PriceAlert
-import kwiktwik.ratewatch.app.data.remote.RetrofitClient
+import kwiktwik.ratewatch.app.data.remote.GoldSilverApi
 import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
 
 @HiltWorker
 class PriceAlertWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val prefs: PreferencesRepository
+    private val prefs: PreferencesRepository,
+    private val goldSilverApi: GoldSilverApi
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -45,7 +44,7 @@ class PriceAlertWorker @AssistedInject constructor(
 
         // Fetch current gold/silver prices
         val prices = try {
-            RetrofitClient.goldSilverApi.getLatestPrices()
+            goldSilverApi.getLatestPrices()
         } catch (e: Exception) {
             Log.e(TAG, "Failed to fetch prices", e)
             return Result.retry()
@@ -84,8 +83,6 @@ class PriceAlertWorker @AssistedInject constructor(
             != PackageManager.PERMISSION_GRANTED
         ) return
 
-        ensureChannel()
-
         val title = "${alert.assetType.displayName} Alert"
         val body = "${alert.assetType.displayName} ${alert.condition.displayName} " +
                 "₹${"%,.0f".format(alert.targetPrice)}! Current: ₹${"%,.0f".format(currentPrice)}"
@@ -101,17 +98,4 @@ class PriceAlertWorker @AssistedInject constructor(
         NotificationManagerCompat.from(applicationContext).notify(notificationId++, notification)
     }
 
-    private fun ensureChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Price Alerts",
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = "Notifications when prices hit your target"
-            }
-            val manager = applicationContext.getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-        }
-    }
 }

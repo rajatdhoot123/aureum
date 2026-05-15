@@ -1,6 +1,5 @@
 package kwiktwik.ratewatch.app.ui.startup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,9 +16,6 @@ class StartupViewModel @Inject constructor(
      * than collecting a StateFlow.
      */
     suspend fun isOnboardingCompleted(): Boolean {
-        Log.d("Aureum", "StartupViewModel: Reading onboarding status from DataStore...")
-        val completed = prefs.isOnboardingCompletedFlow().first()
-        Log.d("Aureum", "StartupViewModel: isOnboardingCompleted = $completed")
-        return completed
+        return prefs.isOnboardingCompletedFlow().first()
     }
 }

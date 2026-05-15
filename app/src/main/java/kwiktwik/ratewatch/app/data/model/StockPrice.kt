@@ -187,5 +187,5 @@ object PopularStocks {
         StockSymbol("HDFCGOLD.NS", "HDFC Gold ETF"),
     )
 
-    val all = indices + stocks
+    val all = indices + stocks + metals
 }

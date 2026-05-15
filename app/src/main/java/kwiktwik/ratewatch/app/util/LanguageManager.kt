@@ -7,13 +7,14 @@ import android.os.Build
 import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import kwiktwik.ratewatch.app.data.repository.PreferencesRepository
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LanguageManager @Inject constructor(
-    private val prefs: kwiktwik.ratewatch.app.data.repository.PreferencesRepository
+    private val prefs: PreferencesRepository
 ) {
     val supportedLanguages = listOf(
         Language("en", "English", "English"),
@@ -72,14 +73,19 @@ class LanguageManager @Inject constructor(
     }
 
     fun changeAppLanguage(activity: Activity, languageCode: String) {
-        // Note: For simplicity, language change requires activity restart in most cases
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val localeList = LocaleListCompat.forLanguageTags(languageCode)
             AppCompatDelegate.setApplicationLocales(localeList)
         } else {
+            // Apply locale to the running configuration before recreating,
+            // so the new Activity instance picks up the correct resources.
+            val locale = Locale(languageCode)
+            Locale.setDefault(locale)
+            val config = Configuration(activity.resources.configuration)
+            config.setLocale(locale)
+            @Suppress("DEPRECATION")
+            activity.resources.updateConfiguration(config, activity.resources.displayMetrics)
             activity.recreate()
         }
     }
 }
-
-

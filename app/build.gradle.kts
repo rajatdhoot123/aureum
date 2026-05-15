@@ -29,10 +29,6 @@ android {
         versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-
         // API Base URLs - loaded from local.properties (gitignored)
         buildConfigField("String", "GOLD_SILVER_BASE_URL", "\"$goldSilverBaseUrl\"")
         buildConfigField("String", "STOCK_API_BASE_URL", "\"$stockApiBaseUrl\"")
@@ -74,7 +70,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
+
     }
 
     buildFeatures {
@@ -89,9 +85,7 @@ android {
         }
     }
 
-    lint {
-        disable += "NullSafeMutableLiveData"
-    }
+
 }
 
 dependencies {
