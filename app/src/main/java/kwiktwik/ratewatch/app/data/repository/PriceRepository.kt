@@ -317,15 +317,30 @@ class PriceRepository @Inject constructor(
             if (data.has("etfPeersData") && !data.get("etfPeersData").isJsonNull && data.has("companyHeadersByIsin")) {
                 val ep = data.getAsJsonObject("etfPeersData")
                 val hm = data.getAsJsonObject("companyHeadersByIsin")
+                val lpd = if (data.has("livePriceData")) data.getAsJsonObject("livePriceData") else null
                 val arr = ep.getAsJsonArray("peers")
                 if (arr != null) {
                     etfPeers = (0 until arr.size()).mapNotNull { i ->
                         val p = arr.get(i).asJsonObject
-                        val isin = p.get("isin")?.takeIf { !it.isJsonNull }?.asString ?: return@mapNotNull null
+                        val peerIsin = p.get("isin")?.takeIf { !it.isJsonNull }?.asString ?: return@mapNotNull null
                         val er = p.get("expenseRatio")?.takeIf { !it.isJsonNull }?.asString?.let { "$it%" } ?: "N/A"
-                        val ph = hm.getAsJsonObject(isin)
-                        val n = ph?.get("displayName")?.takeIf { !it.isJsonNull }?.asString ?: ph?.get("shortName")?.takeIf { !it.isJsonNull }?.asString ?: isin
-                        PeerInfo(n, er, isin)
+                        val peerAum = p.get("aumInCrores")?.takeIf { !it.isJsonNull }?.asDouble
+                        val peerTe = p.get("trackingError")?.takeIf { !it.isJsonNull }?.asDouble
+                        val peerRet1Y = p.get("return1Y")?.takeIf { !it.isJsonNull }?.asDouble
+                        val ph = hm.getAsJsonObject(peerIsin)
+                        val n = ph?.get("displayName")?.takeIf { !it.isJsonNull }?.asString ?: ph?.get("shortName")?.takeIf { !it.isJsonNull }?.asString ?: peerIsin
+                        val peerLogo = ph?.get("logoUrl")?.takeIf { !it.isJsonNull }?.asString
+                        val peerNse = ph?.get("nseScriptCode")?.takeIf { !it.isJsonNull }?.asString
+                        val peerBse = ph?.get("bseScriptCode")?.takeIf { !it.isJsonNull }?.asString
+                        val peerSym = peerNse ?: peerBse
+                        var peerLtp: Double? = null; var peerDc: Double? = null; var peerDcp: Double? = null
+                        if (lpd != null && peerSym != null && lpd.has(peerSym)) {
+                            val pp = lpd.getAsJsonObject(peerSym)
+                            peerLtp = pp.get("ltp")?.takeIf { !it.isJsonNull }?.asDouble
+                            peerDc = pp.get("dayChange")?.takeIf { !it.isJsonNull }?.asDouble
+                            peerDcp = pp.get("dayChangePerc")?.takeIf { !it.isJsonNull }?.asDouble
+                        }
+                        PeerInfo(n, er, peerIsin, peerLogo, peerLtp, peerDc, peerDcp, peerRet1Y, peerAum, peerTe)
                     }
                 }
             }
@@ -486,8 +501,11 @@ class PriceRepository @Inject constructor(
                 instrumentType = header.get("type")?.takeIf { !it.isJsonNull }?.asString,
                 source = "groww.in", gsin = header.get("isin")?.takeIf { !it.isJsonNull }?.asString,
                 aum = aum, expenseRatio = expenseRatio, trackingError = trackingError, nav = nav,
-                return1M = return1M, return6M = return6M, return1Y = return1Y,
+                return1M = return1M, return3M = return3M, return6M = return6M,
+                return1Y = return1Y, returnAll = returnAll,
                 description = description, peers = etfPeers,
+                fundManagers = fundManagers, amc = etfAmc, foundationDate = foundationDate,
+                benchmarkIndex = benchmarkIndex, etfCategory = etfCategory,
                 fullName = fullName, headquarters = headquarters, ceo = ceo, foundedYear = foundedYear,
                 businessSummary = businessSummary, websiteUrl = websiteUrl, industryName = industryName,
                 cappedType = cappedType, marketCap = marketCap, peRatio = peRatio, pbRatio = pbRatio,
