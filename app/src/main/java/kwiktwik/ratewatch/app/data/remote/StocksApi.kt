@@ -7,9 +7,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface StocksApi {
-    @GET("stocks/quote")
-    suspend fun getQuotes(@Query("symbols") symbols: String): StocksQuoteResponse
-
     @GET("stocks/chart/{symbol}")
     suspend fun getChart(
         @Path("symbol") symbol: String,
@@ -60,14 +57,6 @@ interface StocksApi {
         @Query("index") index: String? = null
     ): GrowwMarketDataResponse
 }
-
-// --- Quote Endpoint ---
-
-data class StocksQuoteResponse(
-    val success: Boolean,
-    val count: Int = 0,
-    val data: List<StockQuoteItem> = emptyList()
-)
 
 data class StockQuoteItem(
     val symbol: String? = null,

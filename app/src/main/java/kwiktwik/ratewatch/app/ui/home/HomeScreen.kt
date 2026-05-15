@@ -45,7 +45,8 @@ import java.util.*
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    onNavigateToSearch: () -> Unit
+    onNavigateToSearch: () -> Unit,
+    onNavigateToDetail: (StockQuote) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val stocksViewModel: StocksViewModel = hiltViewModel()
@@ -55,6 +56,12 @@ fun HomeScreen(
         viewModel.refresh()
         stocksViewModel.loadStocks()
         stocksViewModel.loadLatestIndices()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.navigateToDetail.collect { quote ->
+            onNavigateToDetail(quote)
+        }
     }
 
     Box(
@@ -134,10 +141,27 @@ fun HomeScreen(
             MarketInsightsSection(
                 uiState = uiState,
                 onCategorySelected = { viewModel.selectCategory(it) },
-                onIndexSelected = { viewModel.selectIndex(it) }
+                onIndexSelected = { viewModel.selectIndex(it) },
+                onStockClick = { stock -> viewModel.fetchStockDetails(stock) }
             )
 
             Spacer(Modifier.height(120.dp)) // Padding for bottom nav
+        }
+
+        // Loading overlay while fetching stock details
+        if (uiState.isDetailsLoading) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.55f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator(color = GoldAccent)
+                    Spacer(Modifier.height(12.dp))
+                    Text("Loading details...", color = Color.White.copy(alpha = 0.6f))
+                }
+            }
         }
     }
 }
@@ -608,7 +632,8 @@ fun IndexCard(name: String, price: Double?, change: String, isPositive: Boolean 
 fun MarketInsightsSection(
     uiState: HomeUiState,
     onCategorySelected: (GrowwMarketCategory) -> Unit,
-    onIndexSelected: (GrowwMarketIndex) -> Unit
+    onIndexSelected: (GrowwMarketIndex) -> Unit,
+    onStockClick: (StockQuote) -> Unit = {}
 ) {
     Column {
         Row(
@@ -723,7 +748,9 @@ fun MarketInsightsSection(
                             sector = stock.exchange ?: "NSE",
                             price = stock.price,
                             change = "${if (stock.change >= 0) "+" else ""}${"%.2f".format(stock.changePercent)}%",
-                            isPositive = stock.change >= 0
+                            isPositive = stock.change >= 0,
+                            logoUrl = stock.logoUrl,
+                            onClick = { onStockClick(stock) }
                         )
                         if (index < uiState.marketStocks.take(6).size - 1) {
                             HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 16.dp))
@@ -783,9 +810,11 @@ fun TopPerformersSection(stocksState: StocksUiState) {
 }
 
 @Composable
-fun StockItem(symbol: String, name: String, sector: String, price: Double, change: String, isPositive: Boolean) {
+fun StockItem(symbol: String, name: String, sector: String, price: Double, change: String, isPositive: Boolean, logoUrl: String? = null, onClick: (() -> Unit)? = null) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Surface(
@@ -795,12 +824,21 @@ fun StockItem(symbol: String, name: String, sector: String, price: Double, chang
             border = BorderStroke(1.dp, Color.White.copy(alpha = 0.05f))
         ) {
             Box(contentAlignment = Alignment.Center) {
-                Text(
-                    symbol,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White.copy(alpha = 0.6f)
-                )
+                if (!logoUrl.isNullOrEmpty()) {
+                    AsyncImage(
+                        model = logoUrl,
+                        contentDescription = null,
+                        modifier = Modifier.size(32.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                } else {
+                    Text(
+                        symbol,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White.copy(alpha = 0.6f)
+                    )
+                }
             }
         }
         

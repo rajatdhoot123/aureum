@@ -83,7 +83,11 @@ fun AureumNavigation(
             MainScaffold(navController) {
                 HomeScreen(
                     viewModel = hiltViewModel(),
-                    onNavigateToSearch = { navController.navigate(Screen.Search.route) }
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) },
+                    onNavigateToDetail = { quote ->
+                        pendingDetailQuote = quote
+                        navController.navigate("stock_detail")
+                    }
                 )
             }
         }

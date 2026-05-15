@@ -61,40 +61,46 @@ class PriceRepository @Inject constructor(
             return@flow
         }
         val result = runCatching {
-            val csv = symbols.joinToString(",")
-            val response = RetrofitClient.stocksApi.getQuotes(csv)
-            if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item -> item.toStockQuote() }
+            val symbolSet = symbols.toSet()
+            val matched = mutableListOf<StockQuote>()
+            val matchedSymbols = mutableSetOf<String>()
+
+            // Bulk fetch from Groww indices + global endpoints
+            val allItems = mutableListOf<StockQuoteItem>()
+            runCatching { RetrofitClient.stocksApi.getGrowwIndices() }
+                .getOrNull()?.takeIf { it.success }?.data?.let { allItems.addAll(it) }
+            runCatching { RetrofitClient.stocksApi.getGrowwGlobal() }
+                .getOrNull()?.takeIf { it.success }?.data?.let { allItems.addAll(it) }
+
+            for (item in allItems) {
+                val quote = item.toStockQuote()
+                val keys = setOfNotNull(quote.symbol, item.nseScriptCode, item.bseScriptCode, item.symbol)
+                if (keys.any { it in symbolSet }) {
+                    matched.add(quote)
+                    matchedSymbols.addAll(keys)
+                }
+            }
+
+            // Resolve remaining symbols individually via Groww search -> details
+            val remaining = symbolSet - matchedSymbols
+            for (sym in remaining) {
+                runCatching {
+                    val searchResp = RetrofitClient.stocksApi.searchGroww(sym, 1)
+                    if (searchResp.success && searchResp.data.isNotEmpty()) {
+                        getGrowwDetails(searchResp.data.first().searchId)
+                            .getOrNull()?.let { matched.add(it) }
+                    }
+                }
+            }
+
+            matched
         }
         emit(result)
     }
 
-    suspend fun getAllPopularStockQuotes(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
-        runCatching {
-            val symbols = PopularStocks.all.map { it.symbol }
-            val csv = symbols.joinToString(",")
-            val response = RetrofitClient.stocksApi.getQuotes(csv)
-            if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item -> item.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
-    }
+    suspend fun getAllPopularStockQuotes(): Result<List<StockQuote>> = getGrowwIndianIndices()
 
-    suspend fun getUsStockQuotes(): Result<List<StockQuote>> = withContext(Dispatchers.IO) {
-        runCatching {
-            // Use the unified Stocks API (supports any Yahoo symbol including US)
-            val usSymbols = listOf("AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META")
-            val csv = usSymbols.joinToString(",")
-            val response = RetrofitClient.stocksApi.getQuotes(csv)
-            if (!response.success) throw Exception("Stocks API returned failure")
-            response.data.map { item -> item.toStockQuote() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { Result.failure(it) }
-        )
-    }
+    suspend fun getUsStockQuotes(): Result<List<StockQuote>> = getGrowwGlobalInstruments()
 
     // --- New Stocks API (per /stocks/... spec) ---
 

@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.util.Log
 
 data class HomeUiState(
     val prices: List<CityPrice> = emptyList(),
@@ -25,7 +26,8 @@ data class HomeUiState(
     val selectedCategory: GrowwMarketCategory? = null,
     val selectedIndex: GrowwMarketIndex? = null,
     val marketStocks: List<StockQuote> = emptyList(),
-    val isMarketLoading: Boolean = false
+    val isMarketLoading: Boolean = false,
+    val isDetailsLoading: Boolean = false
 )
 
 @HiltViewModel
@@ -36,6 +38,9 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private val _navigateToDetail = MutableSharedFlow<StockQuote>(extraBufferCapacity = 1)
+    val navigateToDetail = _navigateToDetail.asSharedFlow()
 
     val selectedCity: StateFlow<String> = prefs.selectedCityFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "India (approx)")
@@ -144,6 +149,18 @@ class HomeViewModel @Inject constructor(
                 .onFailure {
                     _uiState.update { it.copy(isMarketLoading = false) }
                 }
+        }
+    }
+
+    fun fetchStockDetails(stock: StockQuote) {
+        val id = stock.searchId ?: stock.gsin ?: stock.symbol
+        if (id.isEmpty()) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isDetailsLoading = true) }
+            repository.getGrowwDetails(id)
+                .onSuccess { _navigateToDetail.emit(it) }
+                .onFailure { Log.e("HomeVM", "Failed to load details", it) }
+            _uiState.update { it.copy(isDetailsLoading = false) }
         }
     }
 
