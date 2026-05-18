@@ -85,4 +85,37 @@
     <string name="alert_created">Alert created successfully</string>
     <string name="delete_alert">Delete</string>
 
+    <!-- Dashboard -->
+    <string name="good_morning">Good Morning</string>
+    <string name="good_afternoon">Good Afternoon</string>
+    <string name="good_evening">Good Evening</string>
+    <string name="market_overview">Market Overview</string>
+    <string name="savings_summary">Savings Summary</string>
+    <string name="physical_gold">Physical Gold</string>
+    <string name="global_equities">Global Equities</string>
+    <string name="cash_reserves">Cash Reserves</string>
+    <string name="profit">Profit</string>
+    <string name="loss">Loss</string>
+
+    <!-- Tabs -->
+    <string name="tab_overview">Overview</string>
+    <string name="tab_portfolio">Portfolio</string>
+    <string name="tab_alerts">Alerts</string>
+    <string name="tab_news">News</string>
+
+    <!-- News -->
+    <string name="market_intelligence">Market Intelligence</string>
+    <string name="news_subtitle">Insights on Indian economy, inflation &amp; commodities</string>
+    <string name="read_more">Read More</string>
+    <string name="no_news">No news available</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_value">Portfolio Value</string>
+    <string name="total_pnl">Total P&amp;L</string>
+    <string name="add_holding">Add Holding</string>
+    <string name="current_value">Current Value</string>
+    <string name="your_holdings">Your Holdings</string>
+    <string name="no_holdings">No holdings yet</string>
+    <string name="add_first_holding">Add your first asset to start tracking savings</string>
+
 </resources>

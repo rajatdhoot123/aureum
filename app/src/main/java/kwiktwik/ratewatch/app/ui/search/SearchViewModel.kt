@@ -6,10 +6,12 @@ import kwiktwik.ratewatch.app.data.model.StockQuote
 import kwiktwik.ratewatch.app.data.remote.GrowwSearchResultItem
 import kwiktwik.ratewatch.app.data.repository.PriceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val priceRepo: PriceRepository

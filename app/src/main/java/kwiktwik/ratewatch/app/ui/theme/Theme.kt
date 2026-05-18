@@ -77,7 +77,9 @@ fun SonarTheme(
                 isAppearanceLightNavigationBars = !darkTheme
             }
             // Make status bar transparent
+            @Suppress("DEPRECATION")
             window.statusBarColor = android.graphics.Color.TRANSPARENT
+            @Suppress("DEPRECATION")
             window.navigationBarColor = android.graphics.Color.TRANSPARENT
         }
     }

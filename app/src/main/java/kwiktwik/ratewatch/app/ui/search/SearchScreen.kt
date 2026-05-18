@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -58,11 +58,11 @@ fun SearchScreen(
             // Search Bar
             Surface(modifier = Modifier.fillMaxWidth(), color = SonarBg, tonalElevation = 0.dp) {
                 Row(
-                    modifier = Modifier.padding(16.dp).statusBarsPadding(),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp).statusBarsPadding(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                     TextField(
                         value = searchQuery,
@@ -101,7 +101,7 @@ fun SearchScreen(
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 if (searchResults.isEmpty() && searchQuery.length >= 2 && !isLoading) {
@@ -168,7 +168,7 @@ private fun SearchResultCard(result: GrowwSearchResultItem, onClick: () -> Unit)
                 Text("${result.entityType ?: "Stock"} • ${result.searchId}",
                     style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.4f))
             }
-            Icon(Icons.Default.ArrowBack, null, tint = Color.White.copy(alpha = 0.2f),
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, null, tint = Color.White.copy(alpha = 0.2f),
                 modifier = Modifier.size(16.dp).rotate(180f))
         }
     }

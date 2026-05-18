@@ -17,8 +17,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.TrendingDown
-import androidx.compose.material.icons.outlined.TrendingUp
+import androidx.compose.material.icons.automirrored.outlined.TrendingDown
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -258,7 +258,7 @@ private fun AlertItem(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    if (alert.condition == AlertCondition.ABOVE) Icons.Outlined.TrendingUp else Icons.Outlined.TrendingDown,
+                    if (alert.condition == AlertCondition.ABOVE) Icons.AutoMirrored.Outlined.TrendingUp else Icons.AutoMirrored.Outlined.TrendingDown,
                     contentDescription = null,
                     tint = if (alert.condition == AlertCondition.ABOVE) EmeraldGreen else RubyRed,
                     modifier = Modifier.size(24.dp)
